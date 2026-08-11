@@ -1,0 +1,24 @@
+{
+  "name": "stremio-pt-guides",
+  "version": "1.0.0",
+  "description": "Guias de Stremio e Nuvio em português — simples, diretos e atualizados pela comunidade.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmm413777-star/stremio-pt-guides.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dmm413777-star/stremio-pt-guides/issues"
+  },
+  "homepage": "https://github.com/dmm413777-star/stremio-pt-guides#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}
