@@ -4,15 +4,19 @@ date: 2025-01-01
 description: "Como configurar o AIOStreams para dar prioridade a streams com legendas em português já embutidas no ficheiro, sem depender de addons externos."
 tags: ["aiostreams", "legendas", "português", "filtros", "stremio"]
 categorias: ["legendas", "setup"]
-weight: 25
+weight: 6
 tempo: "5 min"
 ---
 
-> **Créditos:** Configuração partilhada pela comunidade [r/PiratariaTuga](https://www.reddit.com/r/PiratariaTuga/).
+{{< callout type="info" >}}
+**Créditos:** Configuração partilhada pela comunidade [r/PiratariaTuga](https://www.reddit.com/r/PiratariaTuga/).
+{{< /callout >}}
 
 **Tempo estimado: 5 min**
 
-> **Antes de começares:** O AIOStreams já tem de estar instalado e configurado — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+{{< callout type="warning" >}}
+**Antes de começares:** O AIOStreams já tem de estar instalado e configurado — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+{{< /callout >}}
 
 ---
 

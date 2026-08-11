@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Como usar o NuvioSync para copiar o teu perfil Nuvio para outro — ideal para configurar a conta de um familiar sem repetir o setup do zero."
 tags: ["nuvio", "clone", "nuviosync", "família", "perfil"]
 categorias: ["nuvio", "setup"]
-weight: 16
+weight: 14
 tempo: "5 min"
 ---
 
-> **Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.
+{{< callout type="info" >}}
+**Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.
+{{< /callout >}}
 
 ---
 
@@ -27,7 +29,9 @@ Podes escolher quais secções copiar — não tens de clonar tudo.
 
 ## Antes de começar
 
-> ⚠️ A clonagem **substitui** as secções seleccionadas no perfil de destino. Se o perfil de destino já tem dados que queres guardar, faz um backup primeiro — o NuvioSync oferece esta opção durante o processo.
+{{< callout type="warning" >}}
+A clonagem **substitui** as secções seleccionadas no perfil de destino. Se o perfil de destino já tem dados que queres guardar, faz um backup primeiro — o NuvioSync oferece esta opção durante o processo.
+{{< /callout >}}
 
 ---
 

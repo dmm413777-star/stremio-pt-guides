@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Como comprar, ativar e configurar o TorBox no Stremio e Nuvio. O debrid mais económico, sem bloqueios por IP, ideal para partilhar com família."
 tags: ["torbox", "debrid", "real-debrid", "stremio", "torrentio"]
 categorias: ["debrid", "setup"]
-weight: 40
+weight: 5
 tempo: "10 min"
 ---
 
-> **Nota:** Um serviço de Debrid **não é obrigatório** para usar o Stremio ou o Nuvio. Serve para quem quer ver conteúdos 4K instantaneamente (tipo Netflix), sem paragens nem necessidade de fazer download, e sem depender de seeds/torrents ativos.
+{{< callout type="info" >}}
+**Nota:** Um serviço de Debrid **não é obrigatório** para usar o Stremio ou o Nuvio. Serve para quem quer ver conteúdos 4K instantaneamente (tipo Netflix), sem paragens nem necessidade de fazer download, e sem depender de seeds/torrents ativos.
+{{< /callout >}}
 
 **Tempo estimado: 10 min**
 
@@ -33,7 +35,9 @@ O **TorBox Essential Anual** (~$33) dá para **cerca de 15 meses** com o bónus 
 
 Usa **[este link](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd)** para garantir **+84 dias de bónus** na primeira compra.
 
-> ⚠️ Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
+{{< callout type="warning" >}}
+Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
+{{< /callout >}}
 
 {{< fig-mobile src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" >}}TorBox pede confirmação para aplicar o código de referência — clica "Yes" para garantir os +84 dias.{{< /fig-mobile >}}
 
@@ -45,13 +49,17 @@ Seleciona **Essential — One Time — ANUAL** ($33).
 
 {{< img src="/images/torbox-subscription-page.png" alt="Página de subscrição do TorBox com os planos disponíveis" >}}
 
-> ⚠️ Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.
+{{< callout type="warning" >}}
+Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.
+{{< /callout >}}
 
 ### 3. Aplica o cupão (apenas com Crypto)
 
 No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20€).
 
-> O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecerem bloqueadas, certifica-te que selecionaste *Yearly — One Time*.
+{{< callout type="info" >}}
+O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecerem bloqueadas, certifica-te que selecionaste *Yearly — One Time*.
+{{< /callout >}}
 
 **Com cartão:** fica por cerca de **28€** sem cupão. Revolut ou N26 são boas opções (cobrado em dólares).
 

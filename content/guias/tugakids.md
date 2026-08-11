@@ -4,7 +4,7 @@ date: 2025-01-01
 description: "Como obter acesso e instalar o addon TugaKids no Stremio — conteúdo infantil em português com registo automático por e-mail."
 tags: ["tugakids", "infantil", "português", "stremio"]
 categorias: ["addons"]
-weight: 58
+weight: 9
 tempo: "5 min"
 ---
 
@@ -31,7 +31,9 @@ O sistema tem filtros automáticos de spam. Para garantires que recebes o e-mail
 - **Evita padrões de spam:** e-mails com sequências de letras/números aleatórios são bloqueados automaticamente.
 - **Não uses aliases nem domínios temporários** (Guerrilla Mail, 10 Minute Mail, etc.) — estão em listas de spam e o acesso não é enviado, mesmo que o sistema diga que foi.
 
-> Se não receberes o e-mail em alguns minutos, verifica a pasta de Spam. Se mesmo assim não chegou, o teu endereço pode ter sido filtrado — tenta com um e-mail diferente (Gmail ou Outlook funcionam bem).
+{{< callout type="info" >}}
+Se não receberes o e-mail em alguns minutos, verifica a pasta de Spam. Se mesmo assim não chegou, o teu endereço pode ter sido filtrado — tenta com um e-mail diferente (Gmail ou Outlook funcionam bem).
+{{< /callout >}}
 
 ---
 

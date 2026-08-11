@@ -4,17 +4,21 @@ date: 2025-01-01
 description: "Configura o AIOStreams com o template SEL do Tam-Taro para um setup à prova de falhas, com modo P2P e suporte a Debrid."
 tags: ["aiostreams", "tamtaro", "sel", "p2p", "debrid", "stremio"]
 categorias: ["setup", "avançado"]
-weight: 20
+weight: 2
 tempo: "15 min"
 ---
 
-> **Créditos:** Templates SEL criados por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+{{< callout type="info" >}}
+**Créditos:** Templates SEL criados por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+{{< /callout >}}
 
 O **AIOStreams** com o template SEL do Tam-Taro é o addon principal para obter streams no Stremio — agrega dezenas de fontes num só, com filtros e ordenação automáticos. É o primeiro addon a instalar depois do TorBox.
 
 **Tempo estimado: 15 min**
 
-> **Antes de começares:** Recomendado ter o [TorBox](/guias/torbox) configurado (ou outro Debrid) e as chaves [TMDB](/guias/tmdb) e [TVDB](/guias/tvdb) à mão. Funciona sem Debrid (modo P2P), mas a qualidade e velocidade são melhores com ele.
+{{< callout type="warning" >}}
+**Antes de começares:** Recomendado ter o [TorBox](/guias/torbox) configurado (ou outro Debrid) e as chaves [TMDB](/guias/tmdb) e [TVDB](/guias/tvdb) à mão. Funciona sem Debrid (modo P2P), mas a qualidade e velocidade são melhores com ele.
+{{< /callout >}}
 
 ---
 
@@ -34,7 +38,9 @@ Usa uma versão **Nightly** para teres as funcionalidades mais recentes:
 - [Kuu's Nightly](https://aiostreams-nightly.206111.xyz/stremio/configure)
 - [Yeb's Nightly](https://aiostreams-nightly.fortheweak.cloud/stremio/configure)
 
-> Garante que a instância que escolhes tem o addon Torrentio a funcionar. Se não tiver, muda para outra.
+{{< callout type="info" >}}
+Garante que a instância que escolhes tem o addon Torrentio a funcionar. Se não tiver, muda para outra.
+{{< /callout >}}
 
 ---
 
@@ -50,9 +56,11 @@ Em alternativa, importa diretamente via URL (no botão de importar templates):
 https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json
 ```
 
-> **Template atual:** v3.0.4. Há dois disponíveis:
-> - **Complete SEL Setup** — configuração completa (addons + filtros + formatter). Recomendado para quem começa.
-> - **Partial SEL Setup** — importa apenas filtros/formatter, mantendo os teus addons atuais.
+{{< callout type="info" >}}
+**Template atual:** v3.0.4. Há dois disponíveis:
+- **Complete SEL Setup** — configuração completa (addons + filtros + formatter). Recomendado para quem começa.
+- **Partial SEL Setup** — importa apenas filtros/formatter, mantendo os teus addons atuais.
+{{< /callout >}}
 
 ---
 
@@ -91,7 +99,9 @@ São **obrigatórias** para o matching correto de títulos e episódios:
 
 Deixa as restantes opções nos valores padrão para o setup testado e recomendado pelo Tam-Taro.
 
-> **Dica Pro:** Se quiseres manter os teus addons atuais e só adicionar os filtros SEL, usa o *Complete SEL Setup* e marca **"No Addons"** durante o assistente.
+{{< callout type="info" >}}
+**Dica Pro:** Se quiseres manter os teus addons atuais e só adicionar os filtros SEL, usa o *Complete SEL Setup* e marca **"No Addons"** durante o assistente.
+{{< /callout >}}
 
 ---
 

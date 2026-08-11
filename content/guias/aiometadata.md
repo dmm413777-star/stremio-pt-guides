@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Configura o AIOMetadata com os templates do Tam-Taro para ter catálogos organizados (Tendências, Netflix, Disney+, Anime) no ecrã inicial do Stremio."
 tags: ["aiometadata", "catálogos", "tamtaro", "stremio", "cinemeta"]
 categorias: ["catálogos", "setup"]
-weight: 30
+weight: 3
 tempo: "10 min"
 ---
 
-> **Créditos:** Configs AIOMetadata por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+{{< callout type="info" >}}
+**Créditos:** Configs AIOMetadata por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+{{< /callout >}}
 
 **Tempo estimado: 10 min**
 
@@ -18,7 +20,9 @@ tempo: "10 min"
 
 O **AIOMetadata** é um addon **separado** do AIOStreams — enquanto o AIOStreams gere os streams (links de vídeo), o AIOMetadata gere os **catálogos** que aparecem no ecrã inicial do Stremio: Tendências globais, tops da Netflix, Disney+, Prime Video, listas sazonais e pesquisa por IA.
 
-> **Antes de começares:** Precisas de ter criado as tuas API Keys do [TMDB](/guias/tmdb), [TVDB](/guias/tvdb) e [MDBList](/guias/mdblist). Sem elas não consegues completar a configuração.
+{{< callout type="warning" >}}
+**Antes de começares:** Precisas de ter criado as tuas API Keys do [TMDB](/guias/tmdb), [TVDB](/guias/tvdb) e [MDBList](/guias/mdblist). Sem elas não consegues completar a configuração.
+{{< /callout >}}
 
 ---
 
@@ -44,9 +48,13 @@ Antes de importar qualquer template, vai ao separador **Integrations** e insere 
 
 {{< img src="/images/aiometadata-configure-integrations.png" alt="Separador Integrations do AIOMetadata com campos de API Key" >}}
 
-> O **RPDB** adiciona as notas do IMDb/Rotten Tomatoes diretamente nas capas. A key `t0-free-rpdb` é pública e não requer registo.
+{{< callout type="info" >}}
+O **RPDB** adiciona as notas do IMDb/Rotten Tomatoes diretamente nas capas. A key `t0-free-rpdb` é pública e não requer registo.
+{{< /callout >}}
 
-> O **Gemini** permite pesquisa por IA no Stremio — ex: *"filmes parecidos com Interstellar mas passados no fundo do mar"*.
+{{< callout type="info" >}}
+O **Gemini** permite pesquisa por IA no Stremio — ex: *"filmes parecidos com Interstellar mas passados no fundo do mar"*.
+{{< /callout >}}
 
 ---
 
@@ -66,8 +74,10 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 
 {{< img src="/images/aiometadata-import-config.png" alt="Modal Import Configuration do AIOMetadata com o URL do template colado" >}}
 
-> **No telemóvel:** Guarda o ficheiro JSON e usa a opção Upload.  
-> **No PC:** Cola o URL diretamente no campo de importação.
+{{< callout type="info" >}}
+**No telemóvel:** Guarda o ficheiro JSON e usa a opção Upload.  
+**No PC:** Cola o URL diretamente no campo de importação.
+{{< /callout >}}
 
 ---
 

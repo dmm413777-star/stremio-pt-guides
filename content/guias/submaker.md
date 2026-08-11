@@ -4,7 +4,7 @@ date: 2025-01-01
 description: "Como configurar o SubMaker para traduzir automaticamente legendas para português usando IA (Gemini, ChatGPT), ideal quando não existem legendas PT disponíveis."
 tags: ["submaker", "legendas", "ia", "gemini", "stremio"]
 categorias: ["legendas"]
-weight: 55
+weight: 7
 tempo: "5 min"
 ---
 
@@ -12,7 +12,9 @@ O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artifi
 
 **Tempo estimado: 5 min**
 
-> **Antes de começares:** Precisas de uma API Key gratuita do Google Gemini. O link para a criares está directamente na página de configuração do SubMaker.
+{{< callout type="warning" >}}
+**Antes de começares:** Precisas de uma API Key gratuita do Google Gemini. O link para a criares está directamente na página de configuração do SubMaker.
+{{< /callout >}}
 
 ---
 
@@ -47,7 +49,9 @@ O SubMaker **não mostra a legenda imediatamente**. Funciona por pedido dentro d
 5. **Aguarda 20 a 30 segundos** — o sistema está a traduzir.
 6. Volta a selecionar a mesma legenda — o texto já aparece em português.
 
-> **Se a tradução falhar ou parecer estranha:** Clica **3 vezes rapidamente** na mesma legenda para forçar uma nova tradução.
+{{< callout type="info" >}}
+**Se a tradução falhar ou parecer estranha:** Clica **3 vezes rapidamente** na mesma legenda para forçar uma nova tradução.
+{{< /callout >}}
 
 ---
 

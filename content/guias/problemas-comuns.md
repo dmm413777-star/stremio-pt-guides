@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Diagnóstico rápido dos problemas mais frequentes no Stremio: lista de streams vazia, buffering, addons com erro e streams TB+ que não funcionam."
 tags: ["troubleshooting", "streams", "buffering", "debrid", "stremio"]
 categorias: ["ajuda"]
-weight: 71
+weight: 17
 tempo: "leitura"
 ---
 
-> **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/troubleshooting), adaptado para utilizadores portugueses.
+{{< callout type="info" >}}
+**Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/troubleshooting), adaptado para utilizadores portugueses.
+{{< /callout >}}
 
 ---
 

@@ -1,0 +1,9 @@
+:root {
+  --hextra-primary-hue: 230;
+  --hextra-primary-saturation: 70%;
+}
+
+.dark {
+  --hextra-bg: #0f1117;
+  --hextra-sidebar-bg: #0f1117;
+}

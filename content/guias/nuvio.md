@@ -4,17 +4,21 @@ date: 2025-01-01
 description: "Tudo o que precisas para começar com o Nuvio: instalar a app, adicionar addons, configurar autoplay e otimizar para Android TV."
 tags: ["nuvio", "android-tv", "addons", "autoplay", "stremio"]
 categorias: ["setup", "nuvio"]
-weight: 10
+weight: 4
 tempo: "15 min"
 ---
 
-> **Créditos:** Guia baseado no post original de **u/WildRabbitz** no r/PiratariaTuga, com adições e formatação pela comunidade.
+{{< callout type="info" >}}
+**Créditos:** Guia baseado no post original de **u/WildRabbitz** no r/PiratariaTuga, com adições e formatação pela comunidade.
+{{< /callout >}}
 
 O Nuvio é uma alternativa ao Stremio compatível com o ecossistema de addons Stremio, com interface mais moderna, suporte a autoplay e especialmente popular em Android TV/Google TV.
 
 **Tempo estimado: 15 min**
 
-> **Antes de começares:** O Nuvio funciona melhor com um serviço de Debrid activo — ver [guia TorBox](/guias/torbox). Sem Debrid funciona em P2P, mas a experiência é muito melhor com ele.
+{{< callout type="warning" >}}
+**Antes de começares:** O Nuvio funciona melhor com um serviço de Debrid activo — ver [guia TorBox](/guias/torbox). Sem Debrid funciona em P2P, mas a experiência é muito melhor com ele.
+{{< /callout >}}
 
 ---
 
@@ -22,7 +26,9 @@ O Nuvio é uma alternativa ao Stremio compatível com o ecossistema de addons St
 
 O **Nuvio** é uma alternativa ao Stremio compatível com o ecossistema de addons Stremio. Tem interface mais moderna, suporte a autoplay, e é especialmente popular em Android TV/Google TV.
 
-> O Nuvio está atualmente em **beta**. Funciona melhor com um serviço de Debrid ativo — ver [guia TorBox](/guias/torbox).
+{{< callout type="info" >}}
+O Nuvio está atualmente em **beta**. Funciona melhor com um serviço de Debrid ativo — ver [guia TorBox](/guias/torbox).
+{{< /callout >}}
 
 **Site oficial:** [nuvioapp.space](https://nuvioapp.space)  
 **GitHub:** [github.com/tapframe](https://github.com/tapframe)  
@@ -50,7 +56,9 @@ A forma mais fácil de obter o URL de um addon é através do Stremio web:
 4. Abre o Nuvio → **Settings → Content & Discovery → Addons**.
 5. Cola o URL no campo **Add Addon** e confirma.
 
-> **Dica:** Se apenas aparecer o botão "Install" sem opção de copiar link, clica com o botão **direito** sobre ele e seleciona **"Copiar endereço do link"**. Depois substitui `stremio://` por `https://` no início do URL.
+{{< callout type="info" >}}
+**Dica:** Se apenas aparecer o botão "Install" sem opção de copiar link, clica com o botão **direito** sobre ele e seleciona **"Copiar endereço do link"**. Depois substitui `stremio://` por `https://` no início do URL.
+{{< /callout >}}
 
 ---
 

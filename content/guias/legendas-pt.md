@@ -4,10 +4,12 @@ date: 2025-01-01
 description: "Como ter legendas em português, sinopses traduzidas e conteúdo infantil PT no Stremio: SubMaker, Toast Translator, RPDB e TugaKids."
 tags: ["legendas", "português", "submaker", "toast", "tugakids", "rpdb", "tmdb"]
 categorias: ["legendas", "localização"]
-weight: 50
+weight: 18
 ---
 
-> **Créditos:** Informação compilada a partir de posts da comunidade no r/PiratariaTuga.
+{{< callout type="info" >}}
+**Créditos:** Informação compilada a partir de posts da comunidade no r/PiratariaTuga.
+{{< /callout >}}
 
 ---
 
@@ -34,7 +36,9 @@ O SubMaker não mostra a legenda imediatamente — funciona por pedido dentro do
 5. **Aguarda 20 a 30 segundos** (o sistema está a traduzir).
 6. Volta a selecionar a mesma legenda — o texto já aparece em português.
 
-> **Dica:** Se a tradução parecer estranha ou falhar, clica **3 vezes rapidamente** na mesma legenda para forçar uma nova tradução.
+{{< callout type="info" >}}
+**Dica:** Se a tradução parecer estranha ou falhar, clica **3 vezes rapidamente** na mesma legenda para forçar uma nova tradução.
+{{< /callout >}}
 
 ---
 
@@ -54,7 +58,9 @@ Este combo traduz títulos e sinopses para **Português de Portugal** e adiciona
    - **Address/Phone:** Dados genéricos.
 5. Copia a chave **"API Key (v3 auth)"**.
 
-> Para um guia mais completo sobre a TMDB API Key, vê [aqui](/guias/tmdb).
+{{< callout type="info" >}}
+Para um guia mais completo sobre a TMDB API Key, vê [aqui](/guias/tmdb).
+{{< /callout >}}
 
 ### Passo 2 — Configurar o Toast Translator
 

@@ -1,4 +1,4 @@
 ---
-title: "Guias"
-description: "Todos os guias de Stremio e Nuvio em português."
+title: Guias
+description: "Guias de Stremio e Nuvio em português — do setup inicial ao avançado."
 ---

@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Guia de hardware para usar Stremio e Nuvio na televisão: desde o melhor custo-benefício até à opção mais potente, com onde comprar em Portugal."
 tags: ["dispositivos", "android-tv", "fire-stick", "chromecast", "hardware", "stremio", "nuvio"]
 categorias: ["setup", "hardware"]
-weight: 80
+weight: 15
 tempo: "leitura"
 ---
 
-> **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio) e [NuvioSync](https://nuviosync.com). Adaptado para Portugal.
+{{< callout type="info" >}}
+**Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio) e [NuvioSync](https://nuviosync.com). Adaptado para Portugal.
+{{< /callout >}}
 
 ---
 
@@ -38,7 +40,9 @@ O **Nuvio está disponível directamente na Play Store** em Android TV/Google TV
 
 Alternativa sólida. Mais rápido do que o Stick HD normal, suporta 4K HDR. O Stremio e o Nuvio instalam-se via sideload (com o Downloader) — ver [guia Nuvio](/guias/nuvio) para instruções de instalação.
 
-> ⚠️ A segunda geração do Fire TV Stick 4K Max tem um bug de compatibilidade com Dolby Vision Profile 7 — alguns streams aparecem com o ecrã dividido. Selecciona um stream alternativo se isso acontecer.
+{{< callout type="warning" >}}
+A segunda geração do Fire TV Stick 4K Max tem um bug de compatibilidade com Dolby Vision Profile 7 — alguns streams aparecem com o ecrã dividido. Selecciona um stream alternativo se isso acontecer.
+{{< /callout >}}
 
 **Onde comprar:** Amazon.es (~55-70€, frequentemente em promoção).
 

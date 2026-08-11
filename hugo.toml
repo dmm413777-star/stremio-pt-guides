@@ -1,61 +1,52 @@
 baseURL = "https://dmm413777-star.github.io/stremio-pt-guides/"
-languageCode = "pt-PT"
-title = "Stremio PT Guides"
-theme = "PaperMod"
+locale = "pt-PT"
+title = "Stremio PT"
+theme = "hextra"
+
+enableRobotsTXT = true
+enableGitInfo = false
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
 
 [params]
-  description = "Guias de Stremio e Nuvio em português — simples, diretos e atualizados."
-  author = "Stremio PT"
-  defaultTheme = "dark"
-  ShowReadingTime = true
-  ShowBreadCrumbs = true
-  ShowPostNavLinks = true
-  ShowShareButtons = false
-  ShowCodeCopyButtons = true
-  disableScrollToTop = false
+  description = "Guias de Stremio e Nuvio em português — simples, directos e actualizados pela comunidade."
 
-  [params.homeInfoParams]
-    Title = "Stremio PT Guides"
-    Content = "Guias de Stremio e Nuvio escritos em português — simples, diretos e atualizados pela comunidade."
+  [params.navbar]
+    displayTitle = true
+    displayLogo = false
 
-  [[params.socialIcons]]
-    name = "github"
-    url = "https://github.com/dmm413777-star/stremio-pt-guides"
+  [params.theme]
+    default = "dark"
+    displayToggle = true
 
-  [[params.socialIcons]]
-    name = "reddit"
-    url = "https://www.reddit.com/r/PiratariaTuga/"
+  [params.footer]
+    enable = false
+
+  [params.search]
+    enable = true
+
+  customCSS = ["css/custom.css"]
 
 [menu]
   [[menu.main]]
     identifier = "guias"
     name = "Guias"
-    url = "/guias/"
-    weight = 10
-
-  [[menu.main]]
-    identifier = "ferramentas"
-    name = "Ferramentas"
-    url = "/ferramentas/"
-    weight = 20
+    pageRef = "/guias"
+    weight = 1
 
   [[menu.main]]
     identifier = "links"
-    name = "Links Úteis"
-    url = "/links/"
-    weight = 30
+    name = "Links"
+    pageRef = "/links"
+    weight = 2
 
 [markup]
+  [markup.goldmark.renderer]
+    unsafe = true
   [markup.highlight]
     style = "monokai"
     lineNos = false
-    tabWidth = 2
-  [markup.goldmark.renderer]
-    unsafe = true
-
-[outputs]
-  home = ["HTML", "RSS"]
-  section = ["HTML"]
 
 [taxonomies]
   tag = "tags"

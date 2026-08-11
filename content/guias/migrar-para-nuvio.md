@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Como usar o NuvioSync para mover a tua biblioteca, histórico e addons do Stremio para o Nuvio, sem conta Trakt e sem perder nada."
 tags: ["nuvio", "stremio", "migração", "nuviosync", "biblioteca"]
 categorias: ["nuvio", "setup"]
-weight: 15
+weight: 13
 tempo: "10 min"
 ---
 
-> **Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.
+{{< callout type="info" >}}
+**Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.
+{{< /callout >}}
 
 ---
 

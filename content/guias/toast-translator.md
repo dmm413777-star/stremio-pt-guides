@@ -4,7 +4,7 @@ date: 2025-01-01
 description: "Como configurar o Toast Translator com RPDB para ter sinopses e títulos em Português de Portugal, e notas do IMDb/Rotten Tomatoes nas capas dos filmes."
 tags: ["toast", "rpdb", "sinopses", "português", "tmdb", "stremio"]
 categorias: ["localização", "metadata"]
-weight: 57
+weight: 8
 tempo: "5 min"
 ---
 
@@ -12,7 +12,9 @@ O **Toast Translator** traduz títulos e sinopses para **Português de Portugal*
 
 **Tempo estimado: 5 min**
 
-> **Antes de começares:** Precisas da tua [TMDB API Key](/guias/tmdb). É gratuita e demora menos de 5 minutos a criar.
+{{< callout type="warning" >}}
+**Antes de começares:** Precisas da tua [TMDB API Key](/guias/tmdb). É gratuita e demora menos de 5 minutos a criar.
+{{< /callout >}}
 
 ---
 
@@ -20,7 +22,9 @@ O **Toast Translator** traduz títulos e sinopses para **Português de Portugal*
 
 O Toast precisa da tua API Key do TMDB para aceder às traduções. É gratuita e demora menos de 5 minutos.
 
-> Segue o [guia TMDB API Key](/guias/tmdb) e volta aqui com a chave copiada.
+{{< callout type="info" >}}
+Segue o [guia TMDB API Key](/guias/tmdb) e volta aqui com a chave copiada.
+{{< /callout >}}
 
 ---
 

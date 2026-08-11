@@ -4,11 +4,13 @@ date: 2025-01-01
 description: "Respostas às dúvidas mais comuns sobre Debrid, VPN, addons e o Stremio em geral."
 tags: ["faq", "debrid", "vpn", "addons", "stremio"]
 categorias: ["ajuda"]
-weight: 70
+weight: 16
 tempo: "leitura"
 ---
 
-> **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/faq), adaptado para utilizadores portugueses.
+{{< callout type="info" >}}
+**Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/faq), adaptado para utilizadores portugueses.
+{{< /callout >}}
 
 ---
 
