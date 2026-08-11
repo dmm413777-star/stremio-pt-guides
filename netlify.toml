@@ -4,3 +4,8 @@
 
 [build.environment]
   HUGO_VERSION = "0.164.0"
+
+[[redirects]]
+  from = "/guias/"
+  to = "/guias/comecar-aqui/"
+  status = 302
