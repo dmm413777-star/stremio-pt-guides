@@ -35,7 +35,8 @@ Usa uma versão **Nightly** para teres as funcionalidades mais recentes:
 
 Na página inicial do AIOStreams, vai à secção **Featured Templates** e seleciona **"Tamtaro Complete SEL Setup"**.
 
-<!-- SCREENSHOT: Página inicial do AIOStreams com a secção "Featured Templates" visível e o template "Tamtaro Complete SEL Setup" destacado -->
+![Página inicial do AIOStreams com a secção Featured Templates](/images/aiostreams-featured-templates.png)
+*Secção Featured Templates na página inicial do AIOStreams — seleciona "Tamtaro Complete SEL Setup".*
 
 Em alternativa, importa diretamente via URL (no botão de importar templates):
 
@@ -53,13 +54,15 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 
 Após importar, o AIOStreams abre um assistente. Seleciona **"Tamtaro Complete SEL Setup"** e percorre as opções:
 
-<!-- SCREENSHOT: Assistente (wizard) do AIOStreams após importar o template, com as opções de configuração visíveis -->
+![Modal do template Tamtaro Complete SEL Setup no AIOStreams](/images/aiostreams-tamtaro-modal.png)
+*Modal do template Tamtaro Complete SEL Setup v3.0.4 — clica "Load Template" para avançar.*
 
 ### Modo Debrid (recomendado)
 
 Seleciona o teu serviço de Debrid e cola a respetiva API Key. O assistente adapta-se automaticamente.
 
-<!-- SCREENSHOT: Passo do assistente onde se seleciona o serviço Debrid e se insere a API Key -->
+![Passo Select Services do assistente AIOStreams com TorBox selecionado](/images/aiostreams-select-services.png)
+*Passo "Select Services" — seleciona o teu serviço de Debrid (exemplo: TorBox a azul).*
 
 **Recomendação:** O **[TorBox](/guias/torbox)** é a opção mais económica e permite partilhar sem bloqueios por IP.
 
@@ -77,10 +80,11 @@ Quer Debrid ativo **e** fallback P2P? Instala a instância duas vezes: uma com D
 
 São **obrigatórias** para o matching correto de títulos e episódios:
 
-<!-- SCREENSHOT: Passo do assistente onde se pedem as credenciais TMDB e TVDB -->
+![Passo Enter Credentials do assistente AIOStreams com campos de API Key](/images/aiostreams-enter-credentials.png)
+*Passo "Enter Credentials" — campos para TorBox API Key, TMDB API Key e TVDB API Key.*
 
 - **TMDB API Key** → ver [guia TMDB](/guias/tmdb)
-- **TVDB API Key** → cria conta em [thetvdb.com](https://thetvdb.com) e gera a key nas definições
+- **TVDB API Key** → ver [guia TVDB](/guias/tvdb)
 
 Deixa as restantes opções nos valores padrão para o setup testado e recomendado pelo Tam-Taro.
 

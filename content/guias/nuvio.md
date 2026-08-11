@@ -90,3 +90,5 @@ O *Regex* funciona como um filtro de pesquisa inteligente. Este padrão diz ao N
 - [GitHub do Nuvio (tapframe)](https://github.com/tapframe)
 - [Doações (Ko-fi)](https://ko-fi.com/tapframe)
 - [TorBox — Serviço Debrid recomendado](/guias/torbox)
+- [Migrar do Stremio para o Nuvio (NuvioSync)](/guias/migrar-para-nuvio)
+- [Clonar perfil Nuvio para familiar](/guias/clonar-perfil-nuvio)

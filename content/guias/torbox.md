@@ -32,13 +32,19 @@ Usa **[este link](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a0
 
 > ⚠️ Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
 
-<!-- SCREENSHOT: Página de subscrição do TorBox com o código de referência visível no URL ou no checkout -->
+<figure style="max-width:380px;margin:1rem auto;text-align:center">
+<img src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" style="width:100%;border-radius:8px">
+<figcaption><em>TorBox pede confirmação para aplicar o código de referência — clica "Yes" para garantir os +84 dias.</em></figcaption>
+</figure>
 
 ### 2. Escolhe o plano
 
 Seleciona **Essential — One Time — ANUAL** ($33).
 
-<!-- SCREENSHOT: Página de planos do TorBox com "Essential - One Time - Annual" selecionado -->
+<figure style="max-width:380px;margin:1rem auto;text-align:center">
+<img src="/images/torbox-planos-essential.jpg" alt="Página de planos TorBox com Essential anual e cupão SIGMA30" style="width:100%;border-radius:8px">
+<figcaption><em>Seleciona "Essential" anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.</em></figcaption>
+</figure>
 
 > ⚠️ Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.
 
@@ -46,7 +52,10 @@ Seleciona **Essential — One Time — ANUAL** ($33).
 
 No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20€).
 
-<!-- SCREENSHOT: Campo de cupão no checkout do TorBox com o código SIGMA30 inserido e desconto aplicado -->
+<figure style="max-width:380px;margin:1rem auto;text-align:center">
+<img src="/images/torbox-planos-essential.jpg" alt="Campo SIGMA30 no checkout do TorBox" style="width:100%;border-radius:8px">
+<figcaption><em>Insere o cupão SIGMA30 no campo de desconto — funciona apenas com pagamento em criptomoedas.</em></figcaption>
+</figure>
 
 > O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecerem bloqueadas, certifica-te que selecionaste *Yearly — One Time*.
 
@@ -74,7 +83,8 @@ No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20
 
 Após a instalação, os links com a tag **`[TB+]`** estão em **cache** — correm instantaneamente sem depender de seeds. Qualidade máxima, sem espera.
 
-<!-- SCREENSHOT: Lista de streams no Stremio mostrando links com a tag [TB+] — resultado final após configuração do TorBox -->
+![Lista de streams no Stremio com tags TB+ do TorBox](/images/stremio-tb-streams.jpg)
+*Streams com a tag [TB+] estão em cache no TorBox — qualidade máxima, reprodução instantânea.*
 
 ---
 

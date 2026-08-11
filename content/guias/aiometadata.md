@@ -39,8 +39,8 @@ Antes de importar qualquer template, vai ao separador **Integrations** e insere 
 | Serviço | Obrigatório? | Notas |
 |---|---|---|
 | **TMDB** | ✅ Sim | Ver [guia TMDB](/guias/tmdb) |
-| **TheTVDB** | ✅ Sim | Conta gratuita em [thetvdb.com](https://thetvdb.com) |
-| **MDBList** | ✅ Sim | Conta gratuita em [mdblist.com](https://mdblist.com) → API |
+| **TheTVDB** | ✅ Sim | Ver [guia TVDB](/guias/tvdb) |
+| **MDBList** | ✅ Sim | Ver [guia MDBList](/guias/mdblist) |
 | **Fanart.tv** | Recomendado | Conta gratuita em [fanart.tv](https://fanart.tv) |
 | **RPDB** | Opcional | Key gratuita: `t0-free-rpdb` |
 | **Gemini** | Opcional | Pesquisa por IA — [aistudio.google.com](https://aistudio.google.com) |
