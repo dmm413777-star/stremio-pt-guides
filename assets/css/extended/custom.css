@@ -1,0 +1,403 @@
+/* ─── PALETTE & FONTS ─────────────────────────────────────────────────────── */
+:root,
+:root[data-theme="dark"] {
+  --theme:      #0d0f14;
+  --entry:      #1a1e28;
+  --primary:    #e2e6f0;
+  --secondary:  #7a849a;
+  --tertiary:   #252a38;
+  --content:    #c0c8dc;
+  --border:     #252a38;
+  --code-block-bg: #111520;
+  --code-bg:    #111520;
+
+  /* mockup extras */
+  --surf:       #13161e;
+  --card:       #1a1e28;
+  --brd:        #252a38;
+  --acc:        #6c8cff;
+  --acc2:       #a78bfa;
+  --mut:        #7a849a;
+  --tag-bg:     #1e2438;
+  --tag-clr:    #8ba4ff;
+  --warn-bg:    #1f1a10;
+  --warn-brd:   #5a4410;
+  --warn-txt:   #d4a849;
+  --tip-bg:     #0f1e18;
+  --tip-brd:    #1e4a34;
+  --tip-txt:    #4ade80;
+}
+
+/* ─── BASE ────────────────────────────────────────────────────────────────── */
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  background: var(--theme);
+  color: var(--primary);
+}
+
+/* ─── HEADER / NAV ────────────────────────────────────────────────────────── */
+header#header {
+  background: rgba(13,15,20,.88) !important;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--brd);
+  height: 56px;
+}
+
+.nav {
+  max-width: 1100px;
+}
+
+/* Logo */
+.logo a, .logo .logo-switches {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--primary) !important;
+  text-decoration: none;
+}
+
+/* Nav links */
+#menu-header-menu a, #menu-main a {
+  color: var(--mut);
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color .15s, background .15s;
+}
+#menu-header-menu a:hover, #menu-main a:hover {
+  color: var(--primary);
+  background: var(--card);
+}
+
+/* ─── HEADINGS ────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Syne', sans-serif;
+}
+
+.post-title, h1.post-title {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.3px;
+  color: var(--primary);
+  border-bottom: 1px solid var(--brd);
+  padding-bottom: 8px;
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
+
+h3 {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+/* ─── BODY TEXT & LINKS ───────────────────────────────────────────────────── */
+.post-content p {
+  color: var(--content);
+  font-size: 14.5px;
+  margin-bottom: 14px;
+}
+
+.post-content a {
+  color: var(--acc);
+  text-decoration: none;
+}
+.post-content a:hover {
+  text-decoration: underline;
+}
+
+/* ─── CODE ────────────────────────────────────────────────────────────────── */
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  background: var(--code-bg);
+  border: 1px solid var(--brd);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: #a78bfa;
+}
+
+pre {
+  background: var(--code-block-bg) !important;
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #8ba4ff;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* ─── BLOCKQUOTES → callouts ──────────────────────────────────────────────── */
+blockquote {
+  background: var(--tip-bg);
+  border-left: 3px solid var(--tip-brd);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--tip-txt);
+  margin: 16px 0;
+  line-height: 1.6;
+}
+
+blockquote p {
+  color: var(--tip-txt) !important;
+  margin: 0;
+}
+
+/* ⚠️ warning blockquotes — detect by emoji at start */
+blockquote:has(p:first-child > strong:first-child),
+blockquote:has(> p:first-of-type > *:first-child[title="⚠️"]) {
+  background: var(--warn-bg);
+  border-left-color: var(--warn-brd);
+  color: var(--warn-txt);
+}
+
+/* ─── TABLES ──────────────────────────────────────────────────────────────── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 20px;
+  font-size: 13.5px;
+}
+
+th {
+  text-align: left;
+  padding: 8px 12px;
+  color: var(--mut);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--brd);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(37,42,56,.6);
+  color: var(--content);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* ─── TAGS / BADGES ───────────────────────────────────────────────────────── */
+.post-tags a, .tags a, .tag {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--tag-clr) !important;
+  background: var(--tag-bg);
+  border: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-decoration: none !important;
+}
+
+/* ─── POST META ───────────────────────────────────────────────────────────── */
+.post-meta, .post-meta span, .post-meta a {
+  font-size: 12px;
+  color: var(--mut);
+}
+
+/* ─── ENTRY CARDS (list pages) ────────────────────────────────────────────── */
+.entry {
+  background: var(--card);
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 20px;
+  transition: border-color .2s, transform .15s;
+}
+
+.entry:hover {
+  border-color: var(--acc);
+  transform: translateY(-2px);
+}
+
+.entry-header h2 {
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  padding: 0;
+  margin: 0 0 6px;
+}
+
+.entry-content p {
+  font-size: 12.5px;
+  color: var(--mut);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.entry a {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+/* ─── BREADCRUMBS ─────────────────────────────────────────────────────────── */
+.breadcrumbs, nav[aria-label="breadcrumb"] {
+  font-size: 12px;
+  color: var(--mut);
+}
+
+.breadcrumbs a {
+  color: var(--mut);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary);
+}
+
+/* ─── FOOTER ──────────────────────────────────────────────────────────────── */
+footer#footer {
+  border-top: 1px solid var(--brd);
+  font-size: 12px;
+  color: var(--mut);
+  background: var(--theme);
+}
+
+footer a {
+  color: var(--mut) !important;
+}
+footer a:hover {
+  color: var(--primary) !important;
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--brd); border-radius: 3px; }
+
+/* ─── IMAGES ──────────────────────────────────────────────────────────────── */
+.post-content img {
+  border-radius: 8px;
+  border: 1px solid var(--brd);
+  max-width: 100%;
+}
+
+/* ─── HOMEPAGE HERO ───────────────────────────────────────────────────────── */
+
+/* hide PaperMod's empty avatar placeholder */
+.home-info .profile_inner img,
+.home-info .profile_inner > a:first-child {
+  display: none;
+}
+
+.home-info {
+  background: var(--surf);
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.home-info .entry-header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--acc), var(--acc2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.home-info p {
+  color: var(--mut);
+  font-size: 15px;
+  max-width: 520px;
+}
+
+/* ─── HIGHLIGHT ACCENT ────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(108,140,255,.25);
+  color: var(--primary);
+}
+
+/* ─── TOC ─────────────────────────────────────────────────────────────────── */
+#TableOfContents {
+  background: var(--card);
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 13.5px;
+}
+
+#TableOfContents a {
+  color: var(--mut);
+  text-decoration: none;
+}
+
+#TableOfContents a:hover {
+  color: var(--acc);
+}
+
+/* ─── POST NAVIGATION ─────────────────────────────────────────────────────── */
+.paginav {
+  border-top: 1px solid var(--brd);
+  background: var(--card);
+  border-radius: 8px;
+}
+
+.paginav a {
+  color: var(--acc) !important;
+}
+
+/* ─── SEARCH ──────────────────────────────────────────────────────────────── */
+#searchbox input {
+  background: var(--card);
+  border: 1px solid var(--brd);
+  color: var(--primary);
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+#searchbox input:focus {
+  border-color: var(--acc);
+  outline: none;
+}
+
+/* ─── READING TIME / WORD COUNT ───────────────────────────────────────────── */
+.post-description {
+  color: var(--mut);
+  font-size: 14px;
+}
+
+/* ─── COPY BUTTON ─────────────────────────────────────────────────────────── */
+.copy-code {
+  background: var(--card);
+  border: 1px solid var(--brd);
+  color: var(--mut);
+  border-radius: 4px;
+}
+
+.copy-code:hover {
+  background: var(--acc);
+  color: #fff;
+  border-color: var(--acc);
+}

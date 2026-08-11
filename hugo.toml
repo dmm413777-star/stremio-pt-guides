@@ -15,7 +15,7 @@ theme = "PaperMod"
   disableScrollToTop = false
 
   [params.homeInfoParams]
-    Title = "📺 Stremio PT Guides"
+    Title = "Stremio PT Guides"
     Content = "Guias de Stremio e Nuvio escritos em português — simples, diretos e atualizados pela comunidade."
 
   [[params.socialIcons]]
