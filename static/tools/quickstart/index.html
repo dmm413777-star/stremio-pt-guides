@@ -783,9 +783,11 @@
       userEmail = email;
 
       // Ler addons actuais
-      const colRes = await fetch(
-        `https://api.strem.io/api/addonCollectionGet?authKey=${encodeURIComponent(authKey)}&type=User&_=${Date.now()}`
-      );
+      const colRes = await fetchWithTimeout('https://api.strem.io/api/addonCollectionGet', 10000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authKey, type: 'User' })
+      });
       if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
       const colData = await colRes.json();
       currentAddons = colData.result?.addons ?? [];
@@ -1018,10 +1020,10 @@
     row.innerHTML = `<span class="progress-icon">${icons[state]}</span> ${text}`;
   }
 
-  function fetchWithTimeout(url, ms) {
+  function fetchWithTimeout(url, ms, opts = {}) {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), ms);
-    return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(t));
+    return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
   }
 
   function activateCard(id) {
