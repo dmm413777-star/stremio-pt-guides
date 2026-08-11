@@ -1,4 +1,4 @@
-baseURL = "https://dmm413777-star.github.io/stremio-pt-guides/"
+baseURL = "https://denunciastremio.netlify.app/"
 locale = "pt-PT"
 title = "Stremio PT"
 theme = "hextra"
