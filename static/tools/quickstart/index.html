@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickStart PT — Stremio</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3450;
+      --accent: #7c3aed;
+      --accent-hover: #6d28d9;
+      --accent-light: #a78bfa;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-num.done { background: var(--success); }
+    .step-num.inactive { background: var(--surface2); color: var(--text-dim); }
+
+    .card.inactive { opacity: 0.5; pointer-events: none; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      margin-top: 0.75rem;
+    }
+
+    label:first-child { margin-top: 0; }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--accent-light);
+    }
+
+    input::placeholder { color: var(--text-dim); }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.25rem;
+      transition: background 0.15s, opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .status-line {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      min-height: 1.2em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .status-line.ok { color: var(--success); }
+    .status-line.err { color: var(--error); }
+
+    /* Checkboxes */
+    .addon-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .addon-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .addon-item:hover { border-color: var(--accent-light); }
+    .addon-item.checked { border-color: var(--accent); }
+
+    .addon-item input[type="checkbox"] { display: none; }
+
+    .check-box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .addon-item.checked .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .addon-item.checked .check-box::after {
+      content: "✓";
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .addon-info strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .addon-info span {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Progress */
+    .progress-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .progress-item.done { color: var(--success); }
+    .progress-item.err { color: var(--error); }
+    .progress-item.loading { color: var(--accent-light); }
+
+    .progress-icon { font-size: 1rem; width: 1.2em; text-align: center; }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--accent-light);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .result-box {
+      background: var(--surface2);
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 0.88rem;
+      color: var(--success);
+      line-height: 1.5;
+    }
+
+    .result-box.partial { border-color: var(--warning); color: var(--warning); }
+    .result-box.fail { border-color: var(--error); color: var(--error); }
+
+    .warn-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--warning);
+      line-height: 1.5;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    footer a { color: var(--text-dim); text-decoration: underline; }
+
+    /* Disabled state for step 1 card when logged in */
+    #card-login.done-card {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .account-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 0.78rem;
+      color: var(--success);
+      margin-left: 0.5rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Beta</div>
+  <h1>📺 QuickStart PT</h1>
+  <p>Instala o pack de addons portugueses na tua conta Stremio em menos de 2 minutos.</p>
+</header>
+
+<!-- PASSO 1: Login -->
+<div class="card" id="card-login">
+  <h2>
+    <span class="step-num" id="step1-num">1</span>
+    Login Stremio
+    <span class="account-pill" id="account-pill" style="display:none">✓ <span id="account-email-short"></span></span>
+  </h2>
+  <label for="inp-email">E-mail</label>
+  <input type="email" id="inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  <label for="inp-pass">Password</label>
+  <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+  <button class="btn" id="btn-login" onclick="doLogin()">
+    Entrar
+  </button>
+  <div class="status-line" id="login-status"></div>
+  <div class="warn-box" style="margin-top:0.75rem">
+    🔒 As credenciais são usadas apenas para comunicar com a API oficial do Stremio (<code>api.strem.io</code>) e não são guardadas em nenhum sítio.
+  </div>
+</div>
+
+<!-- PASSO 2: Selecionar pack -->
+<div class="card inactive" id="card-pack">
+  <h2>
+    <span class="step-num inactive" id="step2-num">2</span>
+    Selecionar Pack
+  </h2>
+  <div class="addon-list" id="addon-list"></div>
+  <button class="btn" id="btn-install" onclick="doInstall()">
+    Instalar Agora →
+  </button>
+</div>
+
+<!-- PASSO 3: Progresso -->
+<div class="card inactive" id="card-progress">
+  <h2>
+    <span class="step-num inactive" id="step3-num">3</span>
+    Instalação
+  </h2>
+  <div class="progress-list" id="progress-list"></div>
+  <div id="result-box" style="display:none"></div>
+</div>
+
+<footer>
+  Esta ferramenta usa a API oficial do Stremio. Os addons são instalados na tua conta como se usasses o Stremio normalmente.<br>
+  Para remover um addon, abre o Stremio → Addons → desinstala manualmente.<br><br>
+  <a href="/guias/">← Voltar aos guias</a>
+</footer>
+
+<script>
+  // ─── Definição do Pack PT ────────────────────────────────────────────────
+
+  const PT_PACK = [
+    {
+      id: 'aiostreams',
+      name: 'AIOStreams',
+      desc: 'Streams agregados (Comet, MediaFusion, Torrentio, etc.) com template Tam-Taro SEL',
+      manifestUrl: 'https://aiostreams.viren070.me/stremio/manifest.json',
+    },
+    {
+      id: 'aiometadata',
+      name: 'AIOMetadata',
+      desc: 'Catálogos organizados: Netflix, Disney+, Prime Video, Tendências',
+      manifestUrl: 'https://aiometadata.elfhosted.com/manifest.json',
+    },
+    {
+      id: 'submaker',
+      name: 'SubMaker',
+      desc: 'Tradução automática de legendas para português por IA (Gemini)',
+      manifestUrl: 'https://submaker.elfhosted.com/manifest.json',
+    },
+    {
+      id: 'toast',
+      name: 'Toast Translator',
+      desc: 'Sinopses e títulos em português + ratings IMDb/Rotten Tomatoes nos posters',
+      manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
+    },
+  ];
+
+  // ─── Estado ──────────────────────────────────────────────────────────────
+
+  let authKey = null;
+  let currentAddons = [];
+
+  // ─── Render inicial ──────────────────────────────────────────────────────
+
+  const addonList = document.getElementById('addon-list');
+
+  PT_PACK.forEach(addon => {
+    const item = document.createElement('label');
+    item.className = 'addon-item checked';
+    item.htmlFor = 'chk-' + addon.id;
+    item.innerHTML = `
+      <input type="checkbox" id="chk-${addon.id}" checked>
+      <div class="check-box"></div>
+      <div class="addon-info">
+        <strong>${addon.name}</strong>
+        <span>${addon.desc}</span>
+      </div>
+    `;
+    item.addEventListener('change', () => {
+      item.classList.toggle('checked', item.querySelector('input').checked);
+    });
+    addonList.appendChild(item);
+  });
+
+  // ─── Passo 1: Login ──────────────────────────────────────────────────────
+
+  // Allow Enter key on password field
+  document.getElementById('inp-pass').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  async function doLogin() {
+    const email = document.getElementById('inp-email').value.trim();
+    const pass = document.getElementById('inp-pass').value;
+    const statusEl = document.getElementById('login-status');
+    const btn = document.getElementById('btn-login');
+
+    if (!email || !pass) {
+      setStatus(statusEl, 'err', 'Preenche o e-mail e a password.');
+      return;
+    }
+
+    btn.disabled = true;
+    setStatus(statusEl, '', 'A verificar conta…');
+
+    try {
+      const res = await fetch('https://api.strem.io/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass, facebook: false }),
+      });
+
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      if (!data.result || !data.result.authKey) {
+        const msg = data.error || 'E-mail ou password incorretos.';
+        setStatus(statusEl, 'err', msg);
+        btn.disabled = false;
+        return;
+      }
+
+      authKey = data.result.authKey;
+
+      // Read current addons
+      const colRes = await fetch(
+        `https://api.strem.io/api/addonCollectionGet?authKey=${encodeURIComponent(authKey)}&type=User&_=${Date.now()}`
+      );
+      const colData = await colRes.json();
+      currentAddons = (colData.result && colData.result.addons) ? colData.result.addons : [];
+
+      // UI: mark step 1 done
+      setStatus(statusEl, 'ok', '✓ Conta verificada.');
+      document.getElementById('step1-num').className = 'step-num done';
+      document.getElementById('card-login').classList.add('done-card');
+      const shortEmail = email.length > 24 ? email.slice(0, 22) + '…' : email;
+      document.getElementById('account-email-short').textContent = shortEmail;
+      document.getElementById('account-pill').style.display = 'inline-flex';
+
+      // Unlock step 2
+      const packCard = document.getElementById('card-pack');
+      packCard.classList.remove('inactive');
+      document.getElementById('step2-num').className = 'step-num';
+
+    } catch (err) {
+      setStatus(statusEl, 'err', 'Erro ao ligar à API do Stremio. Tenta novamente.');
+      btn.disabled = false;
+    }
+  }
+
+  // ─── Passo 2 → 3: Instalar ───────────────────────────────────────────────
+
+  async function doInstall() {
+    const selected = PT_PACK.filter(a =>
+      document.getElementById('chk-' + a.id).checked
+    );
+
+    if (selected.length === 0) {
+      alert('Seleciona pelo menos um addon para instalar.');
+      return;
+    }
+
+    // Lock step 2, unlock step 3
+    document.getElementById('card-pack').classList.add('inactive');
+    document.getElementById('card-progress').classList.remove('inactive');
+    document.getElementById('step3-num').className = 'step-num';
+
+    const progressList = document.getElementById('progress-list');
+    progressList.innerHTML = '';
+
+    const results = [];
+
+    for (const addon of selected) {
+      const row = addProgressRow(progressList, 'loading', addon.name);
+
+      try {
+        // 1. Validar que o manifest responde
+        const mRes = await fetchWithTimeout(addon.manifestUrl, 8000);
+        if (!mRes.ok) throw new Error('Manifest HTTP ' + mRes.status);
+        const manifest = await mRes.json();
+
+        // 2. Verificar se já está instalado
+        const alreadyInstalled = currentAddons.some(
+          a => a.manifest && a.manifest.id === manifest.id
+        );
+
+        if (alreadyInstalled) {
+          updateRow(row, 'done', `✓ ${addon.name} (já instalado)`);
+          results.push({ addon, ok: true, alreadyInstalled: true });
+          continue;
+        }
+
+        // 3. Construir o objeto de addon no formato Stremio
+        const newAddon = {
+          transportUrl: addon.manifestUrl,
+          transportName: 'http',
+          manifest: manifest,
+          flags: {},
+        };
+
+        // 4. Fazer merge e enviar
+        const mergedAddons = [...currentAddons, newAddon];
+        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authKey, addons: mergedAddons }),
+        });
+
+        if (!setRes.ok) throw new Error('Set HTTP ' + setRes.status);
+        const setData = await setRes.json();
+        if (setData.error) throw new Error(setData.error);
+
+        // Atualizar a lista local para o próximo addon
+        currentAddons = mergedAddons;
+
+        updateRow(row, 'done', `✓ ${addon.name} instalado`);
+        results.push({ addon, ok: true });
+
+      } catch (err) {
+        updateRow(row, 'err', `✗ ${addon.name} — ${err.message}`);
+        results.push({ addon, ok: false, err: err.message });
+      }
+    }
+
+    // Resultado final
+    const ok = results.filter(r => r.ok).length;
+    const fail = results.filter(r => !r.ok).length;
+    const resultBox = document.getElementById('result-box');
+    resultBox.style.display = 'block';
+
+    if (fail === 0) {
+      resultBox.className = 'result-box';
+      resultBox.innerHTML = `✓ ${ok} addon${ok !== 1 ? 's' : ''} instalado${ok !== 1 ? 's' : ''}. Abre o Stremio e já está — os addons aparecem de imediato.`;
+    } else if (ok > 0) {
+      resultBox.className = 'result-box partial';
+      resultBox.innerHTML = `${ok} instalado${ok !== 1 ? 's' : ''}, ${fail} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
+    } else {
+      resultBox.className = 'result-box fail';
+      resultBox.innerHTML = `Não foi possível instalar nenhum addon. Verifica a tua ligação e tenta novamente.`;
+    }
+
+    // Limpar authKey da memória
+    authKey = null;
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────────────
+
+  function setStatus(el, type, msg) {
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  function addProgressRow(container, state, name) {
+    const row = document.createElement('div');
+    row.className = 'progress-item ' + state;
+    row.innerHTML = `<span class="progress-icon">${state === 'loading' ? '<span class="spinner"></span>' : '⏳'}</span> ${name}`;
+    container.appendChild(row);
+    return row;
+  }
+
+  function updateRow(row, state, text) {
+    const icons = { done: '✓', err: '✗', loading: '' };
+    row.className = 'progress-item ' + state;
+    row.innerHTML = `<span class="progress-icon">${icons[state]}</span> ${text}`;
+  }
+
+  function fetchWithTimeout(url, ms) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
+  }
+</script>
+</body>
+</html>
