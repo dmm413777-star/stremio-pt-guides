@@ -5,23 +5,20 @@ description: "Configura o AIOMetadata com os templates do Tam-Taro para ter cat�
 tags: ["aiometadata", "catálogos", "tamtaro", "stremio", "cinemeta"]
 categorias: ["catálogos", "setup"]
 weight: 30
+tempo: "10 min"
 ---
 
 > **Créditos:** Configs AIOMetadata por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+
+**Tempo estimado: 10 min**
 
 ---
 
 ## O que é o AIOMetadata?
 
-O **AIOMetadata** é um addon **separado** do AIOStreams — enquanto o AIOStreams gere os streams (links de vídeo), o AIOMetadata gere os **catálogos** que aparecem no ecrã inicial do Stremio:
+O **AIOMetadata** é um addon **separado** do AIOStreams — enquanto o AIOStreams gere os streams (links de vídeo), o AIOMetadata gere os **catálogos** que aparecem no ecrã inicial do Stremio: Tendências globais, tops da Netflix, Disney+, Prime Video, listas sazonais e pesquisa por IA.
 
-- Tendências globais
-- Tops da Netflix, Disney+, Prime Video, Apple TV+
-- Anime (opcional)
-- Listas sazonais e personalizadas
-- Pesquisa por IA com Gemini (opcional)
-
-<!-- SCREENSHOT: Ecrã inicial do Stremio após instalar o AIOMetadata, mostrando os catálogos organizados por plataforma -->
+> **Antes de começares:** Precisas de ter criado as tuas API Keys do [TMDB](/guias/tmdb), [TVDB](/guias/tvdb) e [MDBList](/guias/mdblist). Sem elas não consegues completar a configuração.
 
 ---
 
@@ -45,7 +42,8 @@ Antes de importar qualquer template, vai ao separador **Integrations** e insere 
 | **RPDB** | Opcional | Key gratuita: `t0-free-rpdb` |
 | **Gemini** | Opcional | Pesquisa por IA — [aistudio.google.com](https://aistudio.google.com) |
 
-<!-- SCREENSHOT: Separador "Integrations" do AIOMetadata com os campos de API Key visíveis (TMDB, TVDB, MDBList, etc.) -->
+![Separador Integrations do AIOMetadata com campos de API Key](/images/aiometadata-configure-integrations.png)
+*Separador "Integrations" — preenche as chaves do TMDB, TVDB e MDBList antes de importar o template.*
 
 > O **RPDB** adiciona as notas do IMDb/Rotten Tomatoes diretamente nas capas. A key `t0-free-rpdb` é pública e não requer registo.
 
@@ -67,7 +65,8 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/AIOMetadata%20Configs/Tamtaro-aiometadata-config-without-anime.json
 ```
 
-<!-- SCREENSHOT: Modal "Import Configuration" do AIOMetadata com o URL do template colado -->
+![Modal Import Configuration do AIOMetadata com o URL do template colado](/images/aiometadata-import-config.png)
+*Modal "Import Configuration" — cola o URL do template e clica em Import.*
 
 > **No telemóvel:** Guarda o ficheiro JSON e usa a opção Upload.  
 > **No PC:** Cola o URL diretamente no campo de importação.
@@ -78,8 +77,6 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 
 O Stremio tem um limite de tamanho para addons. Como estes templates são muito completos, podem dar erro ao instalar diretamente.
 
-<!-- SCREENSHOT: Erro "Max descriptor size reached" no Stremio ao tentar instalar o AIOMetadata diretamente -->
-
 **Solução — StremThru Sidekick:**
 
 1. Copia o teu **Install URL** do AIOMetadata.
@@ -87,7 +84,8 @@ O Stremio tem um limite de tamanho para addons. Como estes templates são muito 
 3. Faz login com a tua conta Stremio.
 4. Cola o URL e instala por lá.
 
-<!-- SCREENSHOT: StremThru Sidekick com o Install URL colado e pronto a instalar -->
+![StremThru Sidekick com o Install URL do AIOMetadata pronto a instalar](/images/stremthru-sidekick.png)
+*StremThru Sidekick — a forma correcta de instalar addons grandes no Stremio.*
 
 ---
 
@@ -98,19 +96,32 @@ O Cinemeta é o catálogo padrão do Stremio — com o AIOMetadata instalado, fi
 1. Abre [cinebye.dinsden.top](https://cinebye.dinsden.top).
 2. Faz login com a tua conta Stremio.
 3. Desativa as **3 opções do Cinemeta** (Search, Catalogs, Meta).
-
-<!-- SCREENSHOT: Interface do Cinebye com as 3 opções do Cinemeta desativadas -->
-
 4. Arrasta o **AIOMetadata para o topo** da lista de addons.
 5. Clica em **Sync to Stremio**.
-
-<!-- SCREENSHOT: Lista de addons no Cinebye reordenada com AIOMetadata no topo, antes de clicar Sync -->
 
 ---
 
 ## Atualizar Configurações no Futuro
 
 Se alterares algo no AIOMetadata mais tarde, não precisas de desinstalar e reinstalar. Usa a função **"Reload"** no StremThru Sidekick para propagar as alterações à tua conta.
+
+---
+
+## Se algo correr mal
+
+**"Max descriptor size reached" no Stremio** — instala via StremThru Sidekick em vez de clicar em Install diretamente no AIOMetadata (ver Passo 4).
+
+**Catálogos não aparecem no ecrã inicial** — verifica se o separador Integrations tem as 3 chaves obrigatórias preenchidas (TMDB, TVDB, MDBList). Uma chave em falta bloqueia os catálogos correspondentes.
+
+**Resultados duplicados** — o Cinemeta ainda está ativo. Desativa-o via Cinebye (ver Passo 5).
+
+---
+
+## Próximo passo
+
+Agora que tens os catálogos organizados, configura as legendas em português:
+- [SubMaker — Legendas por IA](/guias/submaker) — traduz legendas automaticamente
+- [Toast Translator — Sinopses em PT](/guias/toast-translator) — títulos e sinopses em português
 
 ---
 

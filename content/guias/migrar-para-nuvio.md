@@ -5,6 +5,7 @@ description: "Como usar o NuvioSync para mover a tua biblioteca, histórico e ad
 tags: ["nuvio", "stremio", "migração", "nuviosync", "biblioteca"]
 categorias: ["nuvio", "setup"]
 weight: 15
+tempo: "10 min"
 ---
 
 > **Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.

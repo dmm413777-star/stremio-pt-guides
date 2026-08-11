@@ -5,11 +5,16 @@ description: "Como criar gratuitamente a tua API Key do MDBList, necessária par
 tags: ["mdblist", "api-key", "catálogos", "stremio"]
 categorias: ["api-keys"]
 weight: 62
+tempo: "5 min"
 ---
 
 > **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio).
 
-O **MDBList** agrega listas de filmes e séries de várias fontes (IMDb, Letterboxd, Trakt, etc.) e o AIOMetadata usa a sua API para gerar catálogos como "Top Netflix", "Top Disney+" e listas personalizadas no ecrã inicial do Stremio.
+O MDBList agrega listas de filmes e séries de várias fontes (IMDb, Letterboxd, Trakt, etc.). O AIOMetadata usa a sua API para gerar catálogos como "Top Netflix", "Top Disney+" e listas personalizadas no ecrã inicial do Stremio.
+
+**Tempo estimado: 5 min**
+
+> **Antes de começares:** Necessário para completar a configuração do [AIOMetadata](/guias/aiometadata). Cria esta key antes de avançar para esse guia.
 
 ---
 
@@ -27,6 +32,12 @@ O **MDBList** agrega listas de filmes e séries de várias fontes (IMDb, Letterb
 ## Onde Usar
 
 - **AIOMetadata:** Cola no campo **MDBList** no separador **Integrations** da página de configuração — ver [guia AIOMetadata](/guias/aiometadata).
+
+---
+
+## Próximo passo
+
+→ [AIOMetadata — Catálogos Organizados](/guias/aiometadata)
 
 ---
 

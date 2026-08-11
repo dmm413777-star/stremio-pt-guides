@@ -5,6 +5,7 @@ description: "Guia de hardware para usar Stremio e Nuvio na televisão: desde o 
 tags: ["dispositivos", "android-tv", "fire-stick", "chromecast", "hardware", "stremio", "nuvio"]
 categorias: ["setup", "hardware"]
 weight: 80
+tempo: "leitura"
 ---
 
 > **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio) e [NuvioSync](https://nuviosync.com). Adaptado para Portugal.

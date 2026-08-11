@@ -5,6 +5,7 @@ description: "Diagnóstico rápido dos problemas mais frequentes no Stremio: lis
 tags: ["troubleshooting", "streams", "buffering", "debrid", "stremio"]
 categorias: ["ajuda"]
 weight: 71
+tempo: "leitura"
 ---
 
 > **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/troubleshooting), adaptado para utilizadores portugueses.

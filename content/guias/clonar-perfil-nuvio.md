@@ -5,6 +5,7 @@ description: "Como usar o NuvioSync para copiar o teu perfil Nuvio para outro �
 tags: ["nuvio", "clone", "nuviosync", "família", "perfil"]
 categorias: ["nuvio", "setup"]
 weight: 16
+tempo: "5 min"
 ---
 
 > **Créditos:** Ferramenta criada por [NuvioSync](https://nuviosync.com). Guia adaptado em português pela comunidade.

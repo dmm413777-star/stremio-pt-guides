@@ -5,9 +5,12 @@ description: "Como comprar, ativar e configurar o TorBox no Stremio e Nuvio. O d
 tags: ["torbox", "debrid", "real-debrid", "stremio", "torrentio"]
 categorias: ["debrid", "setup"]
 weight: 40
+tempo: "10 min"
 ---
 
 > **Nota:** Um serviço de Debrid **não é obrigatório** para usar o Stremio ou o Nuvio. Serve para quem quer ver conteúdos 4K instantaneamente (tipo Netflix), sem paragens nem necessidade de fazer download, e sem depender de seeds/torrents ativos.
+
+**Tempo estimado: 10 min**
 
 ---
 
@@ -46,16 +49,14 @@ Seleciona **Essential — One Time — ANUAL** ($33).
 <figcaption><em>Seleciona "Essential" anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.</em></figcaption>
 </figure>
 
+![Página de subscrição do TorBox com os planos disponíveis](/images/torbox-subscription-page.png)
+*Página de planos do TorBox — seleciona Essential (anual) para a melhor relação preço/duração.*
+
 > ⚠️ Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.
 
 ### 3. Aplica o cupão (apenas com Crypto)
 
 No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20€).
-
-<figure style="max-width:380px;margin:1rem auto;text-align:center">
-<img src="/images/torbox-planos-essential.jpg" alt="Campo SIGMA30 no checkout do TorBox" style="width:100%;border-radius:8px">
-<figcaption><em>Insere o cupão SIGMA30 no campo de desconto — funciona apenas com pagamento em criptomoedas.</em></figcaption>
-</figure>
 
 > O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecerem bloqueadas, certifica-te que selecionaste *Yearly — One Time*.
 
@@ -66,13 +67,11 @@ No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20
 ## Configurar no Stremio (com Torrentio)
 
 1. Copia a tua **API Key** em [torbox.app/settings](https://torbox.app/settings?section=account).
-
-<!-- SCREENSHOT: Página de Settings do TorBox com a API Key visível (podes ocultar parte da key) -->
-
 2. Abre a configuração do [Torrentio](https://torrentio.strem.fun/configure).
 3. Em **Debrid Provider**, seleciona **TorBox** e cola a API Key.
 
-<!-- SCREENSHOT: Página de configuração do Torrentio com TorBox selecionado como provider e o campo da API Key preenchido -->
+![Página de configuração do Torrentio com TorBox selecionado como Debrid Provider](/images/torrentio-configure.png)
+*Seleciona TorBox em "Debrid Provider" e cola a tua API Key — depois clica em Install.*
 
 4. Marca a opção **"Don't show download to debrid links"** (última caixa).
 5. Clica em **Install** para instalar no Stremio.
@@ -91,6 +90,24 @@ Após a instalação, os links com a tag **`[TB+]`** estão em **cache** — cor
 ## Configurar no AIOStreams
 
 Se usas o AIOStreams com o template do Tam-Taro, seleciona **TorBox** durante o assistente de configuração e cola a API Key quando pedida. O template adapta-se automaticamente — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+
+---
+
+## Se algo correr mal
+
+**Streams `[TB+]` não abrem ou dão erro** — a API Key pode ter expirado ou a subscrição acabou. Vai a [torbox.app/settings](https://torbox.app/settings?section=account), copia a chave actual e reinstala o addon com a nova key.
+
+**Não aparecem streams `[TB+]`** — o ficheiro ainda não está em cache no TorBox. Tenta outro stream do mesmo conteúdo; o cache varia por ficheiro, não por título.
+
+**Ecrã vermelho ao carregar stream** — verifica se a subscrição TorBox ainda está activa em [torbox.app](https://torbox.app).
+
+---
+
+## Próximo passo
+
+Com o TorBox configurado, é altura de instalar o AIOStreams para tirares partido máximo do debrid:
+
+→ [AIOStreams + Template SEL do Tam-Taro](/guias/aiostreams-tamtaro)
 
 ---
 

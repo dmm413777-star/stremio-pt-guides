@@ -5,11 +5,16 @@ description: "Como criar gratuitamente a tua API Key do TheTVDB, necessária par
 tags: ["tvdb", "api-key", "metadata", "stremio"]
 categorias: ["api-keys"]
 weight: 61
+tempo: "5 min"
 ---
 
 > **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio).
 
-A **API Key do TheTVDB** é gratuita e necessária para o AIOStreams e o AIOMetadata identificarem séries, temporadas e episódios correctamente — especialmente útil para séries com nomes ambíguos ou animação.
+O TheTVDB é a base de dados de séries de televisão. O AIOStreams e o AIOMetadata usam esta chave para identificar correctamente séries, temporadas e episódios — especialmente útil para séries com nomes ambíguos ou animação.
+
+**Tempo estimado: 5 min**
+
+> **Antes de começares:** Precisas de criar uma conta gratuita no TheTVDB. O e-mail de confirmação pode demorar alguns minutos.
 
 ---
 
@@ -34,6 +39,12 @@ A **API Key do TheTVDB** é gratuita e necessária para o AIOStreams e o AIOMeta
 
 - **AIOStreams:** Cola no campo **TVDB API Key** durante o passo "Enter Credentials" do assistente — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
 - **AIOMetadata:** Cola no campo **TheTVDB** no separador Integrations — ver [guia AIOMetadata](/guias/aiometadata).
+
+---
+
+## Próximo passo
+
+→ [AIOStreams + Template SEL](/guias/aiostreams-tamtaro) — instala e configura o addon principal de streams
 
 ---
 

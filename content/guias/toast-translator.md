@@ -5,9 +5,14 @@ description: "Como configurar o Toast Translator com RPDB para ter sinopses e t�
 tags: ["toast", "rpdb", "sinopses", "português", "tmdb", "stremio"]
 categorias: ["localização", "metadata"]
 weight: 57
+tempo: "5 min"
 ---
 
 O **Toast Translator** traduz títulos e sinopses para **Português de Portugal** diretamente no Stremio. Combinado com o **RPDB**, adiciona ainda as notas do IMDb e Rotten Tomatoes nas capas dos filmes.
+
+**Tempo estimado: 5 min**
+
+> **Antes de começares:** Precisas da tua [TMDB API Key](/guias/tmdb). É gratuita e demora menos de 5 minutos a criar.
 
 ---
 
@@ -23,11 +28,10 @@ O Toast precisa da tua API Key do TMDB para aceder às traduções. É gratuita 
 
 1. Abre a [Página de Configuração do Toast](https://0f693ad7dcba-toast-translator.baby-beamup.club/configure).
 
-<!-- SCREENSHOT: Página de configuração do Toast Translator mostrando os campos disponíveis -->
+![Página de configuração do Toast Translator com os campos de API Key e idioma](/images/toast-configure.png)
+*Página de configuração do Toast Translator — preenche a TMDB API Key, a RPDB Key e selecciona Portuguese (Portugal).*
 
 2. **TMDB API Key:** Cola a key obtida no passo anterior.
-
-<!-- SCREENSHOT: Campo TMDB API Key preenchido na página do Toast Translator -->
 
 3. **RPDB API Key:** Para teres ratings nos posters, usa a key gratuita:
    ```
@@ -37,8 +41,6 @@ O Toast precisa da tua API Key do TMDB para aceder às traduções. É gratuita 
 
 4. **Translate to:** Seleciona `Portuguese (Portugal)`.
 
-<!-- SCREENSHOT: Dropdown "Translate to" com "Portuguese (Portugal)" selecionado -->
-
 5. Clica em **Install** — o Stremio abre e instala o addon.
 
 ---
@@ -47,7 +49,21 @@ O Toast precisa da tua API Key do TMDB para aceder às traduções. É gratuita 
 
 Após a instalação, as sinopses e títulos dos filmes e séries passam a aparecer em **Português de Portugal** no Stremio. Os posters mostram as notas do IMDb e Rotten Tomatoes sobrepostas na capa.
 
-<!-- SCREENSHOT: Comparação de um filme no Stremio antes e depois do Toast Translator — sinopse em inglês vs. português, e poster com rating RPDB visível -->
+---
+
+## Se algo correr mal
+
+**Sinopses continuam em inglês** — o Toast Translator pode não estar a ter prioridade sobre o Cinemeta. Vai a Addons → reordena para o Toast aparecer acima do Cinemeta na lista.
+
+**Notas RPDB não aparecem nos posters** — confirma que a key `t0-free-rpdb` está correctamente copiada no campo RPDB API Key (sem espaços).
+
+---
+
+## Próximo passo
+
+Para ter legendas em português quando não existem no conteúdo:
+
+→ [SubMaker — Tradução de Legendas por IA](/guias/submaker)
 
 ---
 

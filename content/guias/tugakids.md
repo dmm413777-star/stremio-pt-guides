@@ -5,26 +5,21 @@ description: "Como obter acesso e instalar o addon TugaKids no Stremio — conte
 tags: ["tugakids", "infantil", "português", "stremio"]
 categorias: ["addons"]
 weight: 58
+tempo: "5 min"
 ---
 
-O **TugaKids** é um addon com conteúdo infantil em português para o Stremio. O acesso é **automático** — ao registares o teu e-mail, recebes um link de instalação único.
+O **TugaKids** é um addon com conteúdo infantil em português para o Stremio. O acesso é **automático** — ao registares o teu e-mail, recebes um link de instalação único directamente na caixa de entrada.
+
+**Tempo estimado: 5 min**
 
 ---
 
 ## Como Obter Acesso
 
 1. Abre a [Página de Configuração do TugaKids](https://e1d6cc1ff4a7-tugakids-stremio.baby-beamup.club/).
-
-<!-- SCREENSHOT: Página de registo do TugaKids mostrando o campo de e-mail -->
-
 2. Insere o teu e-mail e submete o formulário.
 3. Receberás um e-mail com o teu **link de instalação único** — cada conta tem um link diferente.
-
-<!-- SCREENSHOT: E-mail recebido do TugaKids com o link de instalação (podes ocultar o link em si por privacidade) -->
-
 4. Clica no link do e-mail para instalar diretamente no Stremio.
-
-<!-- SCREENSHOT: O addon TugaKids instalado e visível na lista de addons do Stremio -->
 
 ---
 

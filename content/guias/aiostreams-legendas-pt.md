@@ -5,9 +5,14 @@ description: "Como configurar o AIOStreams para dar prioridade a streams com leg
 tags: ["aiostreams", "legendas", "português", "filtros", "stremio"]
 categorias: ["legendas", "setup"]
 weight: 25
+tempo: "5 min"
 ---
 
 > **Créditos:** Configuração partilhada pela comunidade [r/PiratariaTuga](https://www.reddit.com/r/PiratariaTuga/).
+
+**Tempo estimado: 5 min**
+
+> **Antes de começares:** O AIOStreams já tem de estar instalado e configurado — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
 
 ---
 
@@ -79,6 +84,14 @@ Nas definições, vai a **Subtitle Filters → Required Subtitles** e adiciona:
 - **Só queres legendas incorporadas** e o conteúdo tem boa disponibilidade → usa **Required** para uma lista mais limpa.
 
 Podes combinar os dois: activa **Preferred** como base e testa **Required** para o conteúdo onde sabes que há boa disponibilidade em PT.
+
+---
+
+## Próximo passo
+
+Se o conteúdo que queres não tiver legendas em PT embutidas, usa o SubMaker para gerar a tradução em tempo real:
+
+→ [SubMaker — Tradução de Legendas por IA](/guias/submaker)
 
 ---
 

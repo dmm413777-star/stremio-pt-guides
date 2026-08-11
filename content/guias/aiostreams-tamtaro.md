@@ -5,9 +5,16 @@ description: "Configura o AIOStreams com o template SEL do Tam-Taro para um setu
 tags: ["aiostreams", "tamtaro", "sel", "p2p", "debrid", "stremio"]
 categorias: ["setup", "avançado"]
 weight: 20
+tempo: "15 min"
 ---
 
 > **Créditos:** Templates SEL criados por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
+
+O **AIOStreams** com o template SEL do Tam-Taro é o addon principal para obter streams no Stremio — agrega dezenas de fontes num só, com filtros e ordenação automáticos. É o primeiro addon a instalar depois do TorBox.
+
+**Tempo estimado: 15 min**
+
+> **Antes de começares:** Recomendado ter o [TorBox](/guias/torbox) configurado (ou outro Debrid) e as chaves [TMDB](/guias/tmdb) e [TVDB](/guias/tvdb) à mão. Funciona sem Debrid (modo P2P), mas a qualidade e velocidade são melhores com ele.
 
 ---
 
@@ -98,8 +105,6 @@ Deixa as restantes opções nos valores padrão para o setup testado e recomenda
 2. Na página principal do AIOStreams, clica em **Save**.
 3. Clica em **Install** — o Stremio abre e adiciona o addon automaticamente.
 
-<!-- SCREENSHOT: Página principal do AIOStreams com os botões Save e Install visíveis após configuração completa -->
-
 ---
 
 ## Por que isto resolve o problema de falhas?
@@ -114,6 +119,24 @@ Este setup elimina pontos únicos de falha:
 ## ⚠️ Aviso de Segurança (P2P)
 
 Usar P2P direto sem Debrid expõe o teu IP na rede torrent. Em Portugal o impacto prático tem sido reduzido, mas uma **VPN** é sempre a recomendação técnica correta.
+
+---
+
+## Se algo correr mal
+
+**Não aparecem streams** — confirma que a instância que escolheste está online em [status.dinsden.top](https://status.dinsden.top/status/stremio-addons). Se estiver em baixo, muda para outra instância e reinstala.
+
+**Streams sem qualidade (só 480p/720p)** — sem Debrid, os streams dependem de seeders activos. Configura o [TorBox](/guias/torbox) para ter streams em cache de qualidade garantida.
+
+**Episódio errado ou série não identificada** — falta a TVDB API Key. Volta ao assistente, insere a chave no passo "Enter Credentials" e reinstala.
+
+---
+
+## Próximo passo
+
+Com o AIOStreams configurado, organiza os catálogos do ecrã inicial:
+
+→ [AIOMetadata — Catálogos Organizados](/guias/aiometadata)
 
 ---
 

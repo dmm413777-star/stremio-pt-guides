@@ -5,9 +5,14 @@ description: "Como criar gratuitamente a tua API Key do TheMovieDB (TMDB), neces
 tags: ["tmdb", "api-key", "metadata", "stremio"]
 categorias: ["api-keys"]
 weight: 60
+tempo: "5 min"
 ---
 
-A **API Key do TMDB** (TheMovieDB) é gratuita e necessária para vários addons do Stremio: AIOStreams, AIOMetadata, Toast Translator, entre outros. Demora menos de 5 minutos a criar.
+O TMDB (TheMovieDB) é a base de dados de filmes e séries que o AIOStreams usa para identificar correctamente títulos e episódios. A chave é gratuita e necessária para vários addons: AIOStreams, AIOMetadata, Toast Translator, entre outros.
+
+**Tempo estimado: 5 min**
+
+> **Antes de começares:** Precisas de criar uma conta gratuita no TMDB. O e-mail de confirmação chega em segundos.
 
 ---
 
@@ -37,6 +42,15 @@ A **API Key do TMDB** (TheMovieDB) é gratuita e necessária para vários addons
 
 - **AIOStreams / AIOMetadata:** Cola no campo TMDB API Key durante a configuração.
 - **Toast Translator:** Cola no campo TMDB API Key na página de configuração.
+
+---
+
+## Próximo passo
+
+Com a TMDB API Key criada, continua para:
+
+→ [AIOStreams + Template SEL](/guias/aiostreams-tamtaro) — se ainda não configuraste o AIOStreams  
+→ [AIOMetadata — Catálogos Organizados](/guias/aiometadata) — se já tens o AIOStreams e queres organizar os catálogos
 
 ---
 

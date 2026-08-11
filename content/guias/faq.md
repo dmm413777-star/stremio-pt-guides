@@ -5,6 +5,7 @@ description: "Respostas às dúvidas mais comuns sobre Debrid, VPN, addons e o S
 tags: ["faq", "debrid", "vpn", "addons", "stremio"]
 categorias: ["ajuda"]
 weight: 70
+tempo: "leitura"
 ---
 
 > **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/faq), adaptado para utilizadores portugueses.
