@@ -1,9 +1,506 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   STREMIO PT — Design System Override
+   Target: Hextra theme (Tailwind hx: prefix, .dark on <html>)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── PALETTE ────────────────────────────────────────────────────────────── */
 :root {
-  --hextra-primary-hue: 230;
-  --hextra-primary-saturation: 70%;
+  --bg:       #0f1117;
+  --surface:  #181c27;
+  --surface2: #1e2336;
+  --border:   #2a3050;
+  --accent:   #5b8dee;
+  --accent2:  #e05d7a;
+  --accent3:  #4ecb8d;
+  --accent4:  #f0a500;
+  --text:     #d8dff0;
+  --muted:    #7a8aaa;
+
+  /* Hextra primary → mapeado para o nosso accent azul */
+  --primary-hue: 220deg;
+  --primary-saturation: 72%;
+  --primary-lightness: 62%;
+  --hextra-primary-hue: 220;
+  --hextra-primary-saturation: 72%;
+  --hextra-bg: var(--bg);
+  --hextra-sidebar-bg: var(--bg);
 }
 
 .dark {
-  --hextra-bg: #0f1117;
-  --hextra-sidebar-bg: #0f1117;
+  --hextra-bg: var(--bg);
+  --hextra-sidebar-bg: var(--bg);
+}
+
+/* ─── FONTS ──────────────────────────────────────────────────────────────── */
+html.dark body,
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+/* ─── BACKGROUND & BASE ──────────────────────────────────────────────────── */
+html.dark,
+html.dark body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Hextra wraps page in a div with bg-white dark:bg-dark */
+html.dark .hx\:dark\:bg-dark,
+html.dark [class*="dark:bg-dark"] {
+  background-color: var(--bg) !important;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+::selection { background: rgba(91,141,238,.22); color: var(--text); }
+
+/* ─── NAVBAR ─────────────────────────────────────────────────────────────── */
+html.dark nav:first-of-type,
+html.dark header > nav,
+html.dark .hx\:sticky > nav,
+html.dark [class*="navbar"],
+html.dark nav.hx\:flex {
+  background-color: var(--surface) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Brand / logo */
+html.dark nav a[href="/"],
+html.dark nav .hx\:font-extrabold {
+  font-family: 'IBM Plex Sans', sans-serif !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+/* Nav links */
+html.dark nav a:not([href="/"]) {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--muted) !important;
+  transition: color 0.15s !important;
+  text-decoration: none !important;
+}
+html.dark nav a:not([href="/"]):hover {
+  color: var(--accent) !important;
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
+html.dark aside,
+html.dark [class*="sidebar"] {
+  background-color: var(--bg) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+html.dark aside a,
+html.dark [class*="sidebar"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  color: var(--muted) !important;
+  text-decoration: none !important;
+  transition: color 0.15s !important;
+}
+html.dark aside a:hover,
+html.dark [class*="sidebar"] a:hover {
+  color: var(--accent) !important;
+}
+html.dark aside a[class*="active"],
+html.dark [class*="sidebar"] a[class*="active"],
+html.dark aside a[aria-current="page"],
+html.dark [class*="sidebar"] a[aria-current="page"] {
+  color: var(--accent) !important;
+  border-left: 2px solid var(--accent) !important;
+  padding-left: calc(0.5rem - 2px) !important;
+}
+
+/* ─── MAIN CONTENT ───────────────────────────────────────────────────────── */
+html.dark main,
+html.dark .content,
+html.dark article {
+  color: var(--text) !important;
+}
+
+/* h1 */
+html.dark .content h1,
+html.dark article h1,
+html.dark h1 {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.1rem) !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.2 !important;
+}
+
+/* h2 */
+html.dark .content h2,
+html.dark article h2 {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding-bottom: 0.45rem !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* h3 */
+html.dark .content h3,
+html.dark article h3 {
+  font-family: 'IBM Plex Sans', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-top: 1.6rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+/* Paragraphs */
+html.dark .content p,
+html.dark article p {
+  color: var(--text) !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+/* Inline links */
+html.dark .content a,
+html.dark article a {
+  color: var(--accent) !important;
+  text-decoration: none !important;
+  transition: opacity 0.15s !important;
+}
+html.dark .content a:hover,
+html.dark article a:hover {
+  text-decoration: underline !important;
+  opacity: 0.85 !important;
+}
+
+/* ─── CODE ───────────────────────────────────────────────────────────────── */
+html.dark :not(pre) > code {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  background: rgba(91,141,238,0.1) !important;
+  color: var(--accent) !important;
+  border: none !important;
+  padding: 0.1rem 0.35rem !important;
+  border-radius: 3px !important;
+}
+
+html.dark pre,
+html.dark .hextra-code-block pre {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 1rem 1.2rem !important;
+  color: var(--text) !important;
+  overflow-x: auto !important;
+  line-height: 1.6 !important;
+}
+
+html.dark pre code {
+  background: none !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+}
+
+/* Code block wrapper */
+html.dark .hextra-code-block {
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  margin: 1rem 0 !important;
+}
+
+/* ─── TABLES ─────────────────────────────────────────────────────────────── */
+html.dark table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 13px !important;
+}
+
+html.dark thead,
+html.dark table thead {
+  background: transparent !important;
+}
+
+html.dark th {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: var(--muted) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0.5rem 0.8rem !important;
+  text-align: left !important;
+}
+
+html.dark td {
+  font-size: 13px !important;
+  color: var(--text) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0.5rem 0.8rem !important;
+  vertical-align: top !important;
+}
+
+html.dark tr:last-child td { border-bottom: none !important; }
+html.dark tr:hover td { background: rgba(255,255,255,0.025) !important; }
+
+/* ─── CALLOUTS / ALERTS ──────────────────────────────────────────────────── */
+/* Hextra info callout */
+html.dark .hextra-callout,
+html.dark [class*="callout"] {
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  padding: 0.9rem 1rem !important;
+  border-left-width: 3px !important;
+}
+
+html.dark .hextra-callout[data-type="info"],
+html.dark [class*="callout-info"],
+html.dark .callout-info {
+  background: rgba(91,141,238,0.08) !important;
+  border-color: rgba(91,141,238,0.35) !important;
+  color: var(--text) !important;
+}
+
+html.dark .hextra-callout[data-type="warning"],
+html.dark [class*="callout-warning"],
+html.dark .callout-warning {
+  background: rgba(240,165,0,0.08) !important;
+  border-color: rgba(240,165,0,0.35) !important;
+  color: var(--text) !important;
+}
+
+html.dark .hextra-callout[data-type="error"],
+html.dark [class*="callout-error"] {
+  background: rgba(224,93,122,0.08) !important;
+  border-color: rgba(224,93,122,0.35) !important;
+  color: var(--text) !important;
+}
+
+html.dark .hextra-callout[data-type="tip"],
+html.dark [class*="callout-tip"] {
+  background: rgba(78,203,141,0.08) !important;
+  border-color: rgba(78,203,141,0.35) !important;
+  color: var(--text) !important;
+}
+
+/* Callout title */
+html.dark .hextra-callout .hx\:font-medium,
+html.dark [class*="callout"] [class*="font-medium"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* ─── BLOCKQUOTE fallback ─────────────────────────────────────────────────── */
+html.dark blockquote {
+  background: rgba(91,141,238,0.06) !important;
+  border-left: 2px solid rgba(91,141,238,0.4) !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 0.8rem 1rem !important;
+  margin: 1rem 0 !important;
+  color: var(--text) !important;
+  font-style: normal !important;
+}
+
+/* ─── TAGS / BADGES ──────────────────────────────────────────────────────── */
+html.dark .hextra-card-tag,
+html.dark [class*="badge"],
+html.dark [class*="tag"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  background: rgba(91,141,238,0.12) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(91,141,238,0.3) !important;
+  border-radius: 3px !important;
+  padding: 0.15rem 0.5rem !important;
+  text-decoration: none !important;
+}
+
+/* ─── SEARCH ──────────────────────────────────────────────────────────────── */
+html.dark input[type="search"],
+html.dark input[type="text"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 4px !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+}
+html.dark input[type="search"]:focus,
+html.dark input[type="text"]:focus {
+  border-color: var(--accent) !important;
+  outline: none !important;
+}
+html.dark input::placeholder { color: var(--muted) !important; }
+
+/* ─── TOC (right panel) ──────────────────────────────────────────────────── */
+html.dark .hextra-toc,
+html.dark [class*="toc"] {
+  font-size: 12px !important;
+  border-left: 1px solid var(--border) !important;
+}
+html.dark .hextra-toc a,
+html.dark [class*="toc"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
+  text-decoration: none !important;
+  transition: color 0.15s !important;
+}
+html.dark .hextra-toc a:hover,
+html.dark [class*="toc"] a:hover {
+  color: var(--accent) !important;
+}
+
+/* ─── BUTTONS (theme toggle, etc.) ──────────────────────────────────────── */
+html.dark button:not([id^="qs-"]) {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.15s !important;
+}
+
+/* Theme toggle buttons */
+html.dark [data-theme-switcher] button,
+html.dark button[aria-label*="theme"],
+html.dark button[aria-label*="light"],
+html.dark button[aria-label*="dark"] {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  border-radius: 3px !important;
+  padding: 0.25rem 0.5rem !important;
+}
+html.dark [data-theme-switcher] button:hover,
+html.dark button[aria-label*="theme"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+html.dark [data-theme-switcher] button[class*="active"],
+html.dark button[class*="selected"] {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* ─── HR / SEPARATORS ────────────────────────────────────────────────────── */
+html.dark hr {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 2rem 0 !important;
+}
+
+/* ─── IMAGES ─────────────────────────────────────────────────────────────── */
+html.dark .content img,
+html.dark article img {
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  max-width: 100% !important;
+}
+
+/* ─── BREADCRUMBS ────────────────────────────────────────────────────────── */
+html.dark [class*="breadcrumb"] a,
+html.dark nav[aria-label*="breadcrumb"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
+  text-decoration: none !important;
+}
+html.dark [class*="breadcrumb"] a:hover {
+  color: var(--accent) !important;
+}
+
+/* ─── GUIDE LIST CARDS ───────────────────────────────────────────────────── */
+html.dark .hextra-card,
+html.dark [class*="hextra-card"] {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  transition: border-color 0.15s !important;
+}
+html.dark .hextra-card:hover,
+html.dark [class*="hextra-card"]:hover {
+  border-color: var(--accent) !important;
+}
+
+/* ─── META & TIMESTAMPS ───────────────────────────────────────────────────── */
+html.dark time,
+html.dark [class*="meta"],
+html.dark [class*="date"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
+}
+
+/* ─── COPY BUTTON on code blocks ─────────────────────────────────────────── */
+html.dark .hextra-code-copy-btn,
+html.dark button[aria-label*="copy"],
+html.dark button[aria-label*="Copy"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  border-radius: 3px !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+}
+html.dark .hextra-code-copy-btn:hover,
+html.dark button[aria-label*="copy"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* ─── LISTS ──────────────────────────────────────────────────────────────── */
+html.dark .content li,
+html.dark article li {
+  color: var(--text) !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────────────────────── */
+html.dark footer {
+  background: var(--bg) !important;
+  border-top: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+}
+html.dark footer a {
+  color: var(--muted) !important;
+  transition: color 0.15s !important;
+}
+html.dark footer a:hover {
+  color: var(--accent) !important;
+}
+
+/* ─── HOMEPAGE HERO TEXT ─────────────────────────────────────────────────── */
+html.dark .hx\:text-6xl,
+html.dark [class*="text-6xl"],
+html.dark .hx\:text-5xl {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  color: #ffffff !important;
+}
+
+html.dark .hx\:text-xl,
+html.dark .hx\:text-lg {
+  color: var(--text) !important;
 }
