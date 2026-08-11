@@ -20,7 +20,7 @@ tempo: "10 min"
 
 | | **Real Debrid** | **TorBox** |
 |---|---|---|
-| Preço anual | ~16€ | ~28€ (~20€ com crypto) |
+| Preço anual | ~32€ | ~28€ (~20€ com crypto) |
 | Vários IPs simultâneos | ❌ Bloqueia | ✅ Funciona |
 | Partilha com família | ❌ Arriscado | ✅ Sem problemas |
 | Usenet (NZB) | ❌ Não | ✅ Plano Pro |
@@ -46,8 +46,6 @@ Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o códig
 Seleciona **Essential — One Time — ANUAL** ($33).
 
 {{< fig-mobile src="/images/torbox-planos-essential.jpg" alt="Página de planos TorBox com Essential anual e cupão SIGMA30" >}}Seleciona Essential anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.{{< /fig-mobile >}}
-
-{{< img src="/images/torbox-subscription-page.png" alt="Página de subscrição do TorBox com os planos disponíveis" >}}
 
 {{< callout type="warning" >}}
 Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.

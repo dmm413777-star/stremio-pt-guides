@@ -26,7 +26,7 @@ Não. Com Debrid és tu a fazer download de um servidor HTTP, não de outros pee
 Sim, desde que estejam na mesma rede doméstica (mesmo IP público). Fora de casa — por exemplo, usar ao mesmo tempo em casa e no telemóvel com dados móveis — viola os termos da maioria dos serviços, excepto o [TorBox](/guias/torbox) e o Premiumize.
 
 **Por que o TorBox e não o Real Debrid?**
-O Real Debrid é mais barato (~16€/ano) mas bloqueia se usares de IPs diferentes em simultâneo. O TorBox (~28€/ano) não tem essa restrição, o que o torna mais prático para quem usa em vários dispositivos ou partilha com família — ver [comparação detalhada](/guias/torbox).
+O Real Debrid (~32€/ano) bloqueia se usares de IPs diferentes em simultâneo. O TorBox (~28€/ano) não tem essa restrição, o que o torna mais prático para quem usa em vários dispositivos ou partilha com família — ver [comparação detalhada](/guias/torbox).
 
 **Como faço teste de velocidade do meu Debrid?**
 - TorBox: [torbox.app/speedtest](https://torbox.app/speedtest)

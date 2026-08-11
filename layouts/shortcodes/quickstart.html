@@ -542,7 +542,7 @@
 <div class="card inactive" id="qs-card-pack">
   <div class="card-header">
     <div class="card-title">Selecionar Pack</div>
-    <span class="card-badge" id="qs-pack-badge">4 selecionados</span>
+    <span class="card-badge" id="qs-pack-badge">8 selecionados</span>
   </div>
   <div class="addon-list-header">
     <span class="addon-list-label">Addons incluídos</span>
@@ -589,7 +589,7 @@
       id: 'aiostreams',
       name: 'AIOStreams',
       icon: '📡',
-      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros — com template Tam-Taro SEL pré-configurado',
+      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros. Após instalar, configura o template Tam-Taro SEL nas definições',
       manifestUrl: 'https://aiostreams.viren070.me/stremio/manifest.json',
     },
     {
@@ -612,6 +612,34 @@
       icon: '🌐',
       desc: 'Sinopses e títulos em Português de Portugal + ratings IMDb/Rotten Tomatoes nas capas',
       manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
+    },
+    {
+      id: 'pipocas',
+      name: 'Pipocas TV',
+      icon: '🍿',
+      desc: 'Catálogo e streams de filmes e séries em português de Portugal',
+      manifestUrl: 'https://pipocas-tv-stremio-addonv1.onrender.com/manifest.json',
+    },
+    {
+      id: 'filmespt',
+      name: 'Filmes, Séries e Novelas PT',
+      icon: '🎬',
+      desc: 'Catálogo de filmes, séries e novelas portuguesas com streams externos',
+      manifestUrl: 'https://filme-series-e-novelas-portuguesas.vercel.app/manifest.json',
+    },
+    {
+      id: 'animacaopt',
+      name: 'Animação PT-PT',
+      icon: '🧸',
+      desc: 'Filmes e séries de animação em PT-PT para as crianças (e não só)',
+      manifestUrl: 'https://anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json',
+    },
+    {
+      id: 'cotonet',
+      name: 'Cotonet',
+      icon: '🇵🇹',
+      desc: 'Filmes em Português de Portugal — catálogo extenso, com pesquisa, géneros e ordenação por avaliação',
+      manifestUrl: 'https://cotonetnet-cotonet.hf.space/manifest.json',
     },
   ];
 
@@ -844,25 +872,35 @@
 
   function qsShowNextSteps(results) {
     const aioInstalled = results.some(r => r.addon.id === 'aiostreams' && r.ok && !r.skipped);
+    const aioSkipped   = results.some(r => r.addon.id === 'aiostreams' && r.skipped);
     const container = document.getElementById('qs-next-steps');
     container.style.display = 'block';
     const steps = [];
-    if (aioInstalled) {
+
+    if (aioInstalled || aioSkipped) {
       steps.push('Abre o <strong>Stremio</strong> — os addons aparecem de imediato na secção Addons.');
-      steps.push('Configura o teu serviço de <strong>Debrid no AIOStreams</strong>: Addons → AIOStreams ⚙️ → Debrid Provider → cola a tua API Key.');
+      steps.push(
+        'O <strong>AIOStreams</strong> precisa de ser configurado antes de mostrar streams: Stremio → Addons → AIOStreams ⚙️ → abre a página de configuração. ' +
+        'Carrega o <strong><a href="https://aiostreams.viren070.me/stremio/configure" target="_blank" rel="noopener">template Tam-Taro SEL</a></strong> ' +
+        '(Featured Templates → Tamtaro Complete SEL Setup) e segue os passos — é o único addon que requer este passo extra.'
+      );
+      steps.push('Se tiveres um serviço <strong>Debrid</strong> (TorBox, Real-Debrid…), introduz a API Key durante a configuração do AIOStreams para acesso a streams instantâneos em 4K.');
     } else {
-      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato.');
+      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
     }
+
     steps.push('Quer legendas em português? O <strong>SubMaker</strong> traduz por pedido — abre qualquer conteúdo → Legendas → "Criar [Portuguese]".');
+
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
-      steps.map((s, i) => `<div class="next-step-item"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
+      steps.map((s, i) => `<div class="next-step-item" style="margin-bottom:0.4rem"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
+
     const btnRow = document.getElementById('qs-btn-row-result');
     btnRow.style.display = 'flex';
     btnRow.innerHTML = `
       <a href="https://app.strem.io" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
         <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
       </a>
-      <a href="/stremio-pt-guides/guias/" style="text-decoration:none">
+      <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
         <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
       </a>
     `;
