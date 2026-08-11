@@ -1,0 +1,931 @@
+<div id="qs-widget">
+<style>
+  #qs-widget {
+    --qs-bg: #0f1117;
+    --qs-surface: #1a1d27;
+    --qs-surface2: #22263a;
+    --qs-border: #2e3450;
+    --qs-accent: #7c3aed;
+    --qs-accent-hover: #6d28d9;
+    --qs-accent-light: #a78bfa;
+    --qs-success: #10b981;
+    --qs-warning: #f59e0b;
+    --qs-error: #ef4444;
+    --qs-text: #e2e8f0;
+    --qs-text-muted: #94a3b8;
+    --qs-text-dim: #64748b;
+    --qs-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0 1rem;
+  }
+
+  #qs-widget .qs-intro {
+    text-align: center;
+    margin-bottom: 1.75rem;
+    max-width: 520px;
+    width: 100%;
+  }
+
+  #qs-widget .qs-intro h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.35rem;
+  }
+
+  #qs-widget .qs-intro p {
+    color: var(--qs-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  #qs-widget .steps-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 1.75rem;
+    max-width: 520px;
+    width: 100%;
+  }
+
+  #qs-widget .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--qs-text-dim);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+
+  #qs-widget .step-pill.active {
+    color: var(--qs-accent-light);
+    background: rgba(124, 58, 237, 0.12);
+  }
+
+  #qs-widget .step-pill.done {
+    color: var(--qs-success);
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  #qs-widget .step-pill-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--qs-surface2);
+    color: var(--qs-text-dim);
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  #qs-widget .step-pill.active .step-pill-num {
+    background: var(--qs-accent);
+    color: #fff;
+  }
+
+  #qs-widget .step-pill.done .step-pill-num {
+    background: var(--qs-success);
+    color: #fff;
+  }
+
+  #qs-widget .step-sep {
+    width: 28px;
+    height: 1px;
+    background: var(--qs-border);
+    flex-shrink: 0;
+  }
+
+  #qs-widget .card {
+    background: var(--qs-surface);
+    border: 1px solid var(--qs-border);
+    border-radius: var(--qs-radius);
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 0.75rem;
+    transition: opacity 0.2s;
+  }
+
+  #qs-widget .card.inactive {
+    opacity: 0.4;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  #qs-widget .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  #qs-widget .card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  #qs-widget .card-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--qs-accent-light);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+  }
+
+  #qs-widget .card-badge.green {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--qs-success);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  #qs-widget .card-badge.fail {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--qs-error);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+
+  #qs-widget .field { margin-bottom: 0.75rem; }
+
+  #qs-widget .field label {
+    display: block;
+    font-size: 0.79rem;
+    font-weight: 500;
+    color: var(--qs-text-muted);
+    margin-bottom: 0.35rem;
+  }
+
+  #qs-widget .field input {
+    width: 100%;
+    background: var(--qs-surface2);
+    border: 1px solid var(--qs-border);
+    border-radius: 7px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.95rem;
+    color: var(--qs-text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  #qs-widget .field input:focus { border-color: var(--qs-accent-light); }
+  #qs-widget .field input::placeholder { color: var(--qs-text-dim); }
+
+  #qs-widget .btn {
+    width: 100%;
+    padding: 0.78rem 1rem;
+    background: var(--qs-accent);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1.1rem;
+    transition: background 0.15s, opacity 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  #qs-widget .btn:hover:not(:disabled) { background: var(--qs-accent-hover); }
+  #qs-widget .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  #qs-widget .btn-ghost {
+    background: var(--qs-surface2);
+    color: var(--qs-text-muted);
+    border: 1px solid var(--qs-border);
+  }
+
+  #qs-widget .btn-ghost:hover:not(:disabled) {
+    background: var(--qs-border);
+    color: var(--qs-text);
+  }
+
+  #qs-widget .btn-success { background: var(--qs-success); }
+  #qs-widget .btn-success:hover:not(:disabled) { background: #0ea271; }
+
+  #qs-widget .status-line {
+    margin-top: 0.85rem;
+    font-size: 0.83rem;
+    color: var(--qs-text-muted);
+    min-height: 1.1em;
+  }
+
+  #qs-widget .status-line.ok { color: var(--qs-success); }
+  #qs-widget .status-line.err { color: var(--qs-error); }
+
+  #qs-widget .info-box {
+    background: rgba(124, 58, 237, 0.07);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    margin-top: 0.9rem;
+    font-size: 0.79rem;
+    color: var(--qs-text-muted);
+    line-height: 1.55;
+  }
+
+  #qs-widget .addon-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+  }
+
+  #qs-widget .addon-list-label {
+    font-size: 0.78rem;
+    color: var(--qs-text-dim);
+  }
+
+  #qs-widget .select-links { display: flex; gap: 0.5rem; }
+
+  #qs-widget .select-links button {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    color: var(--qs-accent-light);
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  #qs-widget .select-links button:hover { color: #fff; }
+
+  #qs-widget .addon-list { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  #qs-widget .addon-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--qs-surface2);
+    border: 1px solid var(--qs-border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  #qs-widget .addon-item:hover { border-color: var(--qs-accent-light); }
+  #qs-widget .addon-item.checked { border-color: var(--qs-accent); background: rgba(124, 58, 237, 0.05); }
+  #qs-widget .addon-item input[type="checkbox"] { display: none; }
+
+  #qs-widget .check-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--qs-border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  #qs-widget .addon-item.checked .check-box {
+    background: var(--qs-accent);
+    border-color: var(--qs-accent);
+  }
+
+  #qs-widget .addon-item.checked .check-box::after {
+    content: "✓";
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  #qs-widget .addon-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 1px;
+  }
+
+  #qs-widget .addon-info { flex: 1; min-width: 0; }
+
+  #qs-widget .addon-info strong {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--qs-text);
+    margin-bottom: 0.15rem;
+  }
+
+  #qs-widget .addon-info span {
+    font-size: 0.76rem;
+    color: var(--qs-text-muted);
+    line-height: 1.4;
+  }
+
+  #qs-widget .option-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--qs-border);
+    margin-top: 0.75rem;
+    cursor: pointer;
+  }
+
+  #qs-widget .option-row input[type="checkbox"] { display: none; }
+
+  #qs-widget .option-check {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--qs-border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  #qs-widget .option-row.checked .option-check {
+    background: var(--qs-accent);
+    border-color: var(--qs-accent);
+  }
+
+  #qs-widget .option-row.checked .option-check::after {
+    content: "✓";
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  #qs-widget .option-text { font-size: 0.8rem; color: var(--qs-text-muted); }
+  #qs-widget .option-text strong { color: var(--qs-text); font-weight: 500; }
+
+  #qs-widget .progress-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  #qs-widget .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.86rem;
+    color: var(--qs-text-muted);
+    padding: 0.5rem 0.75rem;
+    border-radius: 7px;
+    background: var(--qs-surface2);
+  }
+
+  #qs-widget .progress-item.done { color: var(--qs-success); }
+  #qs-widget .progress-item.err { color: var(--qs-error); }
+  #qs-widget .progress-item.loading { color: var(--qs-accent-light); }
+  #qs-widget .progress-item.skip { color: var(--qs-text-dim); }
+
+  #qs-widget .progress-icon { width: 18px; text-align: center; flex-shrink: 0; }
+
+  #qs-widget .spinner {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(167, 139, 250, 0.3);
+    border-top-color: var(--qs-accent-light);
+    border-radius: 50%;
+    animation: qs-spin 0.7s linear infinite;
+  }
+
+  @keyframes qs-spin { to { transform: rotate(360deg); } }
+
+  #qs-widget .result-box {
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.86rem;
+    line-height: 1.6;
+  }
+
+  #qs-widget .result-box.ok {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--qs-success);
+  }
+
+  #qs-widget .result-box.partial {
+    background: rgba(245, 158, 11, 0.07);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #d4a017;
+  }
+
+  #qs-widget .result-box.fail {
+    background: rgba(239, 68, 68, 0.07);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--qs-error);
+  }
+
+  #qs-widget .next-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--qs-text-muted);
+    line-height: 1.5;
+  }
+
+  #qs-widget .next-step-item .ns-num {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--qs-surface2);
+    border: 1px solid var(--qs-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--qs-text-dim);
+    margin-top: 1px;
+  }
+
+  #qs-widget .next-step-item a { color: var(--qs-accent-light); text-decoration: none; }
+  #qs-widget .next-step-item a:hover { text-decoration: underline; }
+
+  #qs-widget .btn-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  #qs-widget .btn-row .btn { margin-top: 0; }
+
+  #qs-widget .account-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 20px;
+    padding: 2px 9px;
+    font-size: 0.75rem;
+    color: var(--qs-success);
+    font-weight: 500;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #qs-widget .qs-footer {
+    margin-top: 1.25rem;
+    font-size: 0.76rem;
+    color: var(--qs-text-dim);
+    text-align: center;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  #qs-widget .qs-footer a { color: var(--qs-text-dim); text-decoration: underline; }
+</style>
+
+<div class="qs-intro">
+  <h2>📺 Instalar Pack PT em 3 Passos</h2>
+  <p>Instala automaticamente os addons portugueses na tua conta Stremio — sem copiar URLs, sem configurar nada manualmente.</p>
+</div>
+
+<div class="steps-bar" id="qs-steps-bar">
+  <div class="step-pill active" id="qs-pill-1">
+    <span class="step-pill-num">1</span> Login
+  </div>
+  <div class="step-sep"></div>
+  <div class="step-pill inactive" id="qs-pill-2">
+    <span class="step-pill-num">2</span> Pack
+  </div>
+  <div class="step-sep"></div>
+  <div class="step-pill inactive" id="qs-pill-3">
+    <span class="step-pill-num">3</span> Instalação
+  </div>
+</div>
+
+<!-- Passo 1: Login -->
+<div class="card" id="qs-card-login">
+  <div class="card-header">
+    <div class="card-title">Login Stremio</div>
+    <span class="account-pill" id="qs-account-pill" style="display:none" aria-live="polite"></span>
+  </div>
+  <div class="field">
+    <label for="qs-inp-email">E-mail</label>
+    <input type="email" id="qs-inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="qs-inp-pass">Password</label>
+    <input type="password" id="qs-inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="qs-btn-login">Entrar</button>
+  <div class="status-line" id="qs-login-status" aria-live="polite"></div>
+  <div class="info-box">
+    🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
+  </div>
+</div>
+
+<!-- Passo 2: Selecionar Pack -->
+<div class="card inactive" id="qs-card-pack">
+  <div class="card-header">
+    <div class="card-title">Selecionar Pack</div>
+    <span class="card-badge" id="qs-pack-badge">4 selecionados</span>
+  </div>
+  <div class="addon-list-header">
+    <span class="addon-list-label">Addons incluídos</span>
+    <div class="select-links">
+      <button onclick="qsSelectAll(true)">Todos</button>
+      <button onclick="qsSelectAll(false)">Nenhum</button>
+    </div>
+  </div>
+  <div class="addon-list" id="qs-addon-list"></div>
+  <label class="option-row" id="qs-opt-clean-row">
+    <input type="checkbox" id="qs-opt-clean">
+    <div class="option-check"></div>
+    <div class="option-text">
+      <strong>Substituir versões antigas</strong> — se algum destes addons já estiver instalado, remove a versão anterior antes de instalar a nova
+    </div>
+  </label>
+  <div class="status-line err" id="qs-pack-error" style="display:none;margin-top:0.6rem"></div>
+  <button class="btn" id="qs-btn-install">Instalar Agora →</button>
+</div>
+
+<!-- Passo 3: Instalação -->
+<div class="card inactive" id="qs-card-progress">
+  <div class="card-header">
+    <div class="card-title">Instalação</div>
+    <span class="card-badge" id="qs-install-badge" style="display:none"></span>
+  </div>
+  <div class="progress-list" id="qs-progress-list"></div>
+  <div id="qs-result-box" style="display:none"></div>
+  <div id="qs-next-steps" style="display:none"></div>
+  <div class="btn-row" id="qs-btn-row-result" style="display:none"></div>
+</div>
+
+<div class="qs-footer">
+  Os addons são instalados na tua conta Stremio como se usasses o cliente oficial.<br>
+  Para remover: Stremio → Addons → ⚙️ → Uninstall.
+</div>
+
+</div><!-- #qs-widget -->
+
+<script>
+(function() {
+  const PT_PACK = [
+    {
+      id: 'aiostreams',
+      name: 'AIOStreams',
+      icon: '📡',
+      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros — com template Tam-Taro SEL pré-configurado',
+      manifestUrl: 'https://aiostreams.viren070.me/stremio/manifest.json',
+    },
+    {
+      id: 'aiometadata',
+      name: 'AIOMetadata',
+      icon: '🗂️',
+      desc: 'Catálogos organizados no ecrã inicial: Netflix, Disney+, Prime Video, Tendências globais',
+      manifestUrl: 'https://aiometadata.elfhosted.com/manifest.json',
+    },
+    {
+      id: 'submaker',
+      name: 'SubMaker',
+      icon: '💬',
+      desc: 'Traduz legendas para português em tempo real com IA. Actua por pedido dentro do stream',
+      manifestUrl: 'https://submaker.elfhosted.com/manifest.json',
+    },
+    {
+      id: 'toast',
+      name: 'Toast Translator',
+      icon: '🌐',
+      desc: 'Sinopses e títulos em Português de Portugal + ratings IMDb/Rotten Tomatoes nas capas',
+      manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
+    },
+  ];
+
+  let authKey = null;
+  let currentAddons = [];
+
+  const addonListEl = document.getElementById('qs-addon-list');
+  PT_PACK.forEach(addon => {
+    const item = document.createElement('label');
+    item.className = 'addon-item checked';
+    item.htmlFor = 'qs-chk-' + addon.id;
+    item.innerHTML = `
+      <input type="checkbox" id="qs-chk-${addon.id}" checked>
+      <div class="check-box"></div>
+      <span class="addon-icon">${addon.icon}</span>
+      <div class="addon-info">
+        <strong>${addon.name}</strong>
+        <span>${addon.desc}</span>
+      </div>
+    `;
+    item.addEventListener('change', () => {
+      item.classList.toggle('checked', item.querySelector('input').checked);
+      qsUpdatePackBadge();
+    });
+    addonListEl.appendChild(item);
+  });
+
+  const optCleanRow = document.getElementById('qs-opt-clean-row');
+  optCleanRow.addEventListener('change', () => {
+    optCleanRow.classList.toggle('checked', document.getElementById('qs-opt-clean').checked);
+  });
+
+  function qsUpdatePackBadge() {
+    const n = PT_PACK.filter(a => document.getElementById('qs-chk-' + a.id).checked).length;
+    const badge = document.getElementById('qs-pack-badge');
+    badge.textContent = n + ' selecionado' + (n !== 1 ? 's' : '');
+    badge.className = 'card-badge' + (n === 0 ? ' fail' : '');
+  }
+
+  window.qsSelectAll = function(state) {
+    PT_PACK.forEach(a => {
+      const inp = document.getElementById('qs-chk-' + a.id);
+      inp.checked = state;
+      inp.closest('.addon-item').classList.toggle('checked', state);
+    });
+    qsUpdatePackBadge();
+  };
+
+  ['qs-inp-email', 'qs-inp-pass'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') qsDoLogin();
+    });
+  });
+
+  document.getElementById('qs-btn-login').addEventListener('click', qsDoLogin);
+
+  async function qsDoLogin() {
+    const email = document.getElementById('qs-inp-email').value.trim();
+    const pass  = document.getElementById('qs-inp-pass').value;
+    const statusEl = document.getElementById('qs-login-status');
+    const btn = document.getElementById('qs-btn-login');
+
+    if (!email || !pass) {
+      qsSetStatus(statusEl, 'err', 'Preenche o e-mail e a password.');
+      return;
+    }
+
+    btn.disabled = true;
+    qsSetStatus(statusEl, '', 'A verificar conta…');
+
+    try {
+      const res = await fetch('https://api.strem.io/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass, facebook: false }),
+      });
+
+      if (!res.ok) throw new Error('Servidor indisponível (HTTP ' + res.status + ')');
+      const data = await res.json();
+
+      if (!data.result || !data.result.authKey) {
+        const errVal = data.error;
+        const errMsg = (typeof errVal === 'string' && errVal) ? errVal
+                     : (errVal?.message || errVal?.error || 'E-mail ou password incorretos.');
+        qsSetStatus(statusEl, 'err', errMsg);
+        btn.disabled = false;
+        return;
+      }
+
+      authKey = data.result.authKey;
+
+      const colRes = await qsFetchTimeout('https://api.strem.io/api/addonCollectionGet', 10000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authKey, type: 'User' })
+      });
+      if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
+      const colData = await colRes.json();
+      currentAddons = colData.result?.addons ?? [];
+
+      qsSetStatus(statusEl, 'ok', '✓ Conta verificada — ' + currentAddons.length + ' addon(s) actualmente instalados.');
+      const pill = document.getElementById('qs-account-pill');
+      pill.textContent = '✓ ' + (email.length > 22 ? email.slice(0, 20) + '…' : email);
+      pill.style.display = 'inline-flex';
+
+      qsSetStepState(1, 'done');
+      qsSetStepState(2, 'active');
+      qsActivateCard('qs-card-pack');
+      qsScrollTo('qs-card-pack');
+
+    } catch (err) {
+      qsSetStatus(statusEl, 'err', err.message || 'Erro ao ligar ao Stremio. Tenta novamente.');
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById('qs-btn-install').addEventListener('click', qsDoInstall);
+
+  async function qsDoInstall() {
+    const selected = PT_PACK.filter(a => document.getElementById('qs-chk-' + a.id).checked);
+    const packErrorEl = document.getElementById('qs-pack-error');
+
+    if (selected.length === 0) {
+      packErrorEl.textContent = 'Seleciona pelo menos um addon para continuar.';
+      packErrorEl.style.display = 'block';
+      return;
+    }
+    packErrorEl.style.display = 'none';
+
+    const removePrevious = document.getElementById('qs-opt-clean').checked;
+
+    qsDeactivateCard('qs-card-pack');
+    qsSetStepState(2, 'done');
+    qsSetStepState(3, 'active');
+    qsActivateCard('qs-card-progress');
+    qsScrollTo('qs-card-progress');
+
+    const progressList = document.getElementById('qs-progress-list');
+    progressList.innerHTML = '';
+
+    const rows = selected.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
+
+    const results = [];
+    const STRIP_IDS = new Set([
+      'com.linvo.stremiochannels',
+      'org.stremio.watchhub',
+      'org.stremio.pubdomainmovies',
+      'org.stremio.local',
+    ]);
+    let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
+
+    for (let i = 0; i < selected.length; i++) {
+      const addon = selected[i];
+      const row   = rows[i];
+      try {
+        const mRes = await qsFetchTimeout(addon.manifestUrl, 10000);
+        if (!mRes.ok) throw new Error('Serviço offline (HTTP ' + mRes.status + ')');
+        let manifest;
+        try { manifest = await mRes.json(); } catch { throw new Error('Resposta inválida do servidor do addon'); }
+
+        const existingIdx = workingAddons.findIndex(
+          a => a.manifest?.id === manifest.id || a.transportUrl === addon.manifestUrl
+        );
+        const alreadyInstalled = existingIdx !== -1;
+
+        if (alreadyInstalled && !removePrevious) {
+          qsUpdateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
+          results.push({ addon, ok: true, skipped: true });
+          continue;
+        }
+        if (alreadyInstalled && removePrevious) workingAddons.splice(existingIdx, 1);
+
+        const newAddon = { transportUrl: addon.manifestUrl, transportName: 'http', manifest, flags: {} };
+        workingAddons = [...workingAddons, newAddon];
+
+        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authKey, addons: workingAddons }),
+        });
+        if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
+        const setData = await setRes.json();
+        if (setData.error) throw new Error(setData.error);
+
+        currentAddons = workingAddons;
+        qsUpdateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
+        results.push({ addon, ok: true });
+
+      } catch (err) {
+        qsUpdateRow(row, 'err', addon.icon + ' ' + addon.name + ' — ' + err.message);
+        results.push({ addon, ok: false, err: err.message });
+      }
+    }
+
+    const failCount    = results.filter(r => !r.ok).length;
+    const successCount = results.filter(r => r.ok && !r.skipped).length;
+    const skipCount    = results.filter(r => r.skipped).length;
+    const totalOk      = results.filter(r => r.ok).length;
+
+    if (failCount === 0) authKey = null;
+
+    const resultBox = document.getElementById('qs-result-box');
+    resultBox.style.display = 'block';
+    const badge = document.getElementById('qs-install-badge');
+    badge.style.display = 'inline-block';
+
+    if (failCount === 0) {
+      badge.textContent = '✓ Concluído';
+      badge.className   = 'card-badge green';
+      let msg = `✓ ${successCount} addon${successCount !== 1 ? 's' : ''} instalado${successCount !== 1 ? 's' : ''}`;
+      if (skipCount > 0) msg += ` · ${skipCount} já estava${skipCount !== 1 ? 'm' : ''} instalado${skipCount !== 1 ? 's' : ''}`;
+      msg += '.';
+      resultBox.className   = 'result-box ok';
+      resultBox.textContent = msg;
+      qsShowNextSteps(results);
+    } else if (totalOk > 0) {
+      badge.textContent = '⚠ Parcial';
+      badge.className   = 'card-badge';
+      resultBox.className   = 'result-box partial';
+      resultBox.textContent = `${totalOk} instalado${totalOk !== 1 ? 's' : ''}, ${failCount} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
+      qsShowRetryBtn();
+    } else {
+      badge.textContent = '✗ Falhou';
+      badge.className   = 'card-badge fail';
+      resultBox.className   = 'result-box fail';
+      resultBox.textContent = 'Nenhum addon foi instalado. Verifica a tua ligação à internet e tenta novamente.';
+      qsShowRetryBtn();
+    }
+  }
+
+  function qsShowNextSteps(results) {
+    const aioInstalled = results.some(r => r.addon.id === 'aiostreams' && r.ok && !r.skipped);
+    const container = document.getElementById('qs-next-steps');
+    container.style.display = 'block';
+    const steps = [];
+    if (aioInstalled) {
+      steps.push('Abre o <strong>Stremio</strong> — os addons aparecem de imediato na secção Addons.');
+      steps.push('Configura o teu serviço de <strong>Debrid no AIOStreams</strong>: Addons → AIOStreams ⚙️ → Debrid Provider → cola a tua API Key.');
+    } else {
+      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato.');
+    }
+    steps.push('Quer legendas em português? O <strong>SubMaker</strong> traduz por pedido — abre qualquer conteúdo → Legendas → "Criar [Portuguese]".');
+    container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
+      steps.map((s, i) => `<div class="next-step-item"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
+    const btnRow = document.getElementById('qs-btn-row-result');
+    btnRow.style.display = 'flex';
+    btnRow.innerHTML = `
+      <a href="https://app.strem.io" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
+        <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
+      </a>
+      <a href="/stremio-pt-guides/guias/" style="text-decoration:none">
+        <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
+      </a>
+    `;
+  }
+
+  function qsShowRetryBtn() {
+    const btnRow = document.getElementById('qs-btn-row-result');
+    btnRow.style.display = 'flex';
+    btnRow.innerHTML = `<button class="btn btn-ghost" onclick="qsResetToStep2()" style="flex:1">← Tentar novamente</button>`;
+  }
+
+  window.qsResetToStep2 = function() {
+    document.getElementById('qs-card-progress').classList.add('inactive');
+    document.getElementById('qs-result-box').style.display = 'none';
+    document.getElementById('qs-next-steps').style.display = 'none';
+    document.getElementById('qs-btn-row-result').style.display = 'none';
+    document.getElementById('qs-progress-list').innerHTML = '';
+    document.getElementById('qs-install-badge').style.display = 'none';
+    qsSetStepState(2, 'active');
+    qsSetStepState(3, 'inactive');
+    qsActivateCard('qs-card-pack');
+    qsScrollTo('qs-card-pack');
+  };
+
+  function qsSetStatus(el, type, msg) {
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  function qsAddProgressRow(container, state, label) {
+    const row = document.createElement('div');
+    row.className = 'progress-item ' + state;
+    row.innerHTML = `<span class="progress-icon"><span class="spinner"></span></span> ${label}`;
+    container.appendChild(row);
+    return row;
+  }
+
+  function qsUpdateRow(row, state, text) {
+    const icons = { done: '✓', err: '✗', skip: '–', loading: '' };
+    row.className = 'progress-item ' + state;
+    row.innerHTML = `<span class="progress-icon">${icons[state]}</span> ${text}`;
+  }
+
+  function qsFetchTimeout(url, ms, opts = {}) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(t));
+  }
+
+  function qsActivateCard(id)   { document.getElementById(id).classList.remove('inactive'); }
+  function qsDeactivateCard(id) { document.getElementById(id).classList.add('inactive'); }
+
+  function qsSetStepState(num, state) {
+    const pill = document.getElementById('qs-pill-' + num);
+    pill.className = 'step-pill ' + (state === 'inactive' ? '' : state);
+    if (state === 'done') pill.querySelector('.step-pill-num').textContent = '✓';
+  }
+
+  function qsScrollTo(id) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  }
+})();
+</script>
