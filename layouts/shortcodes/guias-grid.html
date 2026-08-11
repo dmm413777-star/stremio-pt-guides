@@ -1,0 +1,150 @@
+<style>
+.gg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+.gg-card {
+  background: #181c27;
+  border-radius: 10px;
+  border: 1px solid #2a3050;
+  border-left: 3.5px solid var(--gg-color);
+  padding: 1rem 1.1rem 1rem 1rem;
+  text-decoration: none;
+  display: block;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.gg-card:hover {
+  background: #1e2336;
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.gg-meta {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gg-color);
+  margin-bottom: 0.35rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.gg-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+.gg-desc {
+  font-size: 0.78rem;
+  color: #7a8aaa;
+  line-height: 1.5;
+}
+.gg-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4a5578;
+  margin: 1.75rem 0 0.6rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.gg-section-label:first-child { margin-top: 0; }
+</style>
+
+<div class="gg-section-label">Essencial</div>
+<div class="gg-grid">
+  <a class="gg-card" href="{{ "guias/comecar-aqui/" | relURL }}" style="--gg-color:#5b8dee">
+    <div class="gg-meta">🚀 Início</div>
+    <div class="gg-title">Começa Aqui</div>
+    <div class="gg-desc">Nunca ouviste falar de Stremio? Em 5 minutos sabes o que é e qual o caminho mais rápido.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/aiostreams-tamtaro/" | relURL }}" style="--gg-color:#5b8dee">
+    <div class="gg-meta">📡 Streams</div>
+    <div class="gg-title">AIOStreams + Template Tam-Taro (SEL)</div>
+    <div class="gg-desc">O addon principal. Template SEL pré-configurado com modo P2P e suporte a Debrid.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/torbox/" | relURL }}" style="--gg-color:#f0a500">
+    <div class="gg-meta">💾 Debrid</div>
+    <div class="gg-title">TorBox — Alternativa ao Real-Debrid</div>
+    <div class="gg-desc">Streams 4K instantâneos sem P2P. ~28€/ano, conta partilhável com a família.</div>
+  </a>
+</div>
+
+<div class="gg-section-label">Português</div>
+<div class="gg-grid">
+  <a class="gg-card" href="{{ "guias/aiometadata/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">🗂️ Catálogos</div>
+    <div class="gg-title">AIOMetadata — Catálogos Organizados</div>
+    <div class="gg-desc">Netflix, Disney+, Prime Video e Tendências no ecrã inicial do Stremio.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/submaker/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">💬 Legendas</div>
+    <div class="gg-title">SubMaker — Tradução por IA</div>
+    <div class="gg-desc">Legendas automáticas em Português de Portugal geradas em tempo real por IA.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/toast-translator/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">🌐 Interface</div>
+    <div class="gg-title">Toast Translator</div>
+    <div class="gg-desc">Sinopses e títulos em Português + ratings IMDb/Rotten Tomatoes nas capas.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/tugakids/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">🧸 Família</div>
+    <div class="gg-title">TugaKids — Conteúdo Infantil PT</div>
+    <div class="gg-desc">Filmes e séries infantis dobrados em Português de Portugal.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/conteudo-pt/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">🎬 Conteúdo</div>
+    <div class="gg-title">Filmes, Séries e Novelas PT</div>
+    <div class="gg-desc">Addons com catálogo de conteúdo em Português: Cotonet, Animação PT-PT e mais.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/aiostreams-legendas-pt/" | relURL }}" style="--gg-color:#4ecb8d">
+    <div class="gg-meta">🏷️ Filtros</div>
+    <div class="gg-title">AIOStreams — Legendas PT Embutidas</div>
+    <div class="gg-desc">Configurar o AIOStreams para dar prioridade a streams com legendas já incorporadas.</div>
+  </a>
+</div>
+
+<div class="gg-section-label">Nuvio</div>
+<div class="gg-grid">
+  <a class="gg-card" href="{{ "guias/nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+    <div class="gg-meta">📺 App</div>
+    <div class="gg-title">Nuvio — Guia de Início</div>
+    <div class="gg-desc">Alternativa ao Stremio, popular em Android TV. Autoplay, interface limpa.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/clonar-perfil-nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+    <div class="gg-meta">👥 Família</div>
+    <div class="gg-title">Clonar Perfil Nuvio</div>
+    <div class="gg-desc">Copiar a tua configuração para um familiar sem repetir o setup do zero.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/migrar-para-nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+    <div class="gg-meta">🔄 Migração</div>
+    <div class="gg-title">Migrar do Stremio para Nuvio</div>
+    <div class="gg-desc">Mover biblioteca, histórico e addons do Stremio para o Nuvio sem perder nada.</div>
+  </a>
+</div>
+
+<div class="gg-section-label">Referência</div>
+<div class="gg-grid">
+  <a class="gg-card" href="{{ "guias/faq/" | relURL }}" style="--gg-color:#9b8dee">
+    <div class="gg-meta">❓ FAQ</div>
+    <div class="gg-title">Perguntas Frequentes</div>
+    <div class="gg-desc">Dúvidas comuns sobre Debrid, VPN, addons e o Stremio em geral.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/dispositivos/" | relURL }}" style="--gg-color:#9b8dee">
+    <div class="gg-meta">📱 Hardware</div>
+    <div class="gg-title">Dispositivos Recomendados</div>
+    <div class="gg-desc">O melhor hardware para usar Stremio e Nuvio na televisão, com preços PT.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/tmdb/" | relURL }}" style="--gg-color:#4a5578">
+    <div class="gg-meta">🔑 API</div>
+    <div class="gg-title">TMDB API Key</div>
+    <div class="gg-desc">Como criar a API Key gratuita do TMDB, necessária para o AIOMetadata.</div>
+  </a>
+  <a class="gg-card" href="{{ "guias/mdblist/" | relURL }}" style="--gg-color:#4a5578">
+    <div class="gg-meta">🔑 API</div>
+    <div class="gg-title">MDBList API Key</div>
+    <div class="gg-desc">API Key gratuita do MDBList para listas curadas e catálogos personalizados.</div>
+  </a>
+</div>
