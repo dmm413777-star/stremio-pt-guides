@@ -35,19 +35,13 @@ Usa **[este link](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a0
 
 > ⚠️ Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
 
-<figure style="max-width:380px;margin:1rem auto;text-align:center">
-<img src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" style="width:100%;border-radius:8px">
-<figcaption><em>TorBox pede confirmação para aplicar o código de referência — clica "Yes" para garantir os +84 dias.</em></figcaption>
-</figure>
+{{< fig-mobile src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" >}}TorBox pede confirmação para aplicar o código de referência — clica "Yes" para garantir os +84 dias.{{< /fig-mobile >}}
 
 ### 2. Escolhe o plano
 
 Seleciona **Essential — One Time — ANUAL** ($33).
 
-<figure style="max-width:380px;margin:1rem auto;text-align:center">
-<img src="/images/torbox-planos-essential.jpg" alt="Página de planos TorBox com Essential anual e cupão SIGMA30" style="width:100%;border-radius:8px">
-<figcaption><em>Seleciona "Essential" anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.</em></figcaption>
-</figure>
+{{< fig-mobile src="/images/torbox-planos-essential.jpg" alt="Página de planos TorBox com Essential anual e cupão SIGMA30" >}}Seleciona Essential anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.{{< /fig-mobile >}}
 
 ![Página de subscrição do TorBox com os planos disponíveis](/images/torbox-subscription-page.png)
 *Página de planos do TorBox — seleciona Essential (anual) para a melhor relação preço/duração.*
