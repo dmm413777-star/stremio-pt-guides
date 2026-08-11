@@ -771,7 +771,10 @@
       const data = await res.json();
 
       if (!data.result || !data.result.authKey) {
-        setStatus(statusEl, 'err', data.error || 'E-mail ou password incorretos.');
+        const errVal = data.error;
+        const errMsg = (typeof errVal === 'string' && errVal) ? errVal
+                     : (errVal?.message || errVal?.error || 'E-mail ou password incorretos.');
+        setStatus(statusEl, 'err', errMsg);
         btn.disabled = false;
         return;
       }
