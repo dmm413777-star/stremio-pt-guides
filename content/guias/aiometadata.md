@@ -42,8 +42,7 @@ Antes de importar qualquer template, vai ao separador **Integrations** e insere 
 | **RPDB** | Opcional | Key gratuita: `t0-free-rpdb` |
 | **Gemini** | Opcional | Pesquisa por IA — [aistudio.google.com](https://aistudio.google.com) |
 
-![Separador Integrations do AIOMetadata com campos de API Key](/images/aiometadata-configure-integrations.png)
-*Separador "Integrations" — preenche as chaves do TMDB, TVDB e MDBList antes de importar o template.*
+{{< img src="/images/aiometadata-configure-integrations.png" alt="Separador Integrations do AIOMetadata com campos de API Key" >}}
 
 > O **RPDB** adiciona as notas do IMDb/Rotten Tomatoes diretamente nas capas. A key `t0-free-rpdb` é pública e não requer registo.
 
@@ -65,8 +64,7 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/AIOMetadata%20Configs/Tamtaro-aiometadata-config-without-anime.json
 ```
 
-![Modal Import Configuration do AIOMetadata com o URL do template colado](/images/aiometadata-import-config.png)
-*Modal "Import Configuration" — cola o URL do template e clica em Import.*
+{{< img src="/images/aiometadata-import-config.png" alt="Modal Import Configuration do AIOMetadata com o URL do template colado" >}}
 
 > **No telemóvel:** Guarda o ficheiro JSON e usa a opção Upload.  
 > **No PC:** Cola o URL diretamente no campo de importação.
@@ -84,8 +82,7 @@ O Stremio tem um limite de tamanho para addons. Como estes templates são muito 
 3. Faz login com a tua conta Stremio.
 4. Cola o URL e instala por lá.
 
-![StremThru Sidekick com o Install URL do AIOMetadata pronto a instalar](/images/stremthru-sidekick.png)
-*StremThru Sidekick — a forma correcta de instalar addons grandes no Stremio.*
+{{< img src="/images/stremthru-sidekick.png" alt="StremThru Sidekick com o Install URL do AIOMetadata pronto a instalar" >}}
 
 ---
 

@@ -1,4 +1,9 @@
+{{- $src := .Get "src" -}}
+{{- $path := $src | strings.TrimPrefix "/" -}}
+{{- with resources.Get $path -}}
+  {{- $src = .RelPermalink -}}
+{{- end -}}
 <figure style="max-width:380px;margin:1rem auto;text-align:center">
-<img src="{{ .Get "src" | relURL }}" alt="{{ .Get "alt" }}" style="width:100%;border-radius:8px">
+<img src="{{ $src }}" alt="{{ .Get "alt" }}" style="width:100%;border-radius:8px" loading="lazy">
 {{ with (.Inner | strings.TrimSpace) }}<figcaption><em>{{ . }}</em></figcaption>{{ end }}
 </figure>

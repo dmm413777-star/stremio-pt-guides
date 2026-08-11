@@ -20,8 +20,7 @@ O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artifi
 
 1. Abre a [Página de Configuração do SubMaker](https://submaker.elfhosted.com/).
 
-![Página de configuração do SubMaker com os campos de API Key e idiomas](/images/submaker-configure.png)
-*Página de configuração do SubMaker — preenche a Gemini API Key, selecciona inglês como origem e português como destino.*
+{{< img src="/images/submaker-configure.png" alt="Página de configuração do SubMaker com os campos de API Key e idiomas" >}}
 
 2. **API Key:** Recomenda-se o **Google Gemini** (gratuito e rápido).
    - Clica no link *"Get Gemini API Key"* que aparece na página.

@@ -28,8 +28,7 @@ O Toast precisa da tua API Key do TMDB para aceder às traduções. É gratuita 
 
 1. Abre a [Página de Configuração do Toast](https://0f693ad7dcba-toast-translator.baby-beamup.club/configure).
 
-![Página de configuração do Toast Translator com os campos de API Key e idioma](/images/toast-configure.png)
-*Página de configuração do Toast Translator — preenche a TMDB API Key, a RPDB Key e selecciona Portuguese (Portugal).*
+{{< img src="/images/toast-configure.png" alt="Página de configuração do Toast Translator com os campos de API Key e idioma" >}}
 
 2. **TMDB API Key:** Cola a key obtida no passo anterior.
 

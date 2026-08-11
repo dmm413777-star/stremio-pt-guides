@@ -43,8 +43,7 @@ Seleciona **Essential — One Time — ANUAL** ($33).
 
 {{< fig-mobile src="/images/torbox-planos-essential.jpg" alt="Página de planos TorBox com Essential anual e cupão SIGMA30" >}}Seleciona Essential anual. O campo para o cupão SIGMA30 aparece neste mesmo ecrã.{{< /fig-mobile >}}
 
-![Página de subscrição do TorBox com os planos disponíveis](/images/torbox-subscription-page.png)
-*Página de planos do TorBox — seleciona Essential (anual) para a melhor relação preço/duração.*
+{{< img src="/images/torbox-subscription-page.png" alt="Página de subscrição do TorBox com os planos disponíveis" >}}
 
 > ⚠️ Se comprares **mensal**, só ganhas **7 dias** de bónus em vez de 84.
 
@@ -64,8 +63,7 @@ No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20
 2. Abre a configuração do [Torrentio](https://torrentio.strem.fun/configure).
 3. Em **Debrid Provider**, seleciona **TorBox** e cola a API Key.
 
-![Página de configuração do Torrentio com TorBox selecionado como Debrid Provider](/images/torrentio-configure.png)
-*Seleciona TorBox em "Debrid Provider" e cola a tua API Key — depois clica em Install.*
+{{< img src="/images/torrentio-configure.png" alt="Página de configuração do Torrentio com TorBox selecionado como Debrid Provider" >}}
 
 4. Marca a opção **"Don't show download to debrid links"** (última caixa).
 5. Clica em **Install** para instalar no Stremio.
@@ -76,8 +74,7 @@ No checkout, insere o código **`SIGMA30`** para 30% de desconto extra (fica ~20
 
 Após a instalação, os links com a tag **`[TB+]`** estão em **cache** — correm instantaneamente sem depender de seeds. Qualidade máxima, sem espera.
 
-![Lista de streams no Stremio com tags TB+ do TorBox](/images/stremio-tb-streams.jpg)
-*Streams com a tag [TB+] estão em cache no TorBox — qualidade máxima, reprodução instantânea.*
+{{< img src="/images/stremio-tb-streams.jpg" alt="Lista de streams no Stremio com tags TB+ do TorBox" >}}
 
 ---
 

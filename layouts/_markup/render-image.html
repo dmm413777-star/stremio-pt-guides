@@ -1,0 +1,5 @@
+{{- $src := .Destination -}}
+{{- if not (urls.Parse .Destination).IsAbs -}}
+  {{- $src = .Destination | strings.TrimPrefix "/" | absURL -}}
+{{- end -}}
+<img data-custom="1" src="{{ $src }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">

@@ -1,0 +1,9 @@
+{{- $src := .Get "src" -}}
+{{- $path := $src | strings.TrimPrefix "/" -}}
+{{- with resources.Get $path -}}
+  {{- $src = .RelPermalink -}}
+{{- end -}}
+<img src="{{ $src }}" alt="{{ .Get "alt" }}"{{ with .Get "caption" }} title="{{ . }}"{{ end }} loading="lazy" style="border-radius:8px;border:1px solid var(--brd);max-width:100%">
+{{- with .Get "caption" }}
+<p style="font-size:11.5px;color:var(--mut);text-align:center;margin-top:6px;font-style:italic">{{ . }}</p>
+{{- end }}

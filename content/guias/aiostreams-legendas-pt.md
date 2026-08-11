@@ -35,8 +35,7 @@ Antes de activar os filtros de legenda, garante que a ordenação dá prioridade
 2. **Quality** (qualidade)
 3. **Size** (tamanho)
 
-![Ordenação no AIOStreams: Subtitle → Quality → Size](/images/aiostreams-sort-order.webp)
-*Sort Order configurado: Subtitle em primeiro lugar garante que os streams com legendas PT aparecem no topo.*
+{{< img src="/images/aiostreams-sort-order.webp" alt="Ordenação no AIOStreams: Subtitle → Quality → Size" >}}
 
 ---
 
@@ -49,13 +48,11 @@ Nas definições do AIOStreams, vai a **Subtitle Filters → Preferred Subtitles
 - `Portuguese`
 - `Portuguese (Brazil)`
 
-![Filtro Preferred Subtitles no AIOStreams com Portuguese seleccionado](/images/aiostreams-subtitles-preferred.webp)
-*Preferred Subtitles com Portuguese e Portuguese (Brazil) — streams com legendas PT sobem para o topo.*
+{{< img src="/images/aiostreams-subtitles-preferred.webp" alt="Filtro Preferred Subtitles no AIOStreams com Portuguese seleccionado" >}}
 
 ### Resultado
 
-![Lista de streams no Stremio com streams com legendas PT em primeiro lugar](/images/aiostreams-resultado-preferido.webp)
-*Streams com legendas PT embutidas aparecem no topo da lista, identificados pela etiqueta de legenda.*
+{{< img src="/images/aiostreams-resultado-preferido.webp" alt="Lista de streams no Stremio com streams com legendas PT em primeiro lugar" >}}
 
 ---
 
@@ -68,13 +65,11 @@ Nas definições, vai a **Subtitle Filters → Required Subtitles** e adiciona:
 - `Portuguese`
 - `Portuguese (Brazil)`
 
-![Filtro Required Subtitles no AIOStreams com Portuguese seleccionado](/images/aiostreams-subtitles-required.webp)
-*Required Subtitles activado — o AIOStreams filtra para mostrar apenas streams com legendas PT.*
+{{< img src="/images/aiostreams-subtitles-required.webp" alt="Filtro Required Subtitles no AIOStreams com Portuguese seleccionado" >}}
 
 ### Resultado
 
-![Lista de streams no Stremio com aba "Legendado PT1" mostrando apenas streams com legendas PT](/images/aiostreams-resultado-required.webp)
-*Aba "Legendado PT1" com apenas streams que contêm legendas PT embutidas. Se a lista estiver vazia, esse conteúdo não tem versão legendada disponível em PT.*
+{{< img src="/images/aiostreams-resultado-required.webp" alt="Lista de streams no Stremio com aba " >}}
 
 ---
 
