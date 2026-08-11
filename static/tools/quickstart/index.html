@@ -35,90 +35,155 @@
       padding: 2rem 1rem 4rem;
     }
 
+    /* ── Header ── */
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
-      max-width: 480px;
+      margin-bottom: 2rem;
+      max-width: 520px;
+      width: 100%;
     }
 
     header h1 {
-      font-size: 1.75rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
     header p {
       color: var(--text-muted);
       font-size: 0.95rem;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .badge {
-      display: inline-block;
+    /* ── Step progress bar ── */
+    .steps-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 1.75rem;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+
+    .step-pill.active {
+      color: var(--accent-light);
+      background: rgba(124, 58, 237, 0.12);
+    }
+
+    .step-pill.done {
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .step-pill-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--surface2);
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .step-pill.active .step-pill-num {
       background: var(--accent);
       color: #fff;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.75rem;
     }
 
+    .step-pill.done .step-pill-num {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .step-sep {
+      width: 28px;
+      height: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ── Cards ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 1.75rem;
       width: 100%;
-      max-width: 480px;
-      margin-bottom: 1rem;
+      max-width: 520px;
+      margin-bottom: 0.75rem;
+      transition: opacity 0.2s;
     }
 
-    .card h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
+    .card.inactive {
+      opacity: 0.4;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 1.25rem;
+    }
+
+    .card-title {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-    }
-
-    .step-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--accent);
+      font-size: 1rem;
+      font-weight: 600;
       color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      flex-shrink: 0;
     }
 
-    .step-num.done { background: var(--success); }
-    .step-num.inactive { background: var(--surface2); color: var(--text-dim); }
+    .card-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(124, 58, 237, 0.2);
+      color: var(--accent-light);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
 
-    .card.inactive { opacity: 0.5; pointer-events: none; }
+    .card-badge.green {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
 
-    label {
+    /* ── Inputs ── */
+    .field { margin-bottom: 0.75rem; }
+
+    .field label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
-      margin-top: 0.75rem;
+      margin-bottom: 0.35rem;
     }
 
-    label:first-child { margin-top: 0; }
-
-    input[type="email"],
-    input[type="password"] {
+    .field input {
       width: 100%;
       background: var(--surface2);
       border: 1px solid var(--border);
@@ -130,16 +195,13 @@
       transition: border-color 0.15s;
     }
 
-    input[type="email"]:focus,
-    input[type="password"]:focus {
-      border-color: var(--accent-light);
-    }
+    .field input:focus { border-color: var(--accent-light); }
+    .field input::placeholder { color: var(--text-dim); }
 
-    input::placeholder { color: var(--text-dim); }
-
+    /* ── Buttons ── */
     .btn {
       width: 100%;
-      padding: 0.75rem 1rem;
+      padding: 0.78rem 1rem;
       background: var(--accent);
       color: #fff;
       border: none;
@@ -147,32 +209,102 @@
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 1.25rem;
+      margin-top: 1.1rem;
       transition: background 0.15s, opacity 0.15s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .btn:hover:not(:disabled) { background: var(--accent-hover); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    .status-line {
-      margin-top: 1rem;
-      font-size: 0.85rem;
+    .btn-ghost {
+      background: var(--surface2);
       color: var(--text-muted);
-      min-height: 1.2em;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #0ea271;
+    }
+
+    /* ── Status line ── */
+    .status-line {
+      margin-top: 0.85rem;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      min-height: 1.1em;
     }
 
     .status-line.ok { color: var(--success); }
     .status-line.err { color: var(--error); }
 
-    /* Checkboxes */
-    .addon-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    /* ── Warning / info boxes ── */
+    .info-box {
+      background: rgba(124, 58, 237, 0.07);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      margin-top: 0.9rem;
+      font-size: 0.79rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .warn-box {
+      background: rgba(245, 158, 11, 0.07);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      margin-top: 0.9rem;
+      font-size: 0.79rem;
+      color: #d4a017;
+      line-height: 1.55;
+    }
+
+    /* ── Addon list ── */
+    .addon-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .addon-list-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .select-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .select-links button {
+      background: none;
+      border: none;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .select-links button:hover { color: #fff; }
+
+    .addon-list { display: flex; flex-direction: column; gap: 0.5rem; }
 
     .addon-item {
       display: flex;
@@ -181,13 +313,14 @@
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 0.85rem 1rem;
+      padding: 0.8rem 1rem;
       cursor: pointer;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
     }
 
     .addon-item:hover { border-color: var(--accent-light); }
-    .addon-item.checked { border-color: var(--accent); }
+    .addon-item.checked { border-color: var(--accent); background: rgba(124, 58, 237, 0.05); }
 
     .addon-item input[type="checkbox"] { display: none; }
 
@@ -197,7 +330,7 @@
       border: 2px solid var(--border);
       border-radius: 4px;
       flex-shrink: 0;
-      margin-top: 1px;
+      margin-top: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -216,198 +349,348 @@
       font-weight: 700;
     }
 
+    .addon-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .addon-info { flex: 1; min-width: 0; }
+
     .addon-info strong {
       display: block;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--text);
+      margin-bottom: 0.15rem;
     }
 
     .addon-info span {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
       line-height: 1.4;
     }
 
-    /* Progress */
-    .progress-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    /* ── Options row ── */
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 0;
+      border-top: 1px solid var(--border);
+      margin-top: 0.75rem;
+      cursor: pointer;
+    }
+
+    .option-row input[type="checkbox"] { display: none; }
+
+    .option-check {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border);
+      border-radius: 3px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .option-row.checked .option-check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .option-row.checked .option-check::after {
+      content: "✓";
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .option-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .option-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── Progress items ── */
+    .progress-list { display: flex; flex-direction: column; gap: 0.6rem; }
 
     .progress-item {
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: var(--text-muted);
+      padding: 0.5rem 0.75rem;
+      border-radius: 7px;
+      background: var(--surface2);
     }
 
     .progress-item.done { color: var(--success); }
     .progress-item.err { color: var(--error); }
     .progress-item.loading { color: var(--accent-light); }
+    .progress-item.skip { color: var(--text-dim); }
 
-    .progress-icon { font-size: 1rem; width: 1.2em; text-align: center; }
+    .progress-icon { width: 18px; text-align: center; flex-shrink: 0; }
 
     .spinner {
       display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid var(--accent-light);
-      border-top-color: transparent;
+      width: 13px;
+      height: 13px;
+      border: 2px solid rgba(167, 139, 250, 0.3);
+      border-top-color: var(--accent-light);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Result box ── */
     .result-box {
-      background: var(--surface2);
-      border: 1px solid var(--success);
       border-radius: 8px;
       padding: 1rem;
-      margin-top: 1rem;
-      font-size: 0.88rem;
-      color: var(--success);
-      line-height: 1.5;
-    }
-
-    .result-box.partial { border-color: var(--warning); color: var(--warning); }
-    .result-box.fail { border-color: var(--error); color: var(--error); }
-
-    .warn-box {
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      color: var(--warning);
-      line-height: 1.5;
-    }
-
-    footer {
-      margin-top: 2rem;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      text-align: center;
-      max-width: 480px;
+      margin-top: 0.75rem;
+      font-size: 0.86rem;
       line-height: 1.6;
     }
 
-    footer a { color: var(--text-dim); text-decoration: underline; }
-
-    /* Disabled state for step 1 card when logged in */
-    #card-login.done-card {
-      opacity: 0.6;
-      pointer-events: none;
+    .result-box.ok {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--success);
     }
 
+    .result-box.partial {
+      background: rgba(245, 158, 11, 0.07);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #d4a017;
+    }
+
+    .result-box.fail {
+      background: rgba(239, 68, 68, 0.07);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--error);
+    }
+
+    /* ── Next steps ── */
+    .next-steps {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .next-step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .next-step-item .ns-num {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+
+    .next-step-item a { color: var(--accent-light); text-decoration: none; }
+    .next-step-item a:hover { text-decoration: underline; }
+
+    .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn-row .btn { margin-top: 0; }
+
+    /* ── Account pill (inline in card header) ── */
     .account-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
+      gap: 0.3rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: 20px;
-      padding: 2px 10px;
-      font-size: 0.78rem;
+      padding: 2px 9px;
+      font-size: 0.75rem;
       color: var(--success);
-      margin-left: 0.5rem;
       font-weight: 500;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 2rem;
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--text-dim); text-decoration: underline; }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="badge">Beta</div>
   <h1>📺 QuickStart PT</h1>
-  <p>Instala o pack de addons portugueses na tua conta Stremio em menos de 2 minutos.</p>
+  <p>Instala o pack de addons portugueses na tua conta Stremio&nbsp;em&nbsp;3&nbsp;passos.</p>
 </header>
 
-<!-- PASSO 1: Login -->
-<div class="card" id="card-login">
-  <h2>
-    <span class="step-num" id="step1-num">1</span>
-    Login Stremio
-    <span class="account-pill" id="account-pill" style="display:none">✓ <span id="account-email-short"></span></span>
-  </h2>
-  <label for="inp-email">E-mail</label>
-  <input type="email" id="inp-email" placeholder="o-teu@email.com" autocomplete="email">
-  <label for="inp-pass">Password</label>
-  <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
-  <button class="btn" id="btn-login" onclick="doLogin()">
-    Entrar
-  </button>
-  <div class="status-line" id="login-status"></div>
-  <div class="warn-box" style="margin-top:0.75rem">
-    🔒 As credenciais são usadas apenas para comunicar com a API oficial do Stremio (<code>api.strem.io</code>) e não são guardadas em nenhum sítio.
+<!-- Progress bar -->
+<div class="steps-bar" id="steps-bar">
+  <div class="step-pill active" id="pill-1">
+    <span class="step-pill-num">1</span> Login
+  </div>
+  <div class="step-sep"></div>
+  <div class="step-pill inactive" id="pill-2">
+    <span class="step-pill-num">2</span> Pack
+  </div>
+  <div class="step-sep"></div>
+  <div class="step-pill inactive" id="pill-3">
+    <span class="step-pill-num">3</span> Instalação
   </div>
 </div>
 
-<!-- PASSO 2: Selecionar pack -->
-<div class="card inactive" id="card-pack">
-  <h2>
-    <span class="step-num inactive" id="step2-num">2</span>
-    Selecionar Pack
-  </h2>
-  <div class="addon-list" id="addon-list"></div>
-  <button class="btn" id="btn-install" onclick="doInstall()">
-    Instalar Agora →
-  </button>
+<!-- ── PASSO 1: Login ── -->
+<div class="card" id="card-login">
+  <div class="card-header">
+    <div class="card-title">
+      <span>Login Stremio</span>
+    </div>
+    <span class="account-pill" id="account-pill" style="display:none" aria-live="polite"></span>
+  </div>
+
+  <div class="field">
+    <label for="inp-email">E-mail</label>
+    <input type="email" id="inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="inp-pass">Password</label>
+    <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+
+  <button class="btn" id="btn-login">Entrar</button>
+  <div class="status-line" id="login-status" aria-live="polite"></div>
+
+  <div class="info-box">
+    🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
+  </div>
 </div>
 
-<!-- PASSO 3: Progresso -->
+<!-- ── PASSO 2: Selecionar Pack ── -->
+<div class="card inactive" id="card-pack">
+  <div class="card-header">
+    <div class="card-title">Selecionar Pack</div>
+    <span class="card-badge" id="pack-badge">4 selecionados</span>
+  </div>
+
+  <div class="addon-list-header">
+    <span class="addon-list-label">Addons incluídos</span>
+    <div class="select-links">
+      <button onclick="selectAll(true)">Todos</button>
+      <button onclick="selectAll(false)">Nenhum</button>
+    </div>
+  </div>
+
+  <div class="addon-list" id="addon-list"></div>
+
+  <label class="option-row" id="opt-clean-row">
+    <input type="checkbox" id="opt-clean">
+    <div class="option-check"></div>
+    <div class="option-text">
+      <strong>Substituir versões antigas</strong> — se algum destes addons já estiver instalado, remove a versão anterior antes de instalar a nova
+    </div>
+  </label>
+
+  <div class="status-line err" id="pack-error" style="display:none;margin-top:0.6rem"></div>
+  <button class="btn" id="btn-install">Instalar Agora →</button>
+</div>
+
+<!-- ── PASSO 3: Instalação ── -->
 <div class="card inactive" id="card-progress">
-  <h2>
-    <span class="step-num inactive" id="step3-num">3</span>
-    Instalação
-  </h2>
+  <div class="card-header">
+    <div class="card-title">Instalação</div>
+    <span class="card-badge" id="install-badge" style="display:none"></span>
+  </div>
+
   <div class="progress-list" id="progress-list"></div>
   <div id="result-box" style="display:none"></div>
+  <div id="next-steps" style="display:none"></div>
+  <div class="btn-row" id="btn-row-result" style="display:none"></div>
 </div>
 
 <footer>
-  Esta ferramenta usa a API oficial do Stremio. Os addons são instalados na tua conta como se usasses o Stremio normalmente.<br>
-  Para remover um addon, abre o Stremio → Addons → desinstala manualmente.<br><br>
-  <a href="/guias/">← Voltar aos guias</a>
+  Os addons são instalados na tua conta Stremio como se usasses o cliente oficial.<br>
+  Para remover um addon: Stremio → Addons → ⚙️ → Uninstall.<br><br>
+  <a href="/guias/">← Voltar aos guias</a> &nbsp;·&nbsp;
+  <a href="https://github.com/dmm413777-star/stremio-pt-guides" target="_blank" rel="noopener">GitHub</a>
 </footer>
 
 <script>
-  // ─── Definição do Pack PT ────────────────────────────────────────────────
+  // ── Pack PT ──────────────────────────────────────────────────────────────
 
   const PT_PACK = [
     {
       id: 'aiostreams',
       name: 'AIOStreams',
-      desc: 'Streams agregados (Comet, MediaFusion, Torrentio, etc.) com template Tam-Taro SEL',
+      icon: '📡',
+      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros — com template Tam-Taro SEL pré-configurado',
       manifestUrl: 'https://aiostreams.viren070.me/stremio/manifest.json',
+      note: 'Depois da instalação, configura o teu serviço de Debrid nas definições do AIOStreams.',
     },
     {
       id: 'aiometadata',
       name: 'AIOMetadata',
-      desc: 'Catálogos organizados: Netflix, Disney+, Prime Video, Tendências',
+      icon: '🗂️',
+      desc: 'Catálogos organizados no ecrã inicial: Netflix, Disney+, Prime Video, Tendências globais',
       manifestUrl: 'https://aiometadata.elfhosted.com/manifest.json',
     },
     {
       id: 'submaker',
       name: 'SubMaker',
-      desc: 'Tradução automática de legendas para português por IA (Gemini)',
+      icon: '💬',
+      desc: 'Traduz legendas para português em tempo real com IA (Gemini). Actua por pedido dentro do stream',
       manifestUrl: 'https://submaker.elfhosted.com/manifest.json',
     },
     {
       id: 'toast',
       name: 'Toast Translator',
-      desc: 'Sinopses e títulos em português + ratings IMDb/Rotten Tomatoes nos posters',
+      icon: '🌐',
+      desc: 'Sinopses e títulos em Português de Portugal + ratings IMDb/Rotten Tomatoes nas capas',
       manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
     },
   ];
 
-  // ─── Estado ──────────────────────────────────────────────────────────────
+  // ── Estado ───────────────────────────────────────────────────────────────
 
   let authKey = null;
   let currentAddons = [];
+  let userEmail = '';
 
-  // ─── Render inicial ──────────────────────────────────────────────────────
+  // ── Render addons ─────────────────────────────────────────────────────────
 
-  const addonList = document.getElementById('addon-list');
+  const addonListEl = document.getElementById('addon-list');
 
   PT_PACK.forEach(addon => {
     const item = document.createElement('label');
@@ -416,27 +699,56 @@
     item.innerHTML = `
       <input type="checkbox" id="chk-${addon.id}" checked>
       <div class="check-box"></div>
+      <span class="addon-icon">${addon.icon}</span>
       <div class="addon-info">
         <strong>${addon.name}</strong>
         <span>${addon.desc}</span>
       </div>
     `;
     item.addEventListener('change', () => {
-      item.classList.toggle('checked', item.querySelector('input').checked);
+      const checked = item.querySelector('input').checked;
+      item.classList.toggle('checked', checked);
+      updatePackBadge();
     });
-    addonList.appendChild(item);
+    addonListEl.appendChild(item);
   });
 
-  // ─── Passo 1: Login ──────────────────────────────────────────────────────
-
-  // Allow Enter key on password field
-  document.getElementById('inp-pass').addEventListener('keydown', e => {
-    if (e.key === 'Enter') doLogin();
+  // option-row toggle
+  const optCleanRow = document.getElementById('opt-clean-row');
+  optCleanRow.addEventListener('change', () => {
+    optCleanRow.classList.toggle('checked', document.getElementById('opt-clean').checked);
   });
+
+  function updatePackBadge() {
+    const n = PT_PACK.filter(a => document.getElementById('chk-' + a.id).checked).length;
+    const badge = document.getElementById('pack-badge');
+    badge.textContent = n + ' selecionado' + (n !== 1 ? 's' : '');
+    badge.className = 'card-badge' + (n === 0 ? ' fail' : '');
+  }
+
+  function selectAll(state) {
+    PT_PACK.forEach(a => {
+      const inp = document.getElementById('chk-' + a.id);
+      const item = inp.closest('.addon-item');
+      inp.checked = state;
+      item.classList.toggle('checked', state);
+    });
+    updatePackBadge();
+  }
+
+  // ── Passo 1: Login ────────────────────────────────────────────────────────
+
+  ['inp-email', 'inp-pass'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  });
+
+  document.getElementById('btn-login').addEventListener('click', doLogin);
 
   async function doLogin() {
     const email = document.getElementById('inp-email').value.trim();
-    const pass = document.getElementById('inp-pass').value;
+    const pass  = document.getElementById('inp-pass').value;
     const statusEl = document.getElementById('login-status');
     const btn = document.getElementById('btn-login');
 
@@ -455,164 +767,282 @@
         body: JSON.stringify({ email, password: pass, facebook: false }),
       });
 
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      if (!res.ok) throw new Error('Servidor indisponível (HTTP ' + res.status + ')');
       const data = await res.json();
 
       if (!data.result || !data.result.authKey) {
-        const msg = data.error || 'E-mail ou password incorretos.';
-        setStatus(statusEl, 'err', msg);
+        setStatus(statusEl, 'err', data.error || 'E-mail ou password incorretos.');
         btn.disabled = false;
         return;
       }
 
-      authKey = data.result.authKey;
+      authKey   = data.result.authKey;
+      userEmail = email;
 
-      // Read current addons
+      // Ler addons actuais
       const colRes = await fetch(
         `https://api.strem.io/api/addonCollectionGet?authKey=${encodeURIComponent(authKey)}&type=User&_=${Date.now()}`
       );
+      if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
       const colData = await colRes.json();
-      currentAddons = (colData.result && colData.result.addons) ? colData.result.addons : [];
+      currentAddons = colData.result?.addons ?? [];
 
-      // UI: mark step 1 done
-      setStatus(statusEl, 'ok', '✓ Conta verificada.');
-      document.getElementById('step1-num').className = 'step-num done';
-      document.getElementById('card-login').classList.add('done-card');
-      const shortEmail = email.length > 24 ? email.slice(0, 22) + '…' : email;
-      document.getElementById('account-email-short').textContent = shortEmail;
-      document.getElementById('account-pill').style.display = 'inline-flex';
+      // UI: step 1 done
+      setStatus(statusEl, 'ok', '✓ Conta verificada — ' + currentAddons.length + ' addon(s) actualmente instalados.');
+      const pill = document.getElementById('account-pill');
+      pill.textContent = '✓ ' + (email.length > 22 ? email.slice(0, 20) + '…' : email);
+      pill.style.display = 'inline-flex';
 
-      // Unlock step 2
-      const packCard = document.getElementById('card-pack');
-      packCard.classList.remove('inactive');
-      document.getElementById('step2-num').className = 'step-num';
+      setStepState(1, 'done');
+      setStepState(2, 'active');
+      activateCard('card-pack');
+      smoothScrollTo('card-pack');
 
     } catch (err) {
-      setStatus(statusEl, 'err', 'Erro ao ligar à API do Stremio. Tenta novamente.');
+      setStatus(statusEl, 'err', err.message || 'Erro ao ligar ao Stremio. Tenta novamente.');
       btn.disabled = false;
     }
   }
 
-  // ─── Passo 2 → 3: Instalar ───────────────────────────────────────────────
+  // ── Passo 2 → 3: Instalar ────────────────────────────────────────────────
+
+  document.getElementById('btn-install').addEventListener('click', doInstall);
 
   async function doInstall() {
-    const selected = PT_PACK.filter(a =>
-      document.getElementById('chk-' + a.id).checked
-    );
+    const selected = PT_PACK.filter(a => document.getElementById('chk-' + a.id).checked);
+    const packErrorEl = document.getElementById('pack-error');
 
     if (selected.length === 0) {
-      alert('Seleciona pelo menos um addon para instalar.');
+      packErrorEl.textContent = 'Seleciona pelo menos um addon para continuar.';
+      packErrorEl.style.display = 'block';
       return;
     }
+    packErrorEl.style.display = 'none';
 
-    // Lock step 2, unlock step 3
-    document.getElementById('card-pack').classList.add('inactive');
-    document.getElementById('card-progress').classList.remove('inactive');
-    document.getElementById('step3-num').className = 'step-num';
+    const removePrevious = document.getElementById('opt-clean').checked;
+
+    deactivateCard('card-pack');
+    setStepState(2, 'done');
+    setStepState(3, 'active');
+    activateCard('card-progress');
+    smoothScrollTo('card-progress');
 
     const progressList = document.getElementById('progress-list');
     progressList.innerHTML = '';
 
-    const results = [];
+    // Criar todas as linhas de progresso já visíveis
+    const rows = selected.map(a => addProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
 
-    for (const addon of selected) {
-      const row = addProgressRow(progressList, 'loading', addon.name);
+    const results = [];
+    let workingAddons = [...currentAddons];
+
+    for (let i = 0; i < selected.length; i++) {
+      const addon = selected[i];
+      const row   = rows[i];
 
       try {
         // 1. Validar que o manifest responde
-        const mRes = await fetchWithTimeout(addon.manifestUrl, 8000);
-        if (!mRes.ok) throw new Error('Manifest HTTP ' + mRes.status);
-        const manifest = await mRes.json();
+        const mRes = await fetchWithTimeout(addon.manifestUrl, 10000);
+        if (!mRes.ok) throw new Error('Serviço offline (HTTP ' + mRes.status + ')');
 
-        // 2. Verificar se já está instalado
-        const alreadyInstalled = currentAddons.some(
-          a => a.manifest && a.manifest.id === manifest.id
+        let manifest;
+        try {
+          manifest = await mRes.json();
+        } catch {
+          throw new Error('Resposta inválida do servidor do addon');
+        }
+
+        // 2. Verificar duplicado
+        const existingIdx = workingAddons.findIndex(
+          a => a.manifest?.id === manifest.id || a.transportUrl === addon.manifestUrl
         );
+        const alreadyInstalled = existingIdx !== -1;
 
-        if (alreadyInstalled) {
-          updateRow(row, 'done', `✓ ${addon.name} (já instalado)`);
-          results.push({ addon, ok: true, alreadyInstalled: true });
+        if (alreadyInstalled && !removePrevious) {
+          updateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
+          results.push({ addon, ok: true, skipped: true });
           continue;
         }
 
-        // 3. Construir o objeto de addon no formato Stremio
+        // 3. Remover versão anterior se pedido
+        if (alreadyInstalled && removePrevious) {
+          workingAddons.splice(existingIdx, 1);
+        }
+
+        // 4. Construir objecto addon
         const newAddon = {
-          transportUrl: addon.manifestUrl,
+          transportUrl:  addon.manifestUrl,
           transportName: 'http',
-          manifest: manifest,
+          manifest,
           flags: {},
         };
 
-        // 4. Fazer merge e enviar
-        const mergedAddons = [...currentAddons, newAddon];
+        workingAddons = [...workingAddons, newAddon];
+
+        // 5. Enviar colecção actualizada
         const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ authKey, addons: mergedAddons }),
+          body: JSON.stringify({ authKey, addons: workingAddons }),
         });
 
-        if (!setRes.ok) throw new Error('Set HTTP ' + setRes.status);
+        if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
         const setData = await setRes.json();
         if (setData.error) throw new Error(setData.error);
 
-        // Atualizar a lista local para o próximo addon
-        currentAddons = mergedAddons;
-
-        updateRow(row, 'done', `✓ ${addon.name} instalado`);
+        currentAddons = workingAddons;
+        updateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
         results.push({ addon, ok: true });
 
       } catch (err) {
-        updateRow(row, 'err', `✗ ${addon.name} — ${err.message}`);
+        updateRow(row, 'err', addon.icon + ' ' + addon.name + ' — ' + err.message);
         results.push({ addon, ok: false, err: err.message });
       }
     }
 
-    // Resultado final
-    const ok = results.filter(r => r.ok).length;
-    const fail = results.filter(r => !r.ok).length;
+    // Só limpa a authKey quando tudo correu bem
+    const failCount    = results.filter(r => !r.ok).length;
+    const successCount = results.filter(r => r.ok && !r.skipped).length;
+    const skipCount    = results.filter(r => r.skipped).length;
+    const totalOk      = results.filter(r => r.ok).length;
+
+    if (failCount === 0) authKey = null;
+
+    // ── Resultado ──
     const resultBox = document.getElementById('result-box');
     resultBox.style.display = 'block';
 
-    if (fail === 0) {
-      resultBox.className = 'result-box';
-      resultBox.innerHTML = `✓ ${ok} addon${ok !== 1 ? 's' : ''} instalado${ok !== 1 ? 's' : ''}. Abre o Stremio e já está — os addons aparecem de imediato.`;
-    } else if (ok > 0) {
-      resultBox.className = 'result-box partial';
-      resultBox.innerHTML = `${ok} instalado${ok !== 1 ? 's' : ''}, ${fail} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
-    } else {
-      resultBox.className = 'result-box fail';
-      resultBox.innerHTML = `Não foi possível instalar nenhum addon. Verifica a tua ligação e tenta novamente.`;
-    }
+    const badge = document.getElementById('install-badge');
+    badge.style.display = 'inline-block';
 
-    // Limpar authKey da memória
-    authKey = null;
+    if (failCount === 0) {
+      badge.textContent = '✓ Concluído';
+      badge.className   = 'card-badge green';
+      let msg = `✓ ${successCount} addon${successCount !== 1 ? 's' : ''} instalado${successCount !== 1 ? 's' : ''}`;
+      if (skipCount > 0) msg += ` · ${skipCount} já estava${skipCount !== 1 ? 'm' : ''} instalado${skipCount !== 1 ? 's' : ''}`;
+      msg += '.';
+      resultBox.className   = 'result-box ok';
+      resultBox.textContent = msg;
+      showNextSteps(results);
+    } else if (totalOk > 0) {
+      badge.textContent = '⚠ Parcial';
+      badge.className   = 'card-badge';
+      resultBox.className   = 'result-box partial';
+      resultBox.textContent = `${totalOk} instalado${totalOk !== 1 ? 's' : ''}, ${failCount} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
+      showRetryBtn();
+    } else {
+      badge.textContent = '✗ Falhou';
+      badge.className   = 'card-badge';
+      resultBox.className   = 'result-box fail';
+      resultBox.textContent = 'Nenhum addon foi instalado. Verifica a tua ligação à internet e tenta novamente.';
+      showRetryBtn();
+    }
   }
 
-  // ─── Helpers ─────────────────────────────────────────────────────────────
+  function showNextSteps(results) {
+    const aioInstalled = results.some(r => r.addon.id === 'aiostreams' && r.ok && !r.skipped);
+    const container = document.getElementById('next-steps');
+    container.style.display = 'block';
+
+    const steps = [];
+    if (aioInstalled) {
+      steps.push('Abre o <strong>Stremio</strong> — os addons aparecem de imediato na secção Addons.');
+      steps.push('Configura o teu serviço de <strong>Debrid no AIOStreams</strong>: Addons → AIOStreams ⚙️ → Debrid Provider → cola a tua API Key. Sem debrid, o AIOStreams ainda funciona em modo P2P.');
+    } else {
+      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato.');
+    }
+    steps.push('Quer legendas em português? O <strong>SubMaker</strong> traduz por pedido — abre qualquer conteúdo → Legendas → "Criar [Portuguese]".');
+
+    container.innerHTML = '<div style="font-size:0.78rem;color:var(--text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
+      steps.map((s, i) => `
+        <div class="next-step-item">
+          <div class="ns-num">${i + 1}</div>
+          <div>${s}</div>
+        </div>
+      `).join('');
+
+    const btnRow = document.getElementById('btn-row-result');
+    btnRow.style.display = 'flex';
+    btnRow.innerHTML = `
+      <a href="https://app.strem.io" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
+        <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
+      </a>
+      <a href="/guias/" style="text-decoration:none">
+        <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
+      </a>
+    `;
+  }
+
+  function showRetryBtn() {
+    const btnRow = document.getElementById('btn-row-result');
+    btnRow.style.display = 'flex';
+    btnRow.innerHTML = `<button class="btn btn-ghost" onclick="resetToStep2()" style="flex:1">← Tentar novamente</button>`;
+  }
+
+  function resetToStep2() {
+    // Mantém authKey (não foi limpa porque houve falha)
+    document.getElementById('card-progress').classList.add('inactive');
+    document.getElementById('result-box').style.display = 'none';
+    document.getElementById('next-steps').style.display = 'none';
+    document.getElementById('btn-row-result').style.display = 'none';
+    document.getElementById('progress-list').innerHTML = '';
+    document.getElementById('install-badge').style.display = 'none';
+
+    setStepState(2, 'active');
+    setStepState(3, 'inactive');
+    activateCard('card-pack');
+    smoothScrollTo('card-pack');
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
 
   function setStatus(el, type, msg) {
     el.className = 'status-line' + (type ? ' ' + type : '');
     el.textContent = msg;
   }
 
-  function addProgressRow(container, state, name) {
+  function addProgressRow(container, state, label) {
     const row = document.createElement('div');
     row.className = 'progress-item ' + state;
-    row.innerHTML = `<span class="progress-icon">${state === 'loading' ? '<span class="spinner"></span>' : '⏳'}</span> ${name}`;
+    row.innerHTML = `<span class="progress-icon"><span class="spinner"></span></span> ${label}`;
     container.appendChild(row);
     return row;
   }
 
   function updateRow(row, state, text) {
-    const icons = { done: '✓', err: '✗', loading: '' };
+    const icons = { done: '✓', err: '✗', skip: '–', loading: '' };
     row.className = 'progress-item ' + state;
     row.innerHTML = `<span class="progress-icon">${icons[state]}</span> ${text}`;
   }
 
   function fetchWithTimeout(url, ms) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), ms);
-    return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(t));
+  }
+
+  function activateCard(id) {
+    document.getElementById(id).classList.remove('inactive');
+  }
+
+  function deactivateCard(id) {
+    document.getElementById(id).classList.add('inactive');
+  }
+
+  function setStepState(num, state) {
+    const pill = document.getElementById('pill-' + num);
+    pill.className = 'step-pill ' + (state === 'inactive' ? '' : state);
+    if (state === 'done') {
+      const numEl = pill.querySelector('.step-pill-num');
+      numEl.textContent = '✓';
+    }
+  }
+
+  function smoothScrollTo(id) {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
   }
 </script>
 </body>
