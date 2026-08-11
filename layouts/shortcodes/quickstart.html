@@ -860,7 +860,7 @@
       badge.className   = 'card-badge';
       resultBox.className   = 'result-box partial';
       resultBox.textContent = `${totalOk} instalado${totalOk !== 1 ? 's' : ''}, ${failCount} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
-      qsShowRetryBtn();
+      qsShowNextSteps(results, true);
     } else {
       badge.textContent = '✗ Falhou';
       badge.className   = 'card-badge fail';
@@ -870,7 +870,7 @@
     }
   }
 
-  function qsShowNextSteps(results) {
+  function qsShowNextSteps(results, partial) {
     const aioInstalled = results.some(r => r.addon.id === 'aiostreams' && r.ok && !r.skipped);
     const aioSkipped   = results.some(r => r.addon.id === 'aiostreams' && r.skipped);
     const container = document.getElementById('qs-next-steps');
@@ -903,6 +903,7 @@
       <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
         <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
       </a>
+      ${partial ? '<button class="btn btn-ghost" onclick="qsResetToStep2()" style="width:auto;padding:0 1.1rem">↺ Tentar falhados</button>' : ''}
     `;
   }
 
