@@ -839,7 +839,14 @@
     const rows = selected.map(a => addProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
 
     const results = [];
-    let workingAddons = [...currentAddons];
+    // Remove addons Stremio por defeito sem utilidade com o pack PT
+    const STRIP_IDS = new Set([
+      'com.linvo.stremiochannels',   // YouTube
+      'org.stremio.watchhub',        // WatchHub
+      'org.stremio.pubdomainmovies', // Public Domain Movies
+      'org.stremio.local',           // Local Files
+    ]);
+    let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
 
     for (let i = 0; i < selected.length; i++) {
       const addon = selected[i];
