@@ -496,6 +496,24 @@
   }
 
   #qs-widget .qs-footer a { color: var(--qs-text-dim); text-decoration: underline; }
+
+  #qs-widget .qs-svc-pill {
+    text-align: center;
+    padding: 0.45rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1.5px solid var(--qs-border);
+    color: var(--qs-text-muted);
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+
+  #qs-widget .qs-svc-pill[data-active="true"] {
+    border-color: var(--qs-accent);
+    color: var(--qs-accent-light);
+    background: rgba(124, 58, 237, 0.08);
+  }
 </style>
 
 <div class="qs-intro">
@@ -532,6 +550,7 @@
     <input type="password" id="qs-inp-pass" placeholder="••••••••" autocomplete="current-password">
   </div>
   <button class="btn" id="qs-btn-login">Entrar</button>
+  <button class="btn btn-ghost" id="qs-btn-generate" style="margin-top:0.5rem">🎲 Criar conta gratuita aleatória</button>
   <div class="status-line" id="qs-login-status" aria-live="polite"></div>
   <div class="info-box">
     🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
@@ -542,7 +561,7 @@
 <div class="card inactive" id="qs-card-pack">
   <div class="card-header">
     <div class="card-title">Selecionar Pack</div>
-    <span class="card-badge" id="qs-pack-badge">8 selecionados</span>
+    <span class="card-badge" id="qs-pack-badge">7 selecionados</span>
   </div>
   <div class="addon-list-header">
     <span class="addon-list-label">Addons incluídos</span>
@@ -559,6 +578,39 @@
       <strong>Substituir versões antigas</strong> — se algum destes addons já estiver instalado, remove a versão anterior antes de instalar a nova
     </div>
   </label>
+  <!-- Debrid opcional -->
+  <div style="margin-top:1rem">
+    <label class="option-row" id="qs-debrid-toggle-row" style="border-top:1px solid var(--qs-border);padding-top:0.85rem;margin-top:0;cursor:pointer">
+      <input type="checkbox" id="qs-debrid-toggle">
+      <div class="option-check"></div>
+      <div class="option-text">
+        <strong>Adicionar serviço Debrid</strong> — <span style="font-size:0.76rem">pré-configura o AIOStreams com a tua API Key para streams instantâneos em 4K</span>
+      </div>
+    </label>
+    <div id="qs-debrid-section" style="display:none;margin-top:0.75rem;background:var(--qs-surface2);border:1px solid var(--qs-border);border-radius:8px;padding:0.85rem">
+      <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
+        <label style="flex:1;cursor:pointer">
+          <input type="radio" name="qs-debrid-svc" value="torbox" id="qs-rd-torbox" checked style="display:none">
+          <div class="qs-svc-pill" id="qs-pill-torbox" data-active="true">TorBox</div>
+        </label>
+        <label style="flex:1;cursor:pointer">
+          <input type="radio" name="qs-debrid-svc" value="realdebrid" id="qs-rd-rd" style="display:none">
+          <div class="qs-svc-pill" id="qs-pill-rd" data-active="false">Real-Debrid</div>
+        </label>
+      </div>
+      <div class="field" style="margin-bottom:0.5rem">
+        <label for="qs-debrid-key" style="font-size:0.79rem;color:var(--qs-text-muted)">API Key</label>
+        <input type="password" id="qs-debrid-key" placeholder="Cole aqui a tua API Key" autocomplete="off">
+      </div>
+      <div id="qs-debrid-links" style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
+        <span id="qs-debrid-link-torbox">Sem conta? <a href="{{ "guias/torbox/" | relURL }}" style="color:var(--qs-accent-light)">Ver guia TorBox</a> · <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a></span>
+        <span id="qs-debrid-link-rd" style="display:none">Sem conta? <a href="https://real-debrid.com/?id=9483829" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta Real-Debrid</a></span>
+      </div>
+    </div>
+    <div id="qs-debrid-skip-hint" style="display:none;font-size:0.76rem;color:var(--qs-text-dim);margin-top:0.5rem">
+      Podes adicionar o Debrid mais tarde nas definições do AIOStreams. <a href="{{ "guias/torbox/" | relURL }}" style="color:var(--qs-accent-light)">Ver guia TorBox →</a>
+    </div>
+  </div>
   <div class="status-line err" id="qs-pack-error" style="display:none;margin-top:0.6rem"></div>
   <button class="btn" id="qs-btn-install">Instalar Agora →</button>
 </div>
@@ -614,13 +666,6 @@
       manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
     },
     {
-      id: 'pipocas',
-      name: 'Pipocas TV',
-      icon: '🍿',
-      desc: 'Catálogo e streams de filmes e séries em português de Portugal',
-      manifestUrl: 'https://pipocas-tv-stremio-addonv1.onrender.com/manifest.json',
-    },
-    {
       id: 'filmespt',
       name: 'Filmes, Séries e Novelas PT',
       icon: '🎬',
@@ -645,6 +690,85 @@
 
   let authKey = null;
   let currentAddons = [];
+  let generatedEmail = null;
+
+  // Debrid toggle
+  const debridToggle = document.getElementById('qs-debrid-toggle');
+  const debridToggleRow = document.getElementById('qs-debrid-toggle-row');
+  const debridSection = document.getElementById('qs-debrid-section');
+  const debridSkipHint = document.getElementById('qs-debrid-skip-hint');
+  debridToggleRow.addEventListener('change', () => {
+    const on = debridToggle.checked;
+    debridToggleRow.classList.toggle('checked', on);
+    debridSection.style.display = on ? 'block' : 'none';
+    debridSkipHint.style.display = on ? 'none' : 'block';
+  });
+
+  // Debrid service pills
+  document.querySelectorAll('input[name="qs-debrid-svc"]').forEach(radio => {
+    radio.closest('label').addEventListener('click', () => {
+      document.querySelectorAll('.qs-svc-pill').forEach(p => p.setAttribute('data-active', 'false'));
+      document.getElementById('qs-pill-' + (radio.value === 'torbox' ? 'torbox' : 'rd')).setAttribute('data-active', 'true');
+      document.getElementById('qs-debrid-link-torbox').style.display = radio.value === 'torbox' ? 'inline' : 'none';
+      document.getElementById('qs-debrid-link-rd').style.display = radio.value === 'realdebrid' ? 'inline' : 'none';
+    });
+  });
+
+  // Generate random Stremio account
+  document.getElementById('qs-btn-generate').addEventListener('click', qsGenerateAccount);
+
+  async function qsGenerateAccount() {
+    const statusEl = document.getElementById('qs-login-status');
+    const btn = document.getElementById('qs-btn-generate');
+    btn.disabled = true;
+    qsSetStatus(statusEl, '', 'A criar conta aleatória…');
+
+    try {
+      const rand = Math.random().toString(36).slice(2, 10);
+      const email = `stremio.${rand}@proton.me`;
+      const pass = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2).toUpperCase() + '!1';
+
+      const res = await qsFetchTimeout('https://api.strem.io/api/register', 8000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass, confirmPassword: pass, facebook: false }),
+      });
+      if (!res.ok) throw new Error('Servidor indisponível (HTTP ' + res.status + ')');
+      const data = await res.json();
+      if (!data.result?.authKey) {
+        const errVal = data.error;
+        const msg = (typeof errVal === 'string' && errVal) ? errVal : (errVal?.message || 'Não foi possível criar a conta.');
+        throw new Error(msg);
+      }
+
+      authKey = data.result.authKey;
+      generatedEmail = email;
+      const colRes = await qsFetchTimeout('https://api.strem.io/api/addonCollectionGet', 10000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authKey, type: 'User' })
+      });
+      if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
+      const colData = await colRes.json();
+      currentAddons = colData.result?.addons ?? [];
+
+      document.getElementById('qs-inp-email').value = email;
+      document.getElementById('qs-inp-pass').value = pass;
+
+      qsSetStatus(statusEl, 'ok', `✓ Conta criada — ${email}\nGuarda estas credenciais: password ${pass}`);
+      const pill = document.getElementById('qs-account-pill');
+      pill.textContent = '✓ Nova conta';
+      pill.style.display = 'inline-flex';
+
+      qsSetStepState(1, 'done');
+      qsSetStepState(2, 'active');
+      qsActivateCard('qs-card-pack');
+      qsScrollTo('qs-card-pack');
+    } catch (err) {
+      qsSetStatus(statusEl, 'err', '⚠ ' + (err.message || 'Erro ao criar conta. Regista manualmente em stremio.com.'));
+      btn.disabled = false;
+    }
+  }
 
   const addonListEl = document.getElementById('qs-addon-list');
   PT_PACK.forEach(addon => {
@@ -779,6 +903,41 @@
 
     const progressList = document.getElementById('qs-progress-list');
     progressList.innerHTML = '';
+
+    // Pre-configure AIOStreams with debrid key if provided
+    let aioManifestUrl = 'https://aiostreams.viren070.me/stremio/manifest.json';
+    const debridOn = document.getElementById('qs-debrid-toggle').checked;
+    const debridKey = document.getElementById('qs-debrid-key').value.trim();
+    const debridSvc = document.querySelector('input[name="qs-debrid-svc"]:checked')?.value || 'torbox';
+    const aioSelected = selected.find(a => a.id === 'aiostreams');
+
+    if (aioSelected && debridOn && debridKey) {
+      const configRow = qsAddProgressRow(progressList, 'loading', '⚙️ A configurar AIOStreams com ' + (debridSvc === 'torbox' ? 'TorBox' : 'Real-Debrid') + '…');
+      try {
+        const configRes = await qsFetchTimeout('https://aiostreams.viren070.me/api/v1/user', 12000, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            config: {
+              services: [{ id: debridSvc, enabled: true, credentials: { apiKey: debridKey } }]
+            },
+            password: Math.random().toString(36).slice(2) + '!' + Date.now()
+          })
+        });
+        if (!configRes.ok) throw new Error('HTTP ' + configRes.status);
+        const configData = await configRes.json();
+        if (configData.uuid && configData.encryptedPassword) {
+          aioManifestUrl = `https://aiostreams.viren070.me/stremio/${configData.uuid}/${configData.encryptedPassword}/manifest.json`;
+          aioSelected.manifestUrl = aioManifestUrl;
+          qsUpdateRow(configRow, 'done', '⚙️ AIOStreams pré-configurado com ' + (debridSvc === 'torbox' ? 'TorBox' : 'Real-Debrid'));
+        } else {
+          throw new Error(JSON.stringify(configData));
+        }
+      } catch (err) {
+        qsUpdateRow(configRow, 'err', '⚙️ Falhou pré-configuração AIOStreams (' + err.message + ') — instala sem debrid');
+        aioSelected.manifestUrl = 'https://aiostreams.viren070.me/stremio/manifest.json';
+      }
+    }
 
     const rows = selected.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
 

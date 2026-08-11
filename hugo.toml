@@ -1,6 +1,6 @@
 baseURL = "https://denunciastremio.netlify.app/"
 locale = "pt-PT"
-title = "Stremio PT"
+title = "Denuncia Stremio"
 theme = "hextra"
 
 enableRobotsTXT = true
