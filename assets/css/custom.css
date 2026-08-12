@@ -1,653 +1,506 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Denuncia Stremio — Design System Override
-   Estilo: BentoML (flat, light-first, accent roxo #7c3aed)
-   Target: Hextra (Tailwind hx: prefix, .dark class on <html>)
+   STREMIO PT — Design System Override
+   Target: Hextra theme (Tailwind hx: prefix, .dark on <html>)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── TOKENS LIGHT (default) ─────────────────────────────────────────────── */
+/* ─── PALETTE ────────────────────────────────────────────────────────────── */
 :root {
-  --bg:             #ffffff;
-  --bg-subtle:      #fafafa;
-  --bg-muted:       #f5f5f5;
-  --border:         #f0f0f0;
-  --border-medium:  #e5e5e5;
-  --border-strong:  #d4d4d4;
-  --text:           #0a0a0a;
-  --text-secondary: #444444;
-  --text-muted:     #888888;
-  --text-subtle:    #aaaaaa;
-  --accent:         #7c3aed;
-  --accent-hover:   #6d28d9;
-  --accent-bg:      #f5f0ff;
-  --accent-border:  #e5d9ff;
-  --accent-text:    #5b21b6;
-  --code-bg:        #0f0f12;
-  --code-surface:   #1a1a20;
-  --code-border:    #2a2a35;
-  --success:        #16a34a;
-  --warning:        #d97706;
-  --danger:         #dc2626;
+  --bg:       #0f1117;
+  --surface:  #181c27;
+  --surface2: #1e2336;
+  --border:   #2a3050;
+  --accent:   #5b8dee;
+  --accent2:  #e05d7a;
+  --accent3:  #4ecb8d;
+  --accent4:  #f0a500;
+  --text:     #d8dff0;
+  --muted:    #7a8aaa;
 
-  /* Hextra primary → roxo BentoML */
-  --hextra-primary-hue:        270;
-  --hextra-primary-saturation: 80%;
+  /* Hextra primary → mapeado para o nosso accent azul */
+  --primary-hue: 220deg;
+  --primary-saturation: 72%;
+  --primary-lightness: 62%;
+  --hextra-primary-hue: 220;
+  --hextra-primary-saturation: 72%;
+  --hextra-bg: var(--bg);
+  --hextra-sidebar-bg: var(--bg);
 }
 
-/* ─── TOKENS DARK ────────────────────────────────────────────────────────── */
-html.dark {
-  --bg:             #0a0a0f;
-  --bg-subtle:      #111118;
-  --bg-muted:       #18181f;
-  --border:         #1e1e28;
-  --border-medium:  #2a2a38;
-  --border-strong:  #3a3a50;
-  --text:           #f0f0f8;
-  --text-secondary: #a0a0b8;
-  --text-muted:     #606075;
-  --text-subtle:    #404055;
-  --accent:         #a855f7;
-  --accent-hover:   #9333ea;
-  --accent-bg:      rgba(168,85,247,0.1);
-  --accent-border:  rgba(168,85,247,0.2);
-  --accent-text:    #d8b4fe;
-  --code-bg:        #0d0d14;
-  --code-surface:   #16161e;
-  --code-border:    #222230;
-
-  --hextra-primary-hue:        270;
-  --hextra-primary-saturation: 70%;
+.dark {
+  --hextra-bg: var(--bg);
+  --hextra-sidebar-bg: var(--bg);
 }
 
-/* ─── FONTE ──────────────────────────────────────────────────────────────── */
-html body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+/* ─── FONTS ──────────────────────────────────────────────────────────────── */
+html.dark body,
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif !important;
   font-size: 15px !important;
   line-height: 1.7 !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
 }
 
-code, pre, kbd, samp,
-.hextra-code-block code,
-.hextra-code-block pre {
-  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace !important;
-}
-
-/* ─── BASE BACKGROUND ────────────────────────────────────────────────────── */
-html,
-html body,
-html .hx\:bg-white,
-html .hx\:dark\:bg-dark {
-  background-color: var(--bg) !important;
-  color: var(--text) !important;
-}
-
-html.dark .hx\:dark\:bg-dark,
+/* ─── BACKGROUND & BASE ──────────────────────────────────────────────────── */
+html.dark,
 html.dark body {
   background-color: var(--bg) !important;
   color: var(--text) !important;
 }
 
+/* Hextra wraps page in a div with bg-white dark:bg-dark */
+html.dark .hx\:dark\:bg-dark,
+html.dark [class*="dark:bg-dark"] {
+  background-color: var(--bg) !important;
+}
+
 /* ─── SCROLLBAR ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-::selection { background: rgba(124,58,237,.15); color: var(--text); }
+::selection { background: rgba(91,141,238,.22); color: var(--text); }
 
 /* ─── NAVBAR ─────────────────────────────────────────────────────────────── */
-.hextra-nav-container {
-  background: transparent !important;
-}
-
-.hextra-nav-container-blur {
-  background-color: var(--bg) !important;
-  box-shadow: none !important;
+html.dark nav:first-of-type,
+html.dark header > nav,
+html.dark .hx\:sticky > nav,
+html.dark [class*="navbar"],
+html.dark nav.hx\:flex {
+  background-color: var(--surface) !important;
   border-bottom: 1px solid var(--border) !important;
 }
 
-/* Altura e layout */
-nav.hextra-max-navbar-width,
-.hextra-nav-container nav {
-  height: 56px !important;
-}
-
-/* Logo / nome do site */
-html body nav a.hx\:font-extrabold,
-html body nav .hx\:font-extrabold {
-  font-family: 'Inter', sans-serif !important;
+/* Brand / logo */
+html.dark nav a[href="/"],
+html.dark nav .hx\:font-extrabold {
+  font-family: 'IBM Plex Sans', sans-serif !important;
   font-weight: 700 !important;
-  font-size: 0.9375rem !important;
-  letter-spacing: -0.02em !important;
-  color: var(--text) !important;
-  text-decoration: none !important;
+  color: #ffffff !important;
 }
 
-/* Links da navbar */
-html body nav a:not(.hx\:font-extrabold):not([aria-label]) {
-  font-size: 0.875rem !important;
-  font-weight: 500 !important;
-  color: var(--text-muted) !important;
+/* Nav links */
+html.dark nav a:not([href="/"]) {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--muted) !important;
+  transition: color 0.15s !important;
   text-decoration: none !important;
-  padding: 0.3rem 0.6rem !important;
-  border-radius: 5px !important;
-  transition: color 0.12s, background 0.12s !important;
 }
-html body nav a:not(.hx\:font-extrabold):not([aria-label]):hover {
-  color: var(--text) !important;
-  background: var(--bg-muted) !important;
+html.dark nav a:not([href="/"]):hover {
+  color: var(--accent) !important;
 }
 
 /* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
-html body aside,
-html body .hextra-sidebar-container {
+html.dark aside,
+html.dark [class*="sidebar"] {
   background-color: var(--bg) !important;
   border-right: 1px solid var(--border) !important;
 }
 
-/* Group labels */
-html body aside .hx\:text-gray-500,
-html body [class*="sidebar"] .hx\:text-gray-500,
-html body aside .hx\:text-xs.hx\:font-semibold,
-html body .hextra-sidebar-container .hx\:uppercase {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6875rem !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: var(--text-subtle) !important;
-}
-
-/* Links da sidebar */
-html body aside a,
-html body .hextra-sidebar-container a {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.8125rem !important;
-  font-weight: 500 !important;
-  color: var(--text-secondary) !important;
+html.dark aside a,
+html.dark [class*="sidebar"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  color: var(--muted) !important;
   text-decoration: none !important;
-  transition: color 0.12s, background 0.12s !important;
-  border-left: 2px solid transparent !important;
+  transition: color 0.15s !important;
 }
-
-html body aside a:hover,
-html body .hextra-sidebar-container a:hover {
-  color: var(--text) !important;
-  background: var(--bg-muted) !important;
-}
-
-/* Link activo — roxo BentoML */
-html body aside a[data-active="true"],
-html body aside a.active,
-html body aside a[aria-current="page"],
-html body .hextra-sidebar-item[data-active="true"] a,
-html body .hextra-sidebar-container a[data-active="true"] {
+html.dark aside a:hover,
+html.dark [class*="sidebar"] a:hover {
   color: var(--accent) !important;
-  background: var(--accent-bg) !important;
-  border-left-color: var(--accent) !important;
-  font-weight: 600 !important;
 }
-
-/* Sidebar: linha vertical divisória */
-html body .hx\:before\:bg-gray-200::before {
-  background-color: var(--border-medium) !important;
-}
-html.dark body .hx\:dark\:before\:bg-neutral-800::before {
-  background-color: var(--border) !important;
+html.dark aside a[class*="active"],
+html.dark [class*="sidebar"] a[class*="active"],
+html.dark aside a[aria-current="page"],
+html.dark [class*="sidebar"] a[aria-current="page"] {
+  color: var(--accent) !important;
+  border-left: 2px solid var(--accent) !important;
+  padding-left: calc(0.5rem - 2px) !important;
 }
 
 /* ─── MAIN CONTENT ───────────────────────────────────────────────────────── */
-html body main,
-html body article,
-html body .content {
+html.dark main,
+html.dark .content,
+html.dark article {
   color: var(--text) !important;
 }
 
-/* H1 */
-html body h1,
-html body .hx\:text-4xl {
-  font-family: 'Inter', sans-serif !important;
-  font-size: clamp(1.625rem, 3vw, 2rem) !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.03em !important;
-  line-height: 1.15 !important;
-  color: var(--text) !important;
-}
-
-/* H2 */
-html body h2 {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 1.2rem !important;
+/* h1 */
+html.dark .content h1,
+html.dark article h1,
+html.dark h1 {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  font-size: clamp(1.6rem, 3vw, 2.1rem) !important;
   font-weight: 600 !important;
-  letter-spacing: -0.015em !important;
-  line-height: 1.3 !important;
-  color: var(--text) !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.2 !important;
+}
+
+/* h2 */
+html.dark .content h2,
+html.dark article h2 {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
   border-bottom: 1px solid var(--border) !important;
   padding-bottom: 0.45rem !important;
-  margin-top: 2rem !important;
-  margin-bottom: 0.85rem !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1rem !important;
 }
 
-/* H3 */
-html body h3 {
-  font-family: 'Inter', sans-serif !important;
+/* h3 */
+html.dark .content h3,
+html.dark article h3 {
+  font-family: 'IBM Plex Sans', sans-serif !important;
   font-size: 1rem !important;
-  font-weight: 600 !important;
-  letter-spacing: -0.01em !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-top: 1.6rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+/* Paragraphs */
+html.dark .content p,
+html.dark article p {
   color: var(--text) !important;
-  margin-top: 1.5rem !important;
-  margin-bottom: 0.5rem !important;
-}
-
-/* Parágrafos e listas */
-html body .content p,
-html body article p {
-  color: var(--text-secondary) !important;
   font-size: 15px !important;
   line-height: 1.7 !important;
 }
 
-html body .content li,
-html body article li {
-  color: var(--text-secondary) !important;
-  font-size: 15px !important;
-  line-height: 1.7 !important;
-  margin-bottom: 0.3rem !important;
-}
-
-/* Links inline */
-html body .content a,
-html body article a {
+/* Inline links */
+html.dark .content a,
+html.dark article a {
   color: var(--accent) !important;
   text-decoration: none !important;
-  font-weight: 500 !important;
+  transition: opacity 0.15s !important;
 }
-html body .content a:hover,
-html body article a:hover {
+html.dark .content a:hover,
+html.dark article a:hover {
   text-decoration: underline !important;
+  opacity: 0.85 !important;
 }
 
-/* HR */
-html body hr {
+/* ─── CODE ───────────────────────────────────────────────────────────────── */
+html.dark :not(pre) > code {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  background: rgba(91,141,238,0.1) !important;
+  color: var(--accent) !important;
   border: none !important;
-  border-top: 1px solid var(--border) !important;
-  margin: 1.75rem 0 !important;
+  padding: 0.1rem 0.35rem !important;
+  border-radius: 3px !important;
 }
 
-/* Imagens */
-html body .content img,
-html body article img {
-  border-radius: 8px !important;
-  border: 1px solid var(--border-medium) !important;
-  max-width: 100% !important;
-}
-
-/* ─── CÓDIGO ─────────────────────────────────────────────────────────────── */
-
-/* Código inline */
-html body :not(pre) > code {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.8125em !important;
-  background: var(--bg-muted) !important;
-  border: 1px solid var(--border-medium) !important;
-  border-radius: 4px !important;
-  padding: 0.1em 0.4em !important;
-  color: var(--accent-text) !important;
-}
-html.dark body :not(pre) > code {
-  background: rgba(168,85,247,0.1) !important;
-  border-color: rgba(168,85,247,0.2) !important;
-  color: var(--accent-text) !important;
-}
-
-/* Bloco pre — dark background como BentoML */
-html body pre,
-html body .hextra-code-block pre {
-  background: var(--code-bg) !important;
-  border: 1px solid var(--code-border) !important;
-  border-radius: 10px !important;
-  font-size: 0.875rem !important;
-  line-height: 1.65 !important;
+html.dark pre,
+html.dark .hextra-code-block pre {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 1rem 1.2rem !important;
+  color: var(--text) !important;
   overflow-x: auto !important;
-  color: #d4d4d8 !important;
+  line-height: 1.6 !important;
 }
 
-html body pre code,
-html body .hextra-code-block pre code {
+html.dark pre code {
   background: none !important;
+  color: inherit !important;
   border: none !important;
   padding: 0 !important;
-  color: inherit !important;
   font-size: inherit !important;
 }
 
 /* Code block wrapper */
-html body .hextra-code-block {
-  border: 1px solid var(--code-border) !important;
-  border-radius: 10px !important;
+html.dark .hextra-code-block {
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
   overflow: hidden !important;
-  margin: 1.25rem 0 !important;
-  background: var(--code-bg) !important;
+  margin: 1rem 0 !important;
 }
 
-/* Header do code block */
-html body .hextra-code-block > div:first-child {
-  background: var(--code-surface) !important;
-  border-bottom: 1px solid var(--code-border) !important;
-  color: #606075 !important;
-}
-
-/* Copy button */
-html body .hextra-code-copy-btn,
-html body button[aria-label*="copy"],
-html body button[aria-label*="Copy"] {
-  background: var(--code-surface) !important;
-  border: 1px solid var(--code-border) !important;
-  color: #606075 !important;
-  border-radius: 4px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6875rem !important;
-}
-html body .hextra-code-copy-btn:hover {
-  border-color: var(--accent) !important;
-  color: var(--accent-text) !important;
-}
-
-/* Syntax highlight — Chroma */
-.chroma .k   { color: #c792ea !important; }
-.chroma .kn  { color: #c792ea !important; }
-.chroma .kd  { color: #c792ea !important; }
-.chroma .s   { color: #c3e88d !important; }
-.chroma .s1  { color: #c3e88d !important; }
-.chroma .s2  { color: #c3e88d !important; }
-.chroma .m   { color: #f78c6c !important; }
-.chroma .mi  { color: #f78c6c !important; }
-.chroma .c   { color: #546e7a !important; font-style: italic !important; }
-.chroma .c1  { color: #546e7a !important; font-style: italic !important; }
-.chroma .na  { color: #ffcb6b !important; }
-.chroma .nb  { color: #89ddff !important; }
-.chroma .nc  { color: #82aaff !important; }
-.chroma .o   { color: #89ddff !important; }
-.chroma .p   { color: #d4d4d8 !important; }
-.chroma .n   { color: #d4d4d8 !important; }
-
-/* ─── TABELA ─────────────────────────────────────────────────────────────── */
-html body table {
+/* ─── TABLES ─────────────────────────────────────────────────────────────── */
+html.dark table {
   width: 100% !important;
   border-collapse: collapse !important;
-  font-size: 0.875rem !important;
-  margin: 1.5rem 0 !important;
+  font-size: 13px !important;
 }
 
-html body thead th {
-  background: var(--bg-subtle) !important;
-  border-bottom: 2px solid var(--border-medium) !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  padding: 0.625rem 0.875rem !important;
-  text-align: left !important;
-  font-size: 0.6875rem !important;
+html.dark thead,
+html.dark table thead {
+  background: transparent !important;
+}
+
+html.dark th {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.07em !important;
-  color: var(--text-subtle) !important;
-  font-family: 'JetBrains Mono', monospace !important;
-}
-
-html body tbody td {
-  padding: 0.625rem 0.875rem !important;
+  letter-spacing: 0.1em !important;
+  color: var(--muted) !important;
   border: none !important;
   border-bottom: 1px solid var(--border) !important;
-  color: var(--text-secondary) !important;
-  vertical-align: middle !important;
+  padding: 0.5rem 0.8rem !important;
+  text-align: left !important;
 }
 
-html body tbody tr:last-child td { border-bottom: none !important; }
-html body tbody tr:hover td { background: var(--bg-subtle) !important; }
-html body tbody td a { color: var(--accent) !important; font-weight: 500 !important; }
+html.dark td {
+  font-size: 13px !important;
+  color: var(--text) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0.5rem 0.8rem !important;
+  vertical-align: top !important;
+}
+
+html.dark tr:last-child td { border-bottom: none !important; }
+html.dark tr:hover td { background: rgba(255,255,255,0.025) !important; }
 
 /* ─── CALLOUTS / ALERTS ──────────────────────────────────────────────────── */
-html body .hextra-callout,
-html body [class*="hextra-callout"] {
-  border-radius: 8px !important;
-  font-size: 0.875rem !important;
-  line-height: 1.6 !important;
-  border: 1px solid !important;
+/* Hextra info callout */
+html.dark .hextra-callout,
+html.dark [class*="callout"] {
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  padding: 0.9rem 1rem !important;
+  border-left-width: 3px !important;
 }
 
-/* Note / Info */
-html body .hextra-callout[data-type="info"],
-html body .hextra-callout[data-type="note"] {
-  background: var(--accent-bg) !important;
-  border-color: var(--accent-border) !important;
-  color: var(--accent-text) !important;
+html.dark .hextra-callout[data-type="info"],
+html.dark [class*="callout-info"],
+html.dark .callout-info {
+  background: rgba(91,141,238,0.08) !important;
+  border-color: rgba(91,141,238,0.35) !important;
+  color: var(--text) !important;
 }
 
-/* Warning */
-html body .hextra-callout[data-type="warning"] {
-  background: #fffbeb !important;
-  border-color: #fde68a !important;
-  color: #92400e !important;
-}
-html.dark body .hextra-callout[data-type="warning"] {
-  background: rgba(217,119,6,0.1) !important;
-  border-color: rgba(217,119,6,0.25) !important;
-  color: #fbbf24 !important;
+html.dark .hextra-callout[data-type="warning"],
+html.dark [class*="callout-warning"],
+html.dark .callout-warning {
+  background: rgba(240,165,0,0.08) !important;
+  border-color: rgba(240,165,0,0.35) !important;
+  color: var(--text) !important;
 }
 
-/* Danger */
-html body .hextra-callout[data-type="error"],
-html body .hextra-callout[data-type="danger"] {
-  background: #fef2f2 !important;
-  border-color: #fecaca !important;
-  color: #991b1b !important;
-}
-html.dark body .hextra-callout[data-type="error"],
-html.dark body .hextra-callout[data-type="danger"] {
-  background: rgba(220,38,38,0.1) !important;
-  border-color: rgba(220,38,38,0.25) !important;
-  color: #f87171 !important;
+html.dark .hextra-callout[data-type="error"],
+html.dark [class*="callout-error"] {
+  background: rgba(224,93,122,0.08) !important;
+  border-color: rgba(224,93,122,0.35) !important;
+  color: var(--text) !important;
 }
 
-/* Tip */
-html body .hextra-callout[data-type="tip"] {
-  background: #f0fdf4 !important;
-  border-color: #bbf7d0 !important;
-  color: #14532d !important;
-}
-html.dark body .hextra-callout[data-type="tip"] {
-  background: rgba(22,163,74,0.1) !important;
-  border-color: rgba(22,163,74,0.25) !important;
-  color: #4ade80 !important;
+html.dark .hextra-callout[data-type="tip"],
+html.dark [class*="callout-tip"] {
+  background: rgba(78,203,141,0.08) !important;
+  border-color: rgba(78,203,141,0.35) !important;
+  color: var(--text) !important;
 }
 
 /* Callout title */
-html body .hextra-callout .hx\:font-medium {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6875rem !important;
+html.dark .hextra-callout .hx\:font-medium,
+html.dark [class*="callout"] [class*="font-medium"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.1em !important;
 }
 
-/* Blockquote genérico */
-html body blockquote {
-  background: var(--accent-bg) !important;
-  border-left: 3px solid var(--accent-border) !important;
+/* ─── BLOCKQUOTE fallback ─────────────────────────────────────────────────── */
+html.dark blockquote {
+  background: rgba(91,141,238,0.06) !important;
+  border-left: 2px solid rgba(91,141,238,0.4) !important;
   border-radius: 0 6px 6px 0 !important;
   padding: 0.8rem 1rem !important;
   margin: 1rem 0 !important;
-  color: var(--text-secondary) !important;
+  color: var(--text) !important;
   font-style: normal !important;
 }
 
-/* ─── TOC ────────────────────────────────────────────────────────────────── */
-html body .hextra-toc,
-html body [class*="hextra-toc"] {
-  border-left: 1px solid var(--border) !important;
+/* ─── TAGS / BADGES ──────────────────────────────────────────────────────── */
+html.dark .hextra-card-tag,
+html.dark [class*="badge"],
+html.dark [class*="tag"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  background: rgba(91,141,238,0.12) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(91,141,238,0.3) !important;
+  border-radius: 3px !important;
+  padding: 0.15rem 0.5rem !important;
+  text-decoration: none !important;
 }
 
-html body .hextra-toc a,
-html body [class*="hextra-toc"] a {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6875rem !important;
-  color: var(--text-muted) !important;
+/* ─── SEARCH ──────────────────────────────────────────────────────────────── */
+html.dark input[type="search"],
+html.dark input[type="text"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 4px !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+}
+html.dark input[type="search"]:focus,
+html.dark input[type="text"]:focus {
+  border-color: var(--accent) !important;
+  outline: none !important;
+}
+html.dark input::placeholder { color: var(--muted) !important; }
+
+/* ─── TOC (right panel) ──────────────────────────────────────────────────── */
+html.dark .hextra-toc,
+html.dark [class*="toc"] {
+  font-size: 12px !important;
+  border-left: 1px solid var(--border) !important;
+}
+html.dark .hextra-toc a,
+html.dark [class*="toc"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
   text-decoration: none !important;
-  transition: color 0.12s !important;
+  transition: color 0.15s !important;
 }
-html body .hextra-toc a:hover {
+html.dark .hextra-toc a:hover,
+html.dark [class*="toc"] a:hover {
   color: var(--accent) !important;
 }
-html body .hextra-toc a[aria-selected="true"],
-html body .hextra-toc a.active {
+
+/* ─── BUTTONS (theme toggle, etc.) ──────────────────────────────────────── */
+html.dark button:not([id^="qs-"]) {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.15s !important;
+}
+
+/* Theme toggle buttons */
+html.dark [data-theme-switcher] button,
+html.dark button[aria-label*="theme"],
+html.dark button[aria-label*="light"],
+html.dark button[aria-label*="dark"] {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  border-radius: 3px !important;
+  padding: 0.25rem 0.5rem !important;
+}
+html.dark [data-theme-switcher] button:hover,
+html.dark button[aria-label*="theme"]:hover {
+  border-color: var(--accent) !important;
   color: var(--accent) !important;
+}
+html.dark [data-theme-switcher] button[class*="active"],
+html.dark button[class*="selected"] {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* ─── HR / SEPARATORS ────────────────────────────────────────────────────── */
+html.dark hr {
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  margin: 2rem 0 !important;
+}
+
+/* ─── IMAGES ─────────────────────────────────────────────────────────────── */
+html.dark .content img,
+html.dark article img {
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  max-width: 100% !important;
 }
 
 /* ─── BREADCRUMBS ────────────────────────────────────────────────────────── */
-html body [class*="breadcrumb"] a,
-html body nav[aria-label*="breadcrumb"] a {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
+html.dark [class*="breadcrumb"] a,
+html.dark nav[aria-label*="breadcrumb"] a {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
   text-decoration: none !important;
 }
-html body [class*="breadcrumb"] a:hover { color: var(--accent) !important; }
-
-/* ─── SEARCH ─────────────────────────────────────────────────────────────── */
-html body input[type="search"],
-html body input[type="text"] {
-  background: var(--bg-subtle) !important;
-  border: 1px solid var(--border-medium) !important;
-  color: var(--text) !important;
-  border-radius: 6px !important;
-  font-family: 'Inter', sans-serif !important;
-}
-html body input:focus {
-  border-color: var(--accent) !important;
-  outline: none !important;
-  box-shadow: 0 0 0 3px var(--accent-bg) !important;
-}
-html body input::placeholder { color: var(--text-subtle) !important; }
-
-/* Dropdown de pesquisa */
-html body [class*="search-result"],
-html body [class*="nextra-search"] {
-  background: var(--bg) !important;
-  border: 1px solid var(--border-medium) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+html.dark [class*="breadcrumb"] a:hover {
+  color: var(--accent) !important;
 }
 
-/* ─── HEXTRA CARDS (feature grid) ────────────────────────────────────────── */
-html body .hextra-card,
-html body [class*="hextra-card"] {
-  background: var(--bg-subtle) !important;
+/* ─── GUIDE LIST CARDS ───────────────────────────────────────────────────── */
+html.dark .hextra-card,
+html.dark [class*="hextra-card"] {
+  background: var(--surface) !important;
   border: 1px solid var(--border) !important;
-  border-radius: 10px !important;
-  transition: border-color 0.12s, background 0.12s !important;
-  text-decoration: none !important;
+  border-radius: 6px !important;
+  transition: border-color 0.15s !important;
+}
+html.dark .hextra-card:hover,
+html.dark [class*="hextra-card"]:hover {
+  border-color: var(--accent) !important;
+}
+
+/* ─── META & TIMESTAMPS ───────────────────────────────────────────────────── */
+html.dark time,
+html.dark [class*="meta"],
+html.dark [class*="date"] {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: var(--muted) !important;
+}
+
+/* ─── COPY BUTTON on code blocks ─────────────────────────────────────────── */
+html.dark .hextra-code-copy-btn,
+html.dark button[aria-label*="copy"],
+html.dark button[aria-label*="Copy"] {
+  background: var(--surface2) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  border-radius: 3px !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 10px !important;
+}
+html.dark .hextra-code-copy-btn:hover,
+html.dark button[aria-label*="copy"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* ─── LISTS ──────────────────────────────────────────────────────────────── */
+html.dark .content li,
+html.dark article li {
   color: var(--text) !important;
-}
-html body .hextra-card:hover,
-html body [class*="hextra-card"]:hover {
-  border-color: var(--border-strong) !important;
-  background: var(--bg) !important;
-}
-
-/* ─── TAGS / BADGES ──────────────────────────────────────────────────────── */
-html body .hextra-card-tag,
-html body [class*="hextra-tag"] {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.6875rem !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  background: var(--accent-bg) !important;
-  color: var(--accent-text) !important;
-  border: 1px solid var(--accent-border) !important;
-  border-radius: 4px !important;
-  padding: 0.15rem 0.5rem !important;
-}
-
-/* ─── BOTÕES DO TEMA ─────────────────────────────────────────────────────── */
-html body [data-theme-switcher] button,
-html body button[aria-label*="theme"],
-html body button[aria-label*="light"],
-html body button[aria-label*="dark"],
-html body button[aria-label*="system"] {
-  background: transparent !important;
-  border: 1px solid var(--border-medium) !important;
-  color: var(--text-muted) !important;
-  border-radius: 5px !important;
-  transition: border-color 0.12s, color 0.12s !important;
-}
-html body [data-theme-switcher] button:hover {
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
-}
-html body [data-theme-switcher] button[class*="active"],
-html body [data-theme-switcher] button[data-active="true"] {
-  border-color: var(--accent) !important;
-  color: var(--accent) !important;
-  background: var(--accent-bg) !important;
-}
-
-/* ─── META & TIMESTAMPS ──────────────────────────────────────────────────── */
-html body time,
-html body [class*="date"] {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.75rem !important;
-  color: var(--text-muted) !important;
+  font-size: 15px !important;
+  line-height: 1.7 !important;
 }
 
 /* ─── FOOTER ─────────────────────────────────────────────────────────────── */
-html body footer {
+html.dark footer {
   background: var(--bg) !important;
   border-top: 1px solid var(--border) !important;
-  color: var(--text-muted) !important;
-  font-size: 0.8125rem !important;
+  color: var(--muted) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
 }
-html body footer a {
-  color: var(--text-muted) !important;
-  transition: color 0.12s !important;
+html.dark footer a {
+  color: var(--muted) !important;
+  transition: color 0.15s !important;
 }
-html body footer a:hover { color: var(--accent) !important; }
+html.dark footer a:hover {
+  color: var(--accent) !important;
+}
 
-/* ─── HOMEPAGE HERO ──────────────────────────────────────────────────────── */
-html body .hx\:text-6xl,
-html body .hx\:text-5xl,
-html body .hx\:text-4xl {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.035em !important;
+/* ─── HOMEPAGE HERO TEXT ─────────────────────────────────────────────────── */
+html.dark .hx\:text-6xl,
+html.dark [class*="text-6xl"],
+html.dark .hx\:text-5xl {
+  font-family: 'IBM Plex Serif', Georgia, serif !important;
+  color: #ffffff !important;
+}
+
+html.dark .hx\:text-xl,
+html.dark .hx\:text-lg {
   color: var(--text) !important;
-}
-
-html body .hx\:text-xl,
-html body .hx\:text-lg {
-  color: var(--text-secondary) !important;
-}
-
-/* ─── GUIAS GRID CARDS (custom shortcode) ────────────────────────────────── */
-html body .gg-card {
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  transition: border-color 0.12s, background 0.12s, transform 0.1s;
-}
-html body .gg-card:hover {
-  background: var(--bg);
-  border-left-color: var(--gg-color) !important;
-}
-html body .gg-title { color: var(--text); }
-html body .gg-desc  { color: var(--text-muted); }
-html body .gg-section-label { color: var(--text-subtle); }
-html.dark body .gg-card { background: var(--bg-subtle); border-color: var(--border); }
-
-/* ─── QUICKSTART WIDGET ──────────────────────────────────────────────────── */
-/* Preservar o widget QuickStart — não interferir */
-#qs-widget,
-#qs-widget * {
-  /* herda a fonte base mas mantém as variáveis próprias do widget */
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Inter', sans-serif;
 }
