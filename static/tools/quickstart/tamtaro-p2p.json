@@ -1,0 +1,9 @@
+{
+  "_info": "Template Tam-Taro para modo P2P (sem debrid). Gerado pelo QuickStart PT — denunciastremio.netlify.app.",
+  "_source": "https://github.com/Tam-Taro/SEL-Filtering-and-Sorting",
+  "templateUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json",
+  "templateId": "tamtaro.complete",
+  "mode": "p2p",
+  "services": [],
+  "instance_recommended": "https://aiostreamsfortheweebs.midnightignite.me"
+}

@@ -1,0 +1,9 @@
+{
+  "_info": "Template Tam-Taro para modo Debrid (TorBox). Gerado pelo QuickStart PT — denunciastremio.netlify.app. Credenciais não incluídas.",
+  "_source": "https://github.com/Tam-Taro/SEL-Filtering-and-Sorting",
+  "templateUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json",
+  "templateId": "tamtaro.complete",
+  "mode": "debrid",
+  "services": ["torbox"],
+  "instance_recommended": "https://aiostreamsfortheweebs.midnightignite.me"
+}

@@ -514,6 +514,47 @@
     color: var(--qs-accent-light);
     background: rgba(124, 58, 237, 0.08);
   }
+
+  #qs-widget .qs-mode-btn {
+    flex: 1;
+    padding: 0.55rem 0.6rem;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1.5px solid var(--qs-border);
+    background: var(--qs-surface2);
+    color: var(--qs-text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    text-align: center;
+  }
+
+  #qs-widget .qs-mode-btn.active {
+    border-color: var(--qs-accent);
+    color: var(--qs-accent-light);
+    background: rgba(124, 58, 237, 0.1);
+  }
+
+  #qs-widget #qs-instance-select {
+    width: 100%;
+    background: var(--qs-surface2);
+    border: 1px solid var(--qs-border);
+    border-radius: 7px;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    color: var(--qs-text);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    padding-right: 2rem;
+  }
+
+  #qs-widget #qs-instance-select:focus { border-color: var(--qs-accent-light); }
+  #qs-widget #qs-instance-select option { background: #1a1d27; }
 </style>
 
 <div class="qs-intro">
@@ -578,16 +619,16 @@
       <strong>Substituir versões antigas</strong> — se algum destes addons já estiver instalado, remove a versão anterior antes de instalar a nova
     </div>
   </label>
-  <!-- Debrid opcional -->
-  <div style="margin-top:1rem">
-    <label class="option-row" id="qs-debrid-toggle-row" style="border-top:1px solid var(--qs-border);padding-top:0.85rem;margin-top:0;cursor:pointer">
-      <input type="checkbox" id="qs-debrid-toggle">
-      <div class="option-check"></div>
-      <div class="option-text">
-        <strong>Adicionar serviço Debrid</strong> — <span style="font-size:0.76rem">pré-configura o AIOStreams com a tua API Key para streams instantâneos em 4K</span>
-      </div>
-    </label>
-    <div id="qs-debrid-section" style="display:none;margin-top:0.75rem;background:var(--qs-surface2);border:1px solid var(--qs-border);border-radius:8px;padding:0.85rem">
+  <!-- Modo Debrid / P2P -->
+  <div style="margin-top:1rem;border-top:1px solid var(--qs-border);padding-top:0.85rem">
+    <div style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.6rem">Modo de streams</div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="qs-mode-btn active" id="qs-mode-debrid" onclick="qsSetMode('debrid')">● Com TorBox (Debrid)</button>
+      <button class="qs-mode-btn" id="qs-mode-p2p" onclick="qsSetMode('p2p')">○ Sem Debrid (P2P)</button>
+    </div>
+
+    <!-- Debrid config -->
+    <div id="qs-debrid-section" style="margin-top:0.75rem;background:var(--qs-surface2);border:1px solid var(--qs-border);border-radius:8px;padding:0.85rem">
       <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
         <label style="flex:1;cursor:pointer">
           <input type="radio" name="qs-debrid-svc" value="torbox" id="qs-rd-torbox" checked style="display:none">
@@ -598,18 +639,39 @@
           <div class="qs-svc-pill" id="qs-pill-rd" data-active="false">Real-Debrid</div>
         </label>
       </div>
-      <div class="field" style="margin-bottom:0.5rem">
+      <div class="field" style="margin-bottom:0.35rem">
         <label for="qs-debrid-key" style="font-size:0.79rem;color:var(--qs-text-muted)">API Key</label>
         <input type="password" id="qs-debrid-key" placeholder="Cole aqui a tua API Key" autocomplete="off">
       </div>
+      <div style="min-height:1.3em;margin-bottom:0.4rem">
+        <span id="qs-torbox-validation" style="font-size:0.8125rem"></span>
+      </div>
       <div id="qs-debrid-links" style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
-        <span id="qs-debrid-link-torbox">Sem conta? <a href="{{ "guias/torbox/" | relURL }}" style="color:var(--qs-accent-light)">Ver guia TorBox</a> · <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a></span>
-        <span id="qs-debrid-link-rd" style="display:none">Sem conta? <a href="https://real-debrid.com/?id=9483829" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta Real-Debrid</a></span>
+        <span id="qs-debrid-link-torbox">
+          <a href="https://app.torbox.app/settings" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API key →</a>
+          · Sem conta? <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a>
+        </span>
+        <span id="qs-debrid-link-rd" style="display:none">
+          Sem conta? <a href="https://real-debrid.com/?id=9483829" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta Real-Debrid</a>
+        </span>
       </div>
     </div>
-    <div id="qs-debrid-skip-hint" style="display:none;font-size:0.76rem;color:var(--qs-text-dim);margin-top:0.5rem">
-      Podes adicionar o Debrid mais tarde nas definições do AIOStreams. <a href="{{ "guias/torbox/" | relURL }}" style="color:var(--qs-accent-light)">Ver guia TorBox →</a>
+
+    <!-- P2P info -->
+    <div id="qs-p2p-section" style="display:none;margin-top:0.75rem;font-size:0.82rem;color:#d4a017;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:0.7rem 0.9rem;line-height:1.55">
+      ℹ️ O modo P2P usa torrents directamente — menos fiável que debrid mas gratuito. Podes adicionar um serviço Debrid mais tarde nas definições do AIOStreams.
     </div>
+  </div>
+
+  <!-- Selector de instâncias -->
+  <div style="margin-top:0.85rem">
+    <label for="qs-instance-select" style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.35rem;display:block">Instância AIOStreams</label>
+    <select id="qs-instance-select">
+      <option value="https://aiostreamsfortheweebs.midnightignite.me">Midnight's Nightly (recomendada)</option>
+      <option value="https://aiostreams-nightly.fortheweak.cloud">Yeb's Nightly</option>
+      <option value="https://aiostreams.viren070.me">Viren's Nightly</option>
+      <option value="https://aiostreams-nightly.206111.xyz">Kuu's Nightly</option>
+    </select>
   </div>
   <div class="status-line err" id="qs-pack-error" style="display:none;margin-top:0.6rem"></div>
   <button class="btn" id="qs-btn-install">Instalar Agora →</button>
@@ -688,21 +750,27 @@
     },
   ];
 
+  const TEMPLATE_URL = 'https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json';
+
+  const INSTANCES = [
+    { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
+    { name: "Yeb's Nightly",                    url: "https://aiostreams-nightly.fortheweak.cloud" },
+    { name: "Viren's Nightly",                  url: "https://aiostreams.viren070.me" },
+    { name: "Kuu's Nightly",                    url: "https://aiostreams-nightly.206111.xyz" },
+  ];
+
   let authKey = null;
   let currentAddons = [];
   let generatedEmail = null;
 
-  // Debrid toggle
-  const debridToggle = document.getElementById('qs-debrid-toggle');
-  const debridToggleRow = document.getElementById('qs-debrid-toggle-row');
-  const debridSection = document.getElementById('qs-debrid-section');
-  const debridSkipHint = document.getElementById('qs-debrid-skip-hint');
-  debridToggleRow.addEventListener('change', () => {
-    const on = debridToggle.checked;
-    debridToggleRow.classList.toggle('checked', on);
-    debridSection.style.display = on ? 'block' : 'none';
-    debridSkipHint.style.display = on ? 'none' : 'block';
-  });
+  // Modo Debrid / P2P
+  window.qsSetMode = function(mode) {
+    const isDebrid = mode === 'debrid';
+    document.getElementById('qs-mode-debrid').classList.toggle('active', isDebrid);
+    document.getElementById('qs-mode-p2p').classList.toggle('active', !isDebrid);
+    document.getElementById('qs-debrid-section').style.display = isDebrid ? 'block' : 'none';
+    document.getElementById('qs-p2p-section').style.display = isDebrid ? 'none' : 'block';
+  };
 
   // Debrid service pills
   document.querySelectorAll('input[name="qs-debrid-svc"]').forEach(radio => {
@@ -713,6 +781,40 @@
       document.getElementById('qs-debrid-link-rd').style.display = radio.value === 'realdebrid' ? 'inline' : 'none';
     });
   });
+
+  // TorBox API key validation on blur
+  async function validateTorboxKey(apiKey) {
+    const indicator = document.getElementById('qs-torbox-validation');
+    if (!apiKey) { indicator.textContent = ''; return; }
+    indicator.textContent = '…';
+    indicator.style.color = 'var(--qs-text-muted)';
+    try {
+      const res = await qsFetchTimeout('https://api.torbox.app/v1/api/user/me', 6000, {
+        headers: { 'Authorization': `Bearer ${apiKey}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const plan = data?.data?.plan || '';
+        indicator.textContent = '✅ Key válida' + (plan ? ' · ' + plan : '');
+        indicator.style.color = 'var(--qs-success)';
+      } else {
+        indicator.textContent = '❌ Key inválida';
+        indicator.style.color = 'var(--qs-error)';
+      }
+    } catch {
+      indicator.textContent = '⚠️ Não foi possível verificar';
+      indicator.style.color = 'var(--qs-warning)';
+    }
+  }
+
+  document.getElementById('qs-debrid-key').addEventListener('blur', e => {
+    const svc = document.querySelector('input[name="qs-debrid-svc"]:checked')?.value;
+    if (svc === 'torbox') validateTorboxKey(e.target.value.trim());
+  });
+
+  function getSelectedInstance() {
+    return document.getElementById('qs-instance-select').value;
+  }
 
   // Generate random Stremio account
   document.getElementById('qs-btn-generate').addEventListener('click', qsGenerateAccount);
@@ -891,9 +993,20 @@
       packErrorEl.style.display = 'block';
       return;
     }
+
+    const isDebrid = document.getElementById('qs-mode-debrid').classList.contains('active');
+    const debridKey = document.getElementById('qs-debrid-key').value.trim();
+    const aioSelected = selected.find(a => a.id === 'aiostreams');
+
+    if (aioSelected && isDebrid && !debridKey) {
+      packErrorEl.textContent = 'Introduz a tua API key do TorBox para continuar em modo Debrid.';
+      packErrorEl.style.display = 'block';
+      return;
+    }
     packErrorEl.style.display = 'none';
 
     const removePrevious = document.getElementById('qs-opt-clean').checked;
+    const instance = getSelectedInstance();
 
     qsDeactivateCard('qs-card-pack');
     qsSetStepState(2, 'done');
@@ -904,42 +1017,18 @@
     const progressList = document.getElementById('qs-progress-list');
     progressList.innerHTML = '';
 
-    // Pre-configure AIOStreams with debrid key if provided
-    let aioManifestUrl = 'https://aiostreams.viren070.me/stremio/manifest.json';
-    const debridOn = document.getElementById('qs-debrid-toggle').checked;
-    const debridKey = document.getElementById('qs-debrid-key').value.trim();
-    const debridSvc = document.querySelector('input[name="qs-debrid-svc"]:checked')?.value || 'torbox';
-    const aioSelected = selected.find(a => a.id === 'aiostreams');
-
-    if (aioSelected && debridOn && debridKey) {
-      const configRow = qsAddProgressRow(progressList, 'loading', '⚙️ A configurar AIOStreams com ' + (debridSvc === 'torbox' ? 'TorBox' : 'Real-Debrid') + '…');
-      try {
-        const configRes = await qsFetchTimeout('https://aiostreams.viren070.me/api/v1/user', 12000, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            config: {
-              services: [{ id: debridSvc, enabled: true, credentials: { apiKey: debridKey } }]
-            },
-            password: Math.random().toString(36).slice(2) + '!' + Date.now()
-          })
-        });
-        if (!configRes.ok) throw new Error('HTTP ' + configRes.status);
-        const configData = await configRes.json();
-        if (configData.uuid && configData.encryptedPassword) {
-          aioManifestUrl = `https://aiostreams.viren070.me/stremio/${configData.uuid}/${configData.encryptedPassword}/manifest.json`;
-          aioSelected.manifestUrl = aioManifestUrl;
-          qsUpdateRow(configRow, 'done', '⚙️ AIOStreams pré-configurado com ' + (debridSvc === 'torbox' ? 'TorBox' : 'Real-Debrid'));
-        } else {
-          throw new Error(JSON.stringify(configData));
-        }
-      } catch (err) {
-        qsUpdateRow(configRow, 'err', '⚙️ Falhou pré-configuração AIOStreams (' + err.message + ') — instala sem debrid');
-        aioSelected.manifestUrl = 'https://aiostreams.viren070.me/stremio/manifest.json';
-      }
+    // AIOStreams: abre o configurador com template Tam-Taro pré-carregado
+    let aioOpened = false;
+    if (aioSelected) {
+      const configureUrl = `${instance}/stremio/configure?menu=about&template=${encodeURIComponent(TEMPLATE_URL)}`;
+      window.open(configureUrl, '_blank');
+      qsAddProgressRow(progressList, 'done', '📡 AIOStreams — configurador aberto numa nova tab');
+      aioOpened = true;
     }
 
-    const rows = selected.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
+    // Instalar restantes addons via API Stremio
+    const otherAddons = selected.filter(a => a.id !== 'aiostreams');
+    const rows = otherAddons.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
 
     const results = [];
     const STRIP_IDS = new Set([
@@ -950,8 +1039,8 @@
     ]);
     let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
 
-    for (let i = 0; i < selected.length; i++) {
-      const addon = selected[i];
+    for (let i = 0; i < otherAddons.length; i++) {
+      const addon = otherAddons[i];
       const row   = rows[i];
       try {
         const mRes = await qsFetchTimeout(addon.manifestUrl, 10000);
@@ -1008,18 +1097,20 @@
     if (failCount === 0) {
       badge.textContent = '✓ Concluído';
       badge.className   = 'card-badge green';
-      let msg = `✓ ${successCount} addon${successCount !== 1 ? 's' : ''} instalado${successCount !== 1 ? 's' : ''}`;
+      let msg = '';
+      if (aioOpened) msg += '📡 AIOStreams: configurador aberto. ';
+      if (successCount > 0) msg += `✓ ${successCount} addon${successCount !== 1 ? 's' : ''} instalado${successCount !== 1 ? 's' : ''}`;
       if (skipCount > 0) msg += ` · ${skipCount} já estava${skipCount !== 1 ? 'm' : ''} instalado${skipCount !== 1 ? 's' : ''}`;
-      msg += '.';
+      if (!aioOpened && successCount === 0 && skipCount === 0) msg = '✓ Concluído.';
       resultBox.className   = 'result-box ok';
       resultBox.textContent = msg;
-      qsShowNextSteps(results);
-    } else if (totalOk > 0) {
+      qsShowNextSteps(aioOpened, isDebrid);
+    } else if (totalOk > 0 || aioOpened) {
       badge.textContent = '⚠ Parcial';
       badge.className   = 'card-badge';
       resultBox.className   = 'result-box partial';
-      resultBox.textContent = `${totalOk} instalado${totalOk !== 1 ? 's' : ''}, ${failCount} falharam (serviço offline ou timeout). Os restantes estão a funcionar normalmente.`;
-      qsShowNextSteps(results, true);
+      resultBox.textContent = `${totalOk} addon${totalOk !== 1 ? 's' : ''} instalado${totalOk !== 1 ? 's' : ''}${aioOpened ? ' · AIOStreams: configurador aberto' : ''}, ${failCount} falharam (serviço offline ou timeout).`;
+      qsShowNextSteps(aioOpened, isDebrid, true);
     } else {
       badge.textContent = '✗ Falhou';
       badge.className   = 'card-badge fail';
@@ -1029,21 +1120,24 @@
     }
   }
 
-  function qsShowNextSteps(results, partial) {
-    const aioInstalled = results.some(r => r.addon.id === 'aiostreams' && r.ok && !r.skipped);
-    const aioSkipped   = results.some(r => r.addon.id === 'aiostreams' && r.skipped);
+  function qsShowNextSteps(aioOpened, isDebrid, partial) {
     const container = document.getElementById('qs-next-steps');
     container.style.display = 'block';
     const steps = [];
 
-    if (aioInstalled || aioSkipped) {
-      steps.push('Abre o <strong>Stremio</strong> — os addons aparecem de imediato na secção Addons.');
-      steps.push(
-        'O <strong>AIOStreams</strong> precisa de ser configurado antes de mostrar streams: Stremio → Addons → AIOStreams ⚙️ → abre a página de configuração. ' +
-        'Carrega o <strong><a href="{{ "guias/aiostreams-tamtaro/" | relURL }}" rel="noopener">template Tam-Taro SEL</a></strong> ' +
-        '(Featured Templates → Tamtaro Complete SEL Setup) e segue os passos — é o único addon que requer este passo extra.'
-      );
-      steps.push('Se tiveres um serviço <strong>Debrid</strong> (TorBox, Real-Debrid…), introduz a API Key durante a configuração do AIOStreams para acesso a streams instantâneos em 4K.');
+    if (aioOpened) {
+      if (isDebrid) {
+        steps.push(
+          'Na tab que abriu, selecciona o template <strong>"Tamtaro Complete SEL Setup"</strong>, ' +
+          'introduz a tua <strong>TorBox API key</strong> quando pedida, clica em <strong>Load Template</strong> e depois em <strong>Install</strong>.'
+        );
+      } else {
+        steps.push(
+          'Na tab que abriu, selecciona o template <strong>"Tamtaro Complete SEL Setup"</strong>, ' +
+          'não selecciones nenhum serviço de debrid, clica em <strong>Load Template</strong> e depois em <strong>Install</strong>.'
+        );
+      }
+      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
     } else {
       steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
     }
