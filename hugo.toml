@@ -17,7 +17,7 @@ enableGitInfo = false
     displayLogo = false
 
   [params.theme]
-    default = "dark"
+    default = "light"
     displayToggle = true
 
   [params.footer]
