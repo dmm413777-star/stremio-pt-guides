@@ -703,7 +703,7 @@
       id: 'aiostreams',
       name: 'AIOStreams',
       icon: '📡',
-      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros. Após instalar, configura o template Tam-Taro SEL nas definições',
+      desc: 'Agrega streams de Comet, MediaFusion, Torrentio e outros — instalado e configurado automaticamente com o template Tam-Taro SEL.',
       manifestUrl: 'https://aiostreams.viren070.me/stremio/manifest.json',
     },
     {
@@ -749,8 +749,6 @@
       manifestUrl: 'https://cotonetnet-cotonet.hf.space/manifest.json',
     },
   ];
-
-  const TEMPLATE_URL = 'https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json';
 
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
@@ -982,6 +980,79 @@
     }
   }
 
+  function generateAIOPassword() {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+      .map(b => chars[b % chars.length])
+      .join('');
+  }
+
+  function buildAIOStreamsConfig(isDebrid, torboxKey) {
+    return {
+      formatter: { id: 'tamtaro' },
+      addonName: 'AIOStreams PT',
+      addonDescription: 'Configurado para Portugal — SEL Tam-Taro v3.0.4',
+      sortCriteria: {
+        global: [
+          { key: 'cached', direction: 'desc' },
+          { key: 'seadex', direction: 'desc' },
+          { key: 'streamExpressionMatched', direction: 'desc' },
+          { key: 'streamExpressionScore', direction: 'desc' },
+          { key: 'resolution', direction: 'desc' },
+          { key: 'quality', direction: 'desc' },
+          { key: 'library', direction: 'desc' },
+          { key: 'streamType', direction: isDebrid ? 'desc' : 'asc' },
+          { key: 'language', direction: 'desc' },
+          { key: 'subtitle', direction: 'desc' },
+          { key: 'visualTag', direction: 'desc' },
+          { key: 'audioTag', direction: 'desc' },
+          { key: 'encode', direction: 'desc' },
+          { key: 'seeders', direction: 'desc' },
+          { key: 'age', direction: 'asc' },
+        ],
+        cached: [],
+        uncached: [],
+      },
+      services: isDebrid && torboxKey
+        ? [{ id: 'torbox', enabled: true, credentials: { apiKey: torboxKey } }]
+        : [],
+      presets: [],
+      preferredLanguages: ['Portuguese', 'English', 'Original', 'Dual Audio', 'Multi', 'Dubbed', 'Unknown'],
+      preferredQualities: ['BluRay REMUX', 'BluRay', 'WEB-DL', 'WEBRip', 'HDRip', 'HC HD-Rip', 'HDTV', 'DVDRip', 'Unknown'],
+      preferredResolutions: ['2160p', '1440p', '1080p', '720p', '576p', '480p', '360p', 'Unknown'],
+      excludedQualities: [],
+      excludedVisualTags: ['3D', 'H-OU', 'H-SBS'],
+      preferredAudioTags: ['Atmos', 'DTS:X', 'TrueHD', 'DTS-HD MA', 'FLAC', 'DTS-HD', 'DTS-ES', 'DTS', 'DD+', 'DD', 'OPUS', 'AAC'],
+      preferredStreamTypes: isDebrid
+        ? ['debrid', 'usenet', 'http', 'live', 'p2p']
+        : ['http', 'live', 'p2p'],
+      deduplicator: {
+        enabled: true,
+        excludeAddons: [],
+        multiGroupBehaviour: 'aggressive',
+        keys: ['filename', 'infoHash', 'smartDetect'],
+        cached: 'single_result',
+        uncached: 'single_result',
+        p2p: 'single_result',
+        http: 'per_addon',
+        smartDetectAttributes: ['size', 'resolution', 'quality', 'visualTags', 'audioTags', 'audioChannels', 'languages', 'encode', 'edition', 'network', 'remastered', 'bitrate', 'releaseGroup'],
+        smartDetectRounding: 10,
+        libraryBehaviour: 'prefer',
+        merge: { enabled: true, failoverVariants: true, fields: ['sizes', 'seadex', 'library', 'subtitles', 'languages'] },
+      },
+      titleMatching: { mode: 'exact', similarityThreshold: 1, enabled: true, ambiguousResults: 'keep', requestTypes: ['movie', 'series', 'anime'], addons: [] },
+      seasonEpisodeMatching: { enabled: true, strict: true, requestTypes: ['movie', 'series', 'anime'], addons: [] },
+      syncedExcludedRegexUrls: ['https://git.tamtaro.de/Excluded-Regex.json'],
+      syncedIncludedStreamExpressionUrls: ['https://git.tamtaro.de/ISE.json'],
+      syncedRankedStreamExpressionUrls: ['https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/English/expressions.json'],
+      trusted: false,
+      showStatistics: false,
+      precacheNextEpisode: false,
+      rpdbApiKey: 't0-free-rpdb',
+      autoPlay: false,
+    };
+  }
+
   document.getElementById('qs-btn-install').addEventListener('click', qsDoInstall);
 
   async function qsDoInstall() {
@@ -1017,19 +1088,6 @@
     const progressList = document.getElementById('qs-progress-list');
     progressList.innerHTML = '';
 
-    // AIOStreams: abre o configurador com template Tam-Taro pré-carregado
-    let aioOpened = false;
-    if (aioSelected) {
-      const configureUrl = `${instance}/stremio/configure?menu=about&template=${encodeURIComponent(TEMPLATE_URL)}`;
-      window.open(configureUrl, '_blank');
-      qsAddProgressRow(progressList, 'done', '📡 AIOStreams — configurador aberto numa nova tab');
-      aioOpened = true;
-    }
-
-    // Instalar restantes addons via API Stremio
-    const otherAddons = selected.filter(a => a.id !== 'aiostreams');
-    const rows = otherAddons.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
-
     const results = [];
     const STRIP_IDS = new Set([
       'com.linvo.stremiochannels',
@@ -1038,6 +1096,62 @@
       'org.stremio.local',
     ]);
     let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
+
+    // AIOStreams: criar conta via API com config Tam-Taro pré-configurado
+    let aioInstalled = false;
+    let aioManifestUrl = null;
+    let aioPassword = null;
+
+    if (aioSelected) {
+      const aioRow = qsAddProgressRow(progressList, 'loading', '📡 AIOStreams — a criar configuração Tam-Taro SEL…');
+      try {
+        const config = buildAIOStreamsConfig(isDebrid, debridKey);
+        aioPassword = generateAIOPassword();
+
+        const createRes = await qsFetchTimeout(`${instance}/api/v1/user`, 20000, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ config, password: aioPassword }),
+        });
+        if (!createRes.ok) throw new Error(`Erro ao criar configuração (HTTP ${createRes.status})`);
+        const createData = await createRes.json();
+        if (!createData.success) throw new Error(createData.error?.message || 'Erro na criação da conta AIOStreams');
+
+        const uuid = createData.data.uuid;
+        aioManifestUrl = `${instance}/stremio/${uuid}/manifest.json`;
+
+        const mRes = await qsFetchTimeout(aioManifestUrl, 10000);
+        if (!mRes.ok) throw new Error('Manifest inacessível após criação');
+        const manifest = await mRes.json();
+
+        const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+        if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+        workingAddons = [...workingAddons, { transportUrl: aioManifestUrl, transportName: 'http', manifest, flags: {} }];
+
+        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authKey, addons: workingAddons }),
+        });
+        if (!setRes.ok) throw new Error(`Erro ao guardar na conta Stremio (HTTP ${setRes.status})`);
+        const setData = await setRes.json();
+        if (setData.error) throw new Error(setData.error);
+
+        currentAddons = workingAddons;
+        const modeLabel = isDebrid ? ' + TorBox' : ' — modo P2P';
+        qsUpdateRow(aioRow, 'done', `📡 AIOStreams instalado com Tam-Taro SEL${modeLabel}`);
+        results.push({ addon: aioSelected, ok: true });
+        aioInstalled = true;
+
+      } catch (err) {
+        qsUpdateRow(aioRow, 'err', '📡 AIOStreams — ' + err.message);
+        results.push({ addon: aioSelected, ok: false, err: err.message });
+      }
+    }
+
+    // Instalar restantes addons via API Stremio
+    const otherAddons = selected.filter(a => a.id !== 'aiostreams');
+    const rows = otherAddons.map(a => qsAddProgressRow(progressList, 'loading', a.icon + ' ' + a.name));
 
     for (let i = 0; i < otherAddons.length; i++) {
       const addon = otherAddons[i];
@@ -1098,19 +1212,18 @@
       badge.textContent = '✓ Concluído';
       badge.className   = 'card-badge green';
       let msg = '';
-      if (aioOpened) msg += '📡 AIOStreams: configurador aberto. ';
       if (successCount > 0) msg += `✓ ${successCount} addon${successCount !== 1 ? 's' : ''} instalado${successCount !== 1 ? 's' : ''}`;
       if (skipCount > 0) msg += ` · ${skipCount} já estava${skipCount !== 1 ? 'm' : ''} instalado${skipCount !== 1 ? 's' : ''}`;
-      if (!aioOpened && successCount === 0 && skipCount === 0) msg = '✓ Concluído.';
+      if (successCount === 0 && skipCount === 0) msg = '✓ Concluído.';
       resultBox.className   = 'result-box ok';
       resultBox.textContent = msg;
-      qsShowNextSteps(aioOpened, isDebrid);
-    } else if (totalOk > 0 || aioOpened) {
+      qsShowNextSteps(aioInstalled, isDebrid, aioManifestUrl, aioPassword);
+    } else if (totalOk > 0) {
       badge.textContent = '⚠ Parcial';
       badge.className   = 'card-badge';
       resultBox.className   = 'result-box partial';
-      resultBox.textContent = `${totalOk} addon${totalOk !== 1 ? 's' : ''} instalado${totalOk !== 1 ? 's' : ''}${aioOpened ? ' · AIOStreams: configurador aberto' : ''}, ${failCount} falharam (serviço offline ou timeout).`;
-      qsShowNextSteps(aioOpened, isDebrid, true);
+      resultBox.textContent = `${totalOk} addon${totalOk !== 1 ? 's' : ''} instalado${totalOk !== 1 ? 's' : ''}, ${failCount} falharam (serviço offline ou timeout).`;
+      qsShowNextSteps(aioInstalled, isDebrid, aioManifestUrl, aioPassword, true);
     } else {
       badge.textContent = '✗ Falhou';
       badge.className   = 'card-badge fail';
@@ -1120,28 +1233,22 @@
     }
   }
 
-  function qsShowNextSteps(aioOpened, isDebrid, partial) {
+  function qsShowNextSteps(aioInstalled, isDebrid, aioManifestUrl, aioPassword, partial) {
     const container = document.getElementById('qs-next-steps');
     container.style.display = 'block';
     const steps = [];
 
-    if (aioOpened) {
-      if (isDebrid) {
-        steps.push(
-          'Na tab que abriu, selecciona o template <strong>"Tamtaro Complete SEL Setup"</strong>, ' +
-          'introduz a tua <strong>TorBox API key</strong> quando pedida, clica em <strong>Load Template</strong> e depois em <strong>Install</strong>.'
-        );
-      } else {
-        steps.push(
-          'Na tab que abriu, selecciona o template <strong>"Tamtaro Complete SEL Setup"</strong>, ' +
-          'não selecciones nenhum serviço de debrid, clica em <strong>Load Template</strong> e depois em <strong>Install</strong>.'
-        );
-      }
-      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
-    } else {
-      steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
+    if (aioInstalled && aioManifestUrl && aioPassword) {
+      const configureUrl = aioManifestUrl.replace('/manifest.json', '/configure');
+      const modeLabel = isDebrid ? ' com TorBox' : ' em modo P2P';
+      steps.push(
+        `AIOStreams configurado${modeLabel} com o template Tam-Taro SEL — instalado automaticamente. ` +
+        `Para alterar as definições no futuro, usa a <a href="${configureUrl}" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">página de configuração</a>. ` +
+        `Guarda a password da tua conta AIOStreams: <code style="background:var(--qs-surface2);padding:0.1em 0.4em;border-radius:4px;font-size:0.85em">${aioPassword}</code>`
+      );
     }
 
+    steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
     steps.push('Quer legendas em português? O <strong>SubMaker</strong> traduz por pedido — abre qualquer conteúdo → Legendas → "Criar [Portuguese]".');
 
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
