@@ -1040,8 +1040,8 @@
         libraryBehaviour: 'prefer',
         merge: { enabled: true, failoverVariants: true, fields: ['sizes', 'seadex', 'library', 'subtitles', 'languages'] },
       },
-      titleMatching: { mode: 'exact', similarityThreshold: 1, enabled: true, ambiguousResults: 'keep', requestTypes: ['movie', 'series', 'anime'], addons: [] },
-      seasonEpisodeMatching: { enabled: true, strict: true, requestTypes: ['movie', 'series', 'anime'], addons: [] },
+      titleMatching: { mode: 'exact', similarityThreshold: 1, enabled: false, ambiguousResults: 'keep', requestTypes: ['movie', 'series', 'anime'], addons: [] },
+      seasonEpisodeMatching: { enabled: false, strict: true, requestTypes: ['movie', 'series', 'anime'], addons: [] },
       syncedExcludedRegexUrls: ['https://git.tamtaro.de/Excluded-Regex.json'],
       syncedIncludedStreamExpressionUrls: ['https://git.tamtaro.de/ISE.json'],
       syncedRankedStreamExpressionUrls: ['https://raw.githubusercontent.com/Vidhin05/Releases-Regex/main/English/expressions.json'],
@@ -1049,7 +1049,7 @@
       showStatistics: false,
       precacheNextEpisode: false,
       rpdbApiKey: 't0-free-rpdb',
-      autoPlay: false,
+      autoPlay: { enabled: false },
     };
   }
 
