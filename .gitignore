@@ -2,3 +2,4 @@ public/
 resources/
 .hugo_build.lock
 .DS_Store
+static/tools/quickstart/worker/index.deploy.js

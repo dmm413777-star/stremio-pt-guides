@@ -1088,8 +1088,6 @@
       noTranslationLanguages: ['pt'],
       sourceLanguages: ['en'],
       targetLanguages: ['pt'],
-      geminiApiKey: '',
-      geminiModel: 'gemini-2.0-flash',
       mainProvider: 'gemini',
       multiProviderEnabled: false,
       subtitleProviders: {
@@ -1345,7 +1343,7 @@
     }
 
     steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
-    steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado para PT — só precisas de uma chave Gemini gratuita para activar a tradução automática por IA.');
+    steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado com IA — tradução automática pronta a usar.');
 
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
       steps.map((s, i) => `<div class="next-step-item" style="margin-bottom:0.4rem"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
