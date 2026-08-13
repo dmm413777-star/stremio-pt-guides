@@ -750,9 +750,9 @@
     },
   ];
 
-  // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams
+  // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams e /api/create-session do SubMaker
   // Ver instruções de deploy em static/tools/quickstart/worker/index.js
-  const PROXY_URL = 'https://aiostreams-pt-proxy.three-lingo.workers.dev';
+  const PROXY_URL = 'https://aiostreams-pt-proxy.ahead-ellipse.workers.dev';
 
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
@@ -1081,6 +1081,26 @@
     };
   }
 
+  function buildSubMakerConfig() {
+    return {
+      uiLanguage: 'pt',
+      noTranslationMode: false,
+      noTranslationLanguages: ['pt'],
+      sourceLanguages: ['en'],
+      targetLanguages: ['pt'],
+      geminiApiKey: '',
+      geminiModel: 'gemini-2.0-flash',
+      mainProvider: 'gemini',
+      multiProviderEnabled: false,
+      subtitleProviders: {
+        opensubtitles: { enabled: true, implementationType: 'v3', username: '', password: '' },
+        subdl: { enabled: false, apiKey: '' },
+        subsource: { enabled: false, apiKey: '' },
+      },
+      autoSubs: { defaultMode: 'cloudflare' },
+    };
+  }
+
   document.getElementById('qs-btn-install').addEventListener('click', qsDoInstall);
 
   async function qsDoInstall() {
@@ -1187,6 +1207,51 @@
     for (let i = 0; i < otherAddons.length; i++) {
       const addon = otherAddons[i];
       const row   = rows[i];
+
+      // SubMaker: cria sessão pré-configurada (PT) em vez de instalar URL genérico
+      if (addon.id === 'submaker') {
+        qsUpdateRow(row, 'loading', '💬 SubMaker — a criar sessão pré-configurada para PT…');
+        try {
+          const smRes = await qsFetchTimeout(PROXY_URL, 15000, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ service: 'submaker', config: buildSubMakerConfig() }),
+          });
+          if (!smRes.ok) {
+            const errText = await smRes.text().catch(() => '');
+            throw new Error(`Erro no proxy (HTTP ${smRes.status})${errText ? ': ' + errText.slice(0, 120) : ''}`);
+          }
+          const smData = await smRes.json();
+          if (!smData.success) throw new Error(smData.error || 'Erro ao criar sessão SubMaker');
+
+          const smManifestUrl = smData.manifestUrl;
+          const smMRes = await qsFetchTimeout(smManifestUrl, 10000);
+          if (!smMRes.ok) throw new Error('Manifest SubMaker inacessível após criação');
+          const smManifest = await smMRes.json();
+
+          const smIdx = workingAddons.findIndex(a => a.manifest?.id === smManifest.id);
+          if (smIdx !== -1) workingAddons.splice(smIdx, 1);
+          workingAddons = [...workingAddons, { transportUrl: smManifestUrl, transportName: 'http', manifest: smManifest, flags: {} }];
+
+          const smSetRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ authKey, addons: workingAddons }),
+          });
+          if (!smSetRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + smSetRes.status + ')');
+          const smSetData = await smSetRes.json();
+          if (smSetData.error) throw new Error(smSetData.error);
+
+          currentAddons = workingAddons;
+          qsUpdateRow(row, 'done', '💬 SubMaker configurado para PT — pronto a usar');
+          results.push({ addon, ok: true });
+        } catch (err) {
+          qsUpdateRow(row, 'err', '💬 SubMaker — ' + err.message);
+          results.push({ addon, ok: false, err: err.message });
+        }
+        continue;
+      }
+
       try {
         const mRes = await qsFetchTimeout(addon.manifestUrl, 10000);
         if (!mRes.ok) throw new Error('Serviço offline (HTTP ' + mRes.status + ')');
@@ -1280,7 +1345,7 @@
     }
 
     steps.push('Abre o <strong>Stremio</strong> — os addons instalados aparecem de imediato na secção Addons.');
-    steps.push('Quer legendas em português? O <strong>SubMaker</strong> traduz por pedido — abre qualquer conteúdo → Legendas → "Criar [Portuguese]".');
+    steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado para PT — só precisas de uma chave Gemini gratuita para activar a tradução automática por IA.');
 
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
       steps.map((s, i) => `<div class="next-step-item" style="margin-bottom:0.4rem"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
