@@ -710,7 +710,7 @@
       id: 'aiometadata',
       name: 'AIOMetadata',
       icon: '🗂️',
-      desc: 'Catálogos organizados no ecrã inicial: Netflix, Disney+, Prime Video, Tendências globais',
+      desc: 'Catálogos organizados em PT: Netflix, Disney+, Max, Prime, SkyShowtime, Apple TV+, Tendências TMDB',
       manifestUrl: 'https://aiometadata.elfhosted.com/manifest.json',
     },
     {
@@ -724,7 +724,7 @@
       id: 'toast',
       name: 'Toast Translator',
       icon: '🌐',
-      desc: 'Sinopses e títulos em Português de Portugal + ratings IMDb/Rotten Tomatoes nas capas',
+      desc: 'Cinemeta em PT-PT: títulos, sinopses e ratings em português nas capas',
       manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
     },
     {
@@ -1081,6 +1081,44 @@
     };
   }
 
+  const AIOMETADATA_URL = 'https://aiometadata.elfhosted.com';
+
+  function buildAIOMetadataConfig() {
+    const catalogs = [
+      // TMDB — no ecrã inicial
+      {id:'tmdb.top',       name:'TMDB Popular',       type:'movie',  source:'tmdb',      enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'tmdb.top',       name:'TMDB Popular',       type:'series', source:'tmdb',      enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'tmdb.trending',  name:'TMDB Tendências',    type:'movie',  source:'tmdb',      enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'tmdb.trending',  name:'TMDB Tendências',    type:'series', source:'tmdb',      enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'tmdb.airing_today',name:'A Passar Hoje',   type:'series', source:'tmdb',      enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'tmdb.top_rated', name:'TMDB Mais Avaliados',type:'movie',  source:'tmdb',      enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'tmdb.top_rated', name:'TMDB Mais Avaliados',type:'series', source:'tmdb',      enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'tvmaze.schedule',name:'Agenda Diária TV',   type:'series', source:'tvmaze',    enabled:true, showInHome:false, enableRatingPosters:false},
+      // Streaming disponível em Portugal
+      {id:'streaming.nfx',  name:'Netflix (Filmes)',   type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.nfx',  name:'Netflix (Séries)',   type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.dnp',  name:'Disney+ (Filmes)',   type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.dnp',  name:'Disney+ (Séries)',   type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.amp',  name:'Prime Video (Filmes)',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.amp',  name:'Prime Video (Séries)',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.hbm',  name:'Max (Filmes)',       type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.hbm',  name:'Max (Séries)',       type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.sst',  name:'SkyShowtime (Filmes)',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.sst',  name:'SkyShowtime (Séries)',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.atp',  name:'Apple TV+ (Filmes)', type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.atp',  name:'Apple TV+ (Séries)', type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+    ];
+    return {
+      language: 'pt-PT',
+      addonName: 'AIOMetadata PT',
+      providers: { movie: 'tmdb', series: 'tvdb', anime: 'mal', anime_id_provider: 'imdb' },
+      apiKeys: { tmdb: '', rpdb: 't0-free-rpdb' },
+      posterRatingProvider: 'none',
+      usePosterProxy: true,
+      catalogs,
+    };
+  }
+
   function buildSubMakerConfig() {
     return {
       uiLanguage: 'pt',
@@ -1205,6 +1243,89 @@
     for (let i = 0; i < otherAddons.length; i++) {
       const addon = otherAddons[i];
       const row   = rows[i];
+
+      // AIOMetadata: cria config PT via API directa (tem CORS aberto)
+      if (addon.id === 'aiometadata') {
+        qsUpdateRow(row, 'loading', '🗂️ AIOMetadata — a criar configuração PT…');
+        try {
+          const aioMetaPassword = generateAIOPassword();
+          const aioMetaRes = await qsFetchTimeout(`${AIOMETADATA_URL}/api/config/save`, 15000, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ config: buildAIOMetadataConfig(), password: aioMetaPassword, addonPassword: '' }),
+          });
+          if (!aioMetaRes.ok) throw new Error(`HTTP ${aioMetaRes.status}`);
+          const aioMetaData = await aioMetaRes.json();
+          if (!aioMetaData.success) throw new Error(aioMetaData.error || 'Erro ao criar config AIOMetadata');
+
+          const aioMetaUrl = aioMetaData.installUrl;
+          const mRes = await qsFetchTimeout(aioMetaUrl, 10000);
+          if (!mRes.ok) throw new Error('Manifest inacessível após criação');
+          const manifest = await mRes.json();
+
+          const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+          if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+          workingAddons = [...workingAddons, { transportUrl: aioMetaUrl, transportName: 'http', manifest, flags: {} }];
+
+          const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ authKey, addons: workingAddons }),
+          });
+          if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
+          const setData = await setRes.json();
+          if (setData.error) throw new Error(setData.error);
+
+          currentAddons = workingAddons;
+          qsUpdateRow(row, 'done', '🗂️ AIOMetadata configurado para PT — Netflix, Disney+, Max, TMDB e mais');
+          results.push({ addon, ok: true });
+        } catch (err) {
+          qsUpdateRow(row, 'err', '🗂️ AIOMetadata — ' + err.message);
+          results.push({ addon, ok: false, err: err.message });
+        }
+        continue;
+      }
+
+      // Toast Translator: URL com TMDB key gerado pelo Worker
+      if (addon.id === 'toast') {
+        qsUpdateRow(row, 'loading', '🌐 Toast Translator — a configurar para PT-PT…');
+        try {
+          const toastRes = await qsFetchTimeout(PROXY_URL, 12000, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ service: 'toast' }),
+          });
+          if (!toastRes.ok) throw new Error(`Erro no proxy (HTTP ${toastRes.status})`);
+          const toastData = await toastRes.json();
+          if (!toastData.success) throw new Error(toastData.error || 'Erro ao gerar URL Toast');
+
+          const toastUrl = toastData.manifestUrl;
+          const mRes = await qsFetchTimeout(toastUrl, 10000);
+          if (!mRes.ok) throw new Error('Manifest Toast inacessível');
+          const manifest = await mRes.json();
+
+          const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+          if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+          workingAddons = [...workingAddons, { transportUrl: toastUrl, transportName: 'http', manifest, flags: {} }];
+
+          const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ authKey, addons: workingAddons }),
+          });
+          if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
+          const setData = await setRes.json();
+          if (setData.error) throw new Error(setData.error);
+
+          currentAddons = workingAddons;
+          qsUpdateRow(row, 'done', '🌐 Toast Translator configurado — Cinemeta em PT-PT');
+          results.push({ addon, ok: true });
+        } catch (err) {
+          qsUpdateRow(row, 'err', '🌐 Toast Translator — ' + err.message);
+          results.push({ addon, ok: false, err: err.message });
+        }
+        continue;
+      }
 
       // SubMaker: cria sessão pré-configurada (PT) em vez de instalar URL genérico
       if (addon.id === 'submaker') {
