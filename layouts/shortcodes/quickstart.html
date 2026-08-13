@@ -1005,7 +1005,7 @@
 
   const PRESETS_DEBRID = [
     { type: 'seadex', instanceId: '326', enabled: true, category: 'Debrid', options: { name: 'SeaDex', timeout: 5000, mediaTypes: ['anime'] } },
-    { type: 'library', instanceId: 'ae7', enabled: true, category: 'Debrid', options: { name: 'Library', timeout: 5000, resources: ['stream', 'catalog', 'meta'], mediaTypes: [], showRefreshActions: ['catalog'], skipProcessing: false, hideStreams: false, useMultipleInstances: false } },
+    { type: 'library', instanceId: 'ae7', enabled: true, category: 'Debrid', options: { name: 'Library', timeout: 5000, resources: ['stream', 'meta'], mediaTypes: [], showRefreshActions: [], skipProcessing: false, hideStreams: false, useMultipleInstances: false } },
     { type: 'neko-bt', instanceId: '072', enabled: true, category: 'Debrid', options: { name: 'nekoBT', timeout: 5000, mediaTypes: ['anime'], useMultipleInstances: false } },
     { type: 'torznab', instanceId: '6a6', enabled: true, category: 'Debrid', options: { name: 'ComeTorz', torznabUrl: 'https://comet.feels.legal/torznab/', apiPath: '/api', timeout: 5000, mediaTypes: [], searchMode: 'auto', seasonEpisodeStrategy: 'dynamic', paginate: false, useMultipleInstances: false } },
     { type: 'stremthruTorz', instanceId: '609', enabled: true, category: 'Debrid', options: { name: 'STorz', timeout: 5000, resources: ['stream'], url: '', mediaTypes: [], includeP2P: false, useMultipleInstances: false } },
@@ -1095,19 +1095,19 @@
       {id:'tmdb.top_rated', name:'TMDB Mais Avaliados',type:'movie',  source:'tmdb',      enabled:true, showInHome:false, enableRatingPosters:true},
       {id:'tmdb.top_rated', name:'TMDB Mais Avaliados',type:'series', source:'tmdb',      enabled:true, showInHome:false, enableRatingPosters:true},
       {id:'tvmaze.schedule',name:'Agenda Diária TV',   type:'series', source:'tvmaze',    enabled:true, showInHome:false, enableRatingPosters:false},
-      // Streaming disponível em Portugal
-      {id:'streaming.nfx',  name:'Netflix (Filmes)',   type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.nfx',  name:'Netflix (Séries)',   type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.dnp',  name:'Disney+ (Filmes)',   type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.dnp',  name:'Disney+ (Séries)',   type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.amp',  name:'Prime Video (Filmes)',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.amp',  name:'Prime Video (Séries)',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.hbm',  name:'Max (Filmes)',       type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.hbm',  name:'Max (Séries)',       type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.sst',  name:'SkyShowtime (Filmes)',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.sst',  name:'SkyShowtime (Séries)',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.atp',  name:'Apple TV+ (Filmes)', type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
-      {id:'streaming.atp',  name:'Apple TV+ (Séries)', type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      // Streaming disponível em Portugal — os principais visíveis em casa, resto no Discover
+      {id:'streaming.nfx',  name:'Netflix — Filmes',   type:'movie',  source:'streaming', enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'streaming.nfx',  name:'Netflix — Séries',   type:'series', source:'streaming', enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'streaming.dnp',  name:'Disney+ — Filmes',   type:'movie',  source:'streaming', enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'streaming.dnp',  name:'Disney+ — Séries',   type:'series', source:'streaming', enabled:true, showInHome:true,  enableRatingPosters:true},
+      {id:'streaming.amp',  name:'Prime Video — Filmes',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.amp',  name:'Prime Video — Séries',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.hbm',  name:'Max — Filmes',       type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.hbm',  name:'Max — Séries',       type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.sst',  name:'SkyShowtime — Filmes',type:'movie', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.sst',  name:'SkyShowtime — Séries',type:'series',source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.atp',  name:'Apple TV+ — Filmes', type:'movie',  source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
+      {id:'streaming.atp',  name:'Apple TV+ — Séries', type:'series', source:'streaming', enabled:true, showInHome:false, enableRatingPosters:true},
     ];
     return {
       language: 'pt-PT',
