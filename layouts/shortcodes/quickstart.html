@@ -750,6 +750,10 @@
     },
   ];
 
+  // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams
+  // Ver instruções de deploy em static/tools/quickstart/worker/index.js
+  const PROXY_URL = 'https://aiostreams-pt-proxy.COLOCA_AQUI.workers.dev';
+
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
     { name: "Yeb's Nightly",                    url: "https://aiostreams-nightly.fortheweak.cloud" },
@@ -1132,18 +1136,20 @@
         const config = buildAIOStreamsConfig(isDebrid, debridKey);
         aioPassword = generateAIOPassword();
 
-        const createRes = await qsFetchTimeout(`${instance}/api/v1/user`, 20000, {
+        // Chama o Worker proxy (resolve CORS — /api/v1/user não tem CORS headers)
+        const createRes = await qsFetchTimeout(PROXY_URL, 25000, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ config, password: aioPassword }),
+          body: JSON.stringify({ instance, config, password: aioPassword }),
         });
-        if (!createRes.ok) throw new Error(`Erro ao criar configuração (HTTP ${createRes.status})`);
+        if (!createRes.ok) {
+          const errText = await createRes.text().catch(() => '');
+          throw new Error(`Erro no proxy (HTTP ${createRes.status})${errText ? ': ' + errText.slice(0, 120) : ''}`);
+        }
         const createData = await createRes.json();
-        if (!createData.success) throw new Error(createData.error?.message || 'Erro na criação da conta AIOStreams');
+        if (!createData.success) throw new Error(createData.error?.message || createData.error || 'Erro na criação da conta AIOStreams');
 
-        const uuid = createData.data.uuid;
-        const encryptedPassword = createData.data.encryptedPassword;
-        aioManifestUrl = `${instance}/stremio/${uuid}/${encryptedPassword}/manifest.json`;
+        aioManifestUrl = createData.data.manifestUrl;
 
         const mRes = await qsFetchTimeout(aioManifestUrl, 10000);
         if (!mRes.ok) throw new Error('Manifest inacessível após criação');
