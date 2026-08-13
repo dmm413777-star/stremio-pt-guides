@@ -1118,7 +1118,8 @@
         if (!createData.success) throw new Error(createData.error?.message || 'Erro na criação da conta AIOStreams');
 
         const uuid = createData.data.uuid;
-        aioManifestUrl = `${instance}/stremio/${uuid}/manifest.json`;
+        const encryptedPassword = createData.data.encryptedPassword;
+        aioManifestUrl = `${instance}/stremio/${uuid}/${encryptedPassword}/manifest.json`;
 
         const mRes = await qsFetchTimeout(aioManifestUrl, 10000);
         if (!mRes.ok) throw new Error('Manifest inacessível após criação');
