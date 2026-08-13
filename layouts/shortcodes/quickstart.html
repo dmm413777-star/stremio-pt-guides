@@ -392,6 +392,7 @@
   #qs-widget .progress-item.err { color: var(--qs-error); }
   #qs-widget .progress-item.loading { color: var(--qs-accent-light); }
   #qs-widget .progress-item.skip { color: var(--qs-text-dim); }
+  #qs-widget .progress-item.warn { color: #f59e0b; }
 
   #qs-widget .progress-icon { width: 18px; text-align: center; flex-shrink: 0; }
 
@@ -752,7 +753,7 @@
 
   // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams e /api/create-session do SubMaker
   // Ver instruções de deploy em static/tools/quickstart/worker/index.js
-  const PROXY_URL = 'https://aiostreams-pt-proxy.ahead-ellipse.workers.dev';
+  const PROXY_URL = 'https://aiostreams-pt-proxy.exciting-rayon.workers.dev';
 
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
@@ -1327,25 +1328,34 @@
         continue;
       }
 
-      // SubMaker: cria sessão pré-configurada (PT) em vez de instalar URL genérico
+      // SubMaker: cria sessão pré-configurada (PT); fallback para URL base se API estiver em baixo
       if (addon.id === 'submaker') {
         qsUpdateRow(row, 'loading', '💬 SubMaker — a criar sessão pré-configurada para PT…');
         try {
-          const smRes = await qsFetchTimeout(PROXY_URL, 15000, {
+          let smManifestUrl = null;
+          let smConfigured = false;
+
+          const smProxyRes = await qsFetchTimeout(PROXY_URL, 15000, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ service: 'submaker', config: buildSubMakerConfig() }),
-          });
-          if (!smRes.ok) {
-            const errText = await smRes.text().catch(() => '');
-            throw new Error(`Erro no proxy (HTTP ${smRes.status})${errText ? ': ' + errText.slice(0, 120) : ''}`);
-          }
-          const smData = await smRes.json();
-          if (!smData.success) throw new Error(smData.error || 'Erro ao criar sessão SubMaker');
+          }).catch(() => null);
 
-          const smManifestUrl = smData.manifestUrl;
+          if (smProxyRes && smProxyRes.ok) {
+            const smData = await smProxyRes.json();
+            if (smData.success && smData.manifestUrl) {
+              smManifestUrl = smData.manifestUrl;
+              smConfigured = true;
+            }
+          }
+
+          // Fallback: instalar URL base se a API de sessão não responder
+          if (!smManifestUrl) {
+            smManifestUrl = 'https://submaker.elfhosted.com/manifest.json';
+          }
+
           const smMRes = await qsFetchTimeout(smManifestUrl, 10000);
-          if (!smMRes.ok) throw new Error('Manifest SubMaker inacessível após criação');
+          if (!smMRes.ok) throw new Error('SubMaker inacessível');
           const smManifest = await smMRes.json();
 
           const smIdx = workingAddons.findIndex(a => a.manifest?.id === smManifest.id);
@@ -1362,7 +1372,11 @@
           if (smSetData.error) throw new Error(smSetData.error);
 
           currentAddons = workingAddons;
-          qsUpdateRow(row, 'done', '💬 SubMaker configurado para PT — pronto a usar');
+          if (smConfigured) {
+            qsUpdateRow(row, 'done', '💬 SubMaker configurado para PT — pronto a usar');
+          } else {
+            qsUpdateRow(row, 'warn', '💬 SubMaker instalado — API de configuração indisponível, configura manualmente em <a href="https://submaker.elfhosted.com/configure" target="_blank" rel="noopener">submaker.elfhosted.com</a>');
+          }
           results.push({ addon, ok: true });
         } catch (err) {
           qsUpdateRow(row, 'err', '💬 SubMaker — ' + err.message);
@@ -1515,7 +1529,7 @@
   }
 
   function qsUpdateRow(row, state, text) {
-    const icons = { done: '✓', err: '✗', skip: '–', loading: '' };
+    const icons = { done: '✓', err: '✗', skip: '–', loading: '', warn: '⚠' };
     row.className = 'progress-item ' + state;
     row.innerHTML = `<span class="progress-icon">${icons[state]}</span> ${text}`;
   }
