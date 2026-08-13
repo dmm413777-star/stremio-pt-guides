@@ -987,6 +987,30 @@
       .join('');
   }
 
+  const PRESETS_P2P = [
+    { type: 'meteor', instanceId: '064', enabled: true, category: 'P2P', options: { name: 'Meteor', timeout: 5000, resources: ['stream'], includeP2P: true, removeTrash: false, useMultipleInstances: false, mediaTypes: [] } },
+    { type: 'comet', instanceId: 'b0f', enabled: true, category: 'P2P', options: { name: 'Comet', timeout: 5000, resources: ['stream'], includeP2P: true, removeTrash: false, mediaTypes: [], url: '' } },
+    { type: 'stremthruTorz', instanceId: 'bb9', enabled: true, category: 'P2P', options: { name: 'STorz', timeout: 5000, resources: ['stream'], mediaTypes: [], includeP2P: true, useMultipleInstances: false, url: '' } },
+    { type: 'mediafusion', instanceId: '276', enabled: true, category: 'P2P', options: { name: 'MediaFusion', timeout: 5000, resources: ['stream'], useCachedResultsOnly: true, enableWatchlistCatalogs: false, downloadViaBrowser: false, contributorStreams: false, certificationLevelsFilter: [], nudityFilter: [], mediaTypes: [], url: '' } },
+    { type: 'torrents-db', instanceId: 'a15', enabled: true, category: 'P2P', options: { name: 'TorrentsDB', timeout: 5000, resources: ['stream'], mediaTypes: [], providers: ['yts','1337x','torrentcsv','1lou','nyaa','sktorrent','rargb','knaben','thepiratebay','kickasstorrents','animetosho','yggtorrent','rutor','rutracker','torrent9','ilcorsaronero'], includeP2P: true, useMultipleInstances: false } },
+    { type: 'peerflix', instanceId: '8b6', enabled: true, category: 'P2P', options: { name: 'Peerflix', timeout: 5000, resources: ['stream'], mediaTypes: [], useMultipleInstances: false, showTorrentLinks: true } },
+    { type: 'torrentio', instanceId: '4ef', enabled: true, category: 'P2P', options: { name: 'Torrentio', timeout: 5000, resources: ['stream'], providers: [], useMultipleInstances: false } },
+    { type: 'opensubtitles-v3-plus', instanceId: '262', enabled: true, category: 'Subs', options: { name: 'OpenSubtitles V3+', timeout: 5000, resources: ['subtitles'], language: ['pt', 'en'], sources: 'all', includeAiTranslated: false, movieHashPlusAutoAdjustment: false } },
+  ];
+
+  const PRESETS_DEBRID = [
+    { type: 'seadex', instanceId: '326', enabled: true, category: 'Debrid', options: { name: 'SeaDex', timeout: 5000, mediaTypes: ['anime'] } },
+    { type: 'library', instanceId: 'ae7', enabled: true, category: 'Debrid', options: { name: 'Library', timeout: 5000, resources: ['stream', 'catalog', 'meta'], mediaTypes: [], showRefreshActions: ['catalog'], skipProcessing: false, hideStreams: false, useMultipleInstances: false } },
+    { type: 'neko-bt', instanceId: '072', enabled: true, category: 'Debrid', options: { name: 'nekoBT', timeout: 5000, mediaTypes: ['anime'], useMultipleInstances: false } },
+    { type: 'torznab', instanceId: '6a6', enabled: true, category: 'Debrid', options: { name: 'ComeTorz', torznabUrl: 'https://comet.feels.legal/torznab/', apiPath: '/api', timeout: 5000, mediaTypes: [], searchMode: 'auto', seasonEpisodeStrategy: 'dynamic', paginate: false, useMultipleInstances: false } },
+    { type: 'stremthruTorz', instanceId: '609', enabled: true, category: 'Debrid', options: { name: 'STorz', timeout: 5000, resources: ['stream'], url: '', mediaTypes: [], includeP2P: false, useMultipleInstances: false } },
+    { type: 'meteor', instanceId: 'ddd', enabled: true, category: 'Debrid', options: { name: 'Meteor', timeout: 5000, resources: ['stream'], includeP2P: false, removeTrash: false, useMultipleInstances: false, mediaTypes: [], yourMedia: { sources: ['torrent', 'webdl'], showStreams: true, enabled: true }, usenet: { enabled: false, customSearchEngines: false } } },
+    { type: 'knaben', instanceId: 'dc9', enabled: true, category: 'Debrid', options: { name: 'Knaben', timeout: 5000, mediaTypes: [], useMultipleInstances: false } },
+    { type: 'torrentio', instanceId: '4ef', enabled: true, category: 'Debrid', options: { name: 'Torrentio', timeout: 5000, resources: ['stream'], providers: [], useMultipleInstances: false } },
+    { type: 'mediafusion', instanceId: '276', enabled: true, category: 'Debrid', options: { name: 'MediaFusion', timeout: 5000, resources: ['stream'], useCachedResultsOnly: false, enableWatchlistCatalogs: false, downloadViaBrowser: false, contributorStreams: false, certificationLevelsFilter: [], nudityFilter: [], mediaTypes: [], url: '' } },
+    { type: 'opensubtitles-v3-plus', instanceId: '262', enabled: true, category: 'Subs', options: { name: 'OpenSubtitles V3+', timeout: 5000, resources: ['subtitles'], language: ['pt', 'en'], sources: 'all', includeAiTranslated: false, movieHashPlusAutoAdjustment: false } },
+  ];
+
   function buildAIOStreamsConfig(isDebrid, torboxKey) {
     return {
       formatter: { id: 'tamtaro' },
@@ -1016,7 +1040,7 @@
       services: isDebrid && torboxKey
         ? [{ id: 'torbox', enabled: true, credentials: { apiKey: torboxKey } }]
         : [],
-      presets: [],
+      presets: isDebrid ? PRESETS_DEBRID : PRESETS_P2P,
       preferredLanguages: ['Portuguese', 'English', 'Original', 'Dual Audio', 'Multi', 'Dubbed', 'Unknown'],
       preferredQualities: ['BluRay REMUX', 'BluRay', 'WEB-DL', 'WEBRip', 'HDRip', 'HC HD-Rip', 'HDTV', 'DVDRip', 'Unknown'],
       preferredResolutions: ['2160p', '1440p', '1080p', '720p', '576p', '480p', '360p', 'Unknown'],
