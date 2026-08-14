@@ -1,4 +1,4 @@
-baseURL = "https://denunciastremio.netlify.app/"
+baseURL = "https://denunciastremio.pages.dev/"
 locale = "pt-PT"
 title = "Denuncia Stremio"
 theme = "hextra"
