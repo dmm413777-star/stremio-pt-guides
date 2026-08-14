@@ -613,6 +613,16 @@
     </div>
   </div>
   <div class="addon-list" id="qs-addon-list"></div>
+
+  <!-- Addons PT da Comunidade (opcional, não pré-seleccionados) -->
+  <div style="display:flex;align-items:center;gap:10px;margin:1rem 0 0.5rem;color:var(--qs-text-dim);font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em">
+    <div style="flex:1;height:1px;background:var(--qs-border)"></div>
+    <span>Addons PT da Comunidade</span>
+    <div style="flex:1;height:1px;background:var(--qs-border)"></div>
+  </div>
+  <p style="font-size:0.79rem;color:var(--qs-text-muted);margin-bottom:0.5rem;line-height:1.5">Opcionais criados pela comunidade — não pré-seleccionados. Estado verificado em tempo real.</p>
+  <div class="addon-list" id="qs-community-list"></div>
+
   <label class="option-row" id="qs-opt-clean-row">
     <input type="checkbox" id="qs-opt-clean">
     <div class="option-check"></div>
@@ -726,7 +736,7 @@
       name: 'Toast Translator',
       icon: '🌐',
       desc: 'Cinemeta em PT-PT: títulos, sinopses e ratings em português nas capas',
-      manifestUrl: 'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
+      manifestUrl: 'https://toast-translator.elfhosted.com/manifest.json',
     },
     {
       id: 'filmespt',
@@ -748,6 +758,17 @@
       icon: '🇵🇹',
       desc: 'Filmes em Português de Portugal — catálogo extenso, com pesquisa, géneros e ordenação por avaliação',
       manifestUrl: 'https://cotonetnet-cotonet.hf.space/manifest.json',
+    },
+  ];
+
+  const PT_COMMUNITY = [
+    {
+      id: 'ptgdrive',
+      name: 'PTGDrive',
+      icon: '🗂️',
+      desc: 'Filmes e séries em português via Google Drive — criado por Viren e Phen0menal0ne',
+      manifestUrl: 'https://pt-pt-gdrive.newptdrive.workers.dev/manifest.json',
+      credit: 'Viren + Phen0menal0ne',
     },
   ];
 
@@ -897,6 +918,48 @@
     });
     addonListEl.appendChild(item);
   });
+
+  const communityListEl = document.getElementById('qs-community-list');
+  PT_COMMUNITY.forEach(addon => {
+    const item = document.createElement('label');
+    item.className = 'addon-item';
+    item.htmlFor = 'qs-chk-' + addon.id;
+    item.innerHTML = `
+      <input type="checkbox" id="qs-chk-${addon.id}">
+      <div class="check-box"></div>
+      <span class="addon-icon">${addon.icon}</span>
+      <div class="addon-info">
+        <strong>${addon.name}</strong>
+        <span>${addon.desc}</span>
+        <span id="qs-status-${addon.id}" style="font-size:0.75rem;margin-top:0.15rem;display:block;color:var(--qs-text-dim)">A verificar…</span>
+      </div>
+    `;
+    item.addEventListener('change', () => {
+      item.classList.toggle('checked', item.querySelector('input').checked);
+    });
+    communityListEl.appendChild(item);
+  });
+
+  (async function checkCommunityStatus() {
+    for (const addon of PT_COMMUNITY) {
+      const indicator = document.getElementById('qs-status-' + addon.id);
+      const checkbox  = document.getElementById('qs-chk-' + addon.id);
+      if (!indicator) continue;
+      try {
+        const res = await fetch(addon.manifestUrl, { method: 'HEAD', signal: AbortSignal.timeout(6000) });
+        if (res.ok) {
+          indicator.textContent = '● Online';
+          indicator.style.color = 'var(--qs-success)';
+        } else {
+          throw new Error('offline');
+        }
+      } catch {
+        indicator.textContent = '● Offline — temporariamente indisponível';
+        indicator.style.color = 'var(--qs-error)';
+        if (checkbox) { checkbox.disabled = true; checkbox.closest('.addon-item').style.opacity = '0.5'; }
+      }
+    }
+  })();
 
   const optCleanRow = document.getElementById('qs-opt-clean-row');
   optCleanRow.addEventListener('change', () => {
@@ -1516,6 +1579,47 @@
         qsUpdateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
         results.push({ addon, ok: true });
 
+      } catch (err) {
+        qsUpdateRow(row, 'err', addon.icon + ' ' + addon.name + ' — ' + err.message);
+        results.push({ addon, ok: false, err: err.message });
+      }
+    }
+
+    // Addons PT da Comunidade (opcionais, seleccionados pelo utilizador)
+    const selectedCommunity = PT_COMMUNITY.filter(a => {
+      const chk = document.getElementById('qs-chk-' + a.id);
+      return chk && chk.checked && !chk.disabled;
+    });
+    for (const addon of selectedCommunity) {
+      const row = qsAddProgressRow(progressList, 'loading', addon.icon + ' ' + addon.name + ' — a instalar…');
+      try {
+        const mRes = await qsFetchTimeout(addon.manifestUrl, 10000);
+        if (!mRes.ok) throw new Error('Serviço offline (HTTP ' + mRes.status + ')');
+        let manifest;
+        try { manifest = await mRes.json(); } catch { throw new Error('Resposta inválida do addon'); }
+
+        const existingIdx = workingAddons.findIndex(
+          a => a.manifest?.id === manifest.id || a.transportUrl === addon.manifestUrl
+        );
+        if (existingIdx !== -1) {
+          qsUpdateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
+          results.push({ addon, ok: true, skipped: true });
+          continue;
+        }
+
+        workingAddons = [...workingAddons, { transportUrl: addon.manifestUrl, transportName: 'http', manifest, flags: {} }];
+        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authKey, addons: workingAddons }),
+        });
+        if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
+        const setData = await setRes.json();
+        if (setData.error) throw new Error(setData.error);
+
+        currentAddons = workingAddons;
+        qsUpdateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
+        results.push({ addon, ok: true });
       } catch (err) {
         qsUpdateRow(row, 'err', addon.icon + ' ' + addon.name + ' — ' + err.message);
         results.push({ addon, ok: false, err: err.message });
