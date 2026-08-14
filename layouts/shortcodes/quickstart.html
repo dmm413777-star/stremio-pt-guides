@@ -1011,7 +1011,6 @@
     { type: 'stremthruTorz', instanceId: '609', enabled: true, category: 'Debrid', options: { name: 'STorz', timeout: 5000, resources: ['stream'], url: '', mediaTypes: [], includeP2P: false, useMultipleInstances: false } },
     { type: 'meteor', instanceId: 'ddd', enabled: true, category: 'Debrid', options: { name: 'Meteor', timeout: 5000, resources: ['stream'], includeP2P: false, removeTrash: false, useMultipleInstances: false, mediaTypes: [], yourMedia: { sources: ['torrent', 'webdl'], showStreams: true, enabled: true }, usenet: { enabled: false, customSearchEngines: false } } },
     { type: 'knaben', instanceId: 'dc9', enabled: true, category: 'Debrid', options: { name: 'Knaben', timeout: 5000, mediaTypes: [], useMultipleInstances: false } },
-    { type: 'torrentio', instanceId: '4ef', enabled: true, category: 'Debrid', options: { name: 'Torrentio', timeout: 5000, resources: ['stream'], providers: [], useMultipleInstances: false } },
     { type: 'mediafusion', instanceId: '276', enabled: true, category: 'Debrid', options: { name: 'MediaFusion', timeout: 5000, resources: ['stream'], useCachedResultsOnly: false, enableWatchlistCatalogs: false, downloadViaBrowser: false, contributorStreams: false, certificationLevelsFilter: [], nudityFilter: [], mediaTypes: [], url: '' } },
     { type: 'opensubtitles-v3-plus', instanceId: '262', enabled: true, category: 'Subs', options: { name: 'OpenSubtitles V3+', timeout: 5000, resources: ['subtitles'], language: ['pt', 'en'], sources: 'all', includeAiTranslated: false, movieHashPlusAutoAdjustment: false } },
   ];
@@ -1046,6 +1045,22 @@
         ? [{ id: 'torbox', enabled: true, credentials: { apiKey: torboxKey } }]
         : [],
       presets: isDebrid ? PRESETS_DEBRID : PRESETS_P2P,
+      // Em modo debrid: esconde streams não-cached (evita "a fazer download" e "invalid token")
+      excludeUncached: false,
+      excludeUncachedFromStreamTypes: isDebrid ? ['debrid'] : [],
+      excludeUncachedMode: 'or',
+      checkOwned: isDebrid,
+      failover: isDebrid ? {
+        enabled: true,
+        contentTypes: ['debrid'],
+        allowCrossType: false,
+        maxAttempts: 3,
+        parallel: 2,
+        position: 'beforeLimiting',
+        includeExternalFailover: false,
+        sameReleaseLimit: 2,
+        precacheFailover: false,
+      } : { enabled: false },
       preferredLanguages: ['Portuguese', 'English', 'Original', 'Dual Audio', 'Multi', 'Dubbed', 'Unknown'],
       preferredQualities: ['BluRay REMUX', 'BluRay', 'WEB-DL', 'WEBRip', 'HDRip', 'HC HD-Rip', 'HDTV', 'DVDRip', 'Unknown'],
       preferredResolutions: ['2160p', '1440p', '1080p', '720p', '576p', '480p', '360p', 'Unknown'],
