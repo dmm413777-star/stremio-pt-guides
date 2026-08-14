@@ -60,6 +60,23 @@ async function handleAIOStreams(body) {
   return jsonResponse(data, aioRes.status);
 }
 
+async function handleTorboxValidate(body) {
+  const { apiKey } = body;
+  if (!apiKey) return jsonResponse({ success: false, error: 'Missing apiKey' }, 400);
+  try {
+    const res = await fetch('https://api.torbox.app/v1/api/user/me', {
+      headers: { 'Authorization': `Bearer ${apiKey}` },
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data?.data) {
+      return jsonResponse({ success: true, plan: data.data.plan || '', email: data.data.email || '' });
+    }
+    return jsonResponse({ success: false, error: data?.detail || `HTTP ${res.status}` });
+  } catch (err) {
+    return jsonResponse({ success: false, error: `Unreachable: ${err.message}` }, 502);
+  }
+}
+
 async function handleSubMaker(body) {
   const { config } = body;
 
@@ -109,11 +126,8 @@ export default {
     }
 
     const service = body.service || 'aiostreams';
-
-    if (service === 'submaker') {
-      return handleSubMaker(body);
-    }
-
+    if (service === 'submaker') return handleSubMaker(body);
+    if (service === 'torbox-validate') return handleTorboxValidate(body);
     return handleAIOStreams(body);
   },
 };

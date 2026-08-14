@@ -753,7 +753,7 @@
 
   // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams e /api/create-session do SubMaker
   // Ver instruções de deploy em static/tools/quickstart/worker/index.js
-  const PROXY_URL = 'https://aiostreams-pt-proxy.exciting-rayon.workers.dev';
+  const PROXY_URL = 'https://aiostreams-pt-proxy.mire-freckle.workers.dev';
 
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
@@ -785,23 +785,25 @@
     });
   });
 
-  // TorBox API key validation on blur
+  // TorBox API key validation on blur — via Worker (TorBox bloqueia CORS directo)
   async function validateTorboxKey(apiKey) {
     const indicator = document.getElementById('qs-torbox-validation');
     if (!apiKey) { indicator.textContent = ''; return; }
     indicator.textContent = '…';
     indicator.style.color = 'var(--qs-text-muted)';
     try {
-      const res = await qsFetchTimeout('https://api.torbox.app/v1/api/user/me', 6000, {
-        headers: { 'Authorization': `Bearer ${apiKey}` }
+      const res = await qsFetchTimeout(PROXY_URL, 8000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ service: 'torbox-validate', apiKey }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        const plan = data?.data?.plan || '';
+      const data = await res.json();
+      if (data.success) {
+        const plan = data.plan || '';
         indicator.textContent = '✅ Key válida' + (plan ? ' · ' + plan : '');
         indicator.style.color = 'var(--qs-success)';
       } else {
-        indicator.textContent = '❌ Key inválida';
+        indicator.textContent = '❌ Key inválida — ' + (data.error || '');
         indicator.style.color = 'var(--qs-error)';
       }
     } catch {
