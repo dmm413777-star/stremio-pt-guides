@@ -1,29 +1,14 @@
 ---
 title: "Conteúdo Português: Filmes, Séries, Novelas e Animação"
 date: 2026-08-11
-description: "Addons de catálogo com conteúdo em Português de Portugal: Filmes/Séries/Novelas PT, Animação PT-PT e PTGDrive — todos instalados automaticamente pelo QuickStart PT."
-tags: ["filmes", "séries", "novelas", "animação", "português", "stremio", "catálogo", "ptgdrive"]
+description: "Addons de catálogo com conteúdo em Português de Portugal: Animação PT-PT e PTGDrive — instalados automaticamente pelo QuickStart PT."
+tags: ["filmes", "séries", "animação", "português", "stremio", "catálogo", "ptgdrive"]
 categorias: ["addons", "conteúdo-pt"]
 weight: 20
 tempo: "2 min"
 ---
 
-Estes addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração, são instalados automaticamente pelo [QuickStart PT](/).
-
----
-
-## Filmes, Séries e Novelas Portuguesas
-
-**Addon:** `Filmes, Series e Novelas Portuguesas Addon Stremio` (v2.0.0)
-
-Catálogo de filmes, séries e novelas portuguesas com streams externos.
-
-**Três catálogos:**
-- Filmes Portugueses
-- Séries Portuguesas
-- Novelas Portuguesas
-
-Cada catálogo suporta pesquisa, filtro por género e paginação.
+Estes addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração — são instalados automaticamente pelo [QuickStart PT](/).
 
 ---
 
@@ -59,7 +44,6 @@ Todos estes addons são instalados automaticamente pelo [QuickStart PT](/). Para
 
 | Addon | Manifest URL |
 |---|---|
-| Filmes/Séries/Novelas PT | `filme-series-e-novelas-portuguesas.vercel.app/manifest.json` |
 | Animação PT-PT | `anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json` |
 | PTGDrive | `pt-pt-gdrive.newptdrive.workers.dev/manifest.json` |
 
