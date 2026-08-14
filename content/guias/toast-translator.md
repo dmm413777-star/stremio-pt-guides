@@ -10,6 +10,8 @@ tempo: "5 min"
 
 O **Toast Translator** traduz títulos e sinopses para **Português de Portugal** diretamente no Stremio. Combinado com o **RPDB**, adiciona ainda as notas do IMDb e Rotten Tomatoes nas capas dos filmes.
 
+> **Nuvio:** O Toast Translator funciona também no Nuvio. Instala o addon via URL do manifest como qualquer outro.
+
 **Tempo estimado: 5 min**
 
 {{< callout type="warning" >}}

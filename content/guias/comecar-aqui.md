@@ -84,3 +84,15 @@ O **Nuvio** é uma alternativa ao Stremio com a mesma ideia mas interface mais m
 
 - [Problemas Comuns e Soluções](/guias/problemas-comuns): buffering, streams em falta, addons com erro
 - [FAQ](/guias/faq): perguntas frequentes sobre debrid, VPN e segurança
+
+---
+
+## O que fazer a seguir
+
+Já tens tudo instalado? Aqui estão os próximos passos naturais:
+
+- **[Instalar tudo de uma vez](/)**  — usa o QuickStart PT na página inicial para instalar todos os addons em 3 cliques
+- **[AIOStreams + Tam-Taro](/guias/aiostreams-tamtaro/)** — configura os filtros e ordena streams por qualidade
+- **[Legendas em português](/guias/legendas-pt/)** — SubMaker com IA ou OpenSubtitles
+- **[Conteúdo português](/guias/conteudo-pt/)** — addons com filmes e séries em PT (PTGDrive, Cotonet, TugaKids)
+- **[Problemas comuns](/guias/problemas-comuns/)** — se algo não funcionar logo na primeira vez

@@ -631,16 +631,7 @@
 
     <!-- Debrid config -->
     <div id="qs-debrid-section" style="margin-top:0.75rem;background:var(--qs-surface2);border:1px solid var(--qs-border);border-radius:8px;padding:0.85rem">
-      <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
-        <label style="flex:1;cursor:pointer">
-          <input type="radio" name="qs-debrid-svc" value="torbox" id="qs-rd-torbox" checked style="display:none">
-          <div class="qs-svc-pill" id="qs-pill-torbox" data-active="true">TorBox</div>
-        </label>
-        <label style="flex:1;cursor:pointer">
-          <input type="radio" name="qs-debrid-svc" value="realdebrid" id="qs-rd-rd" style="display:none">
-          <div class="qs-svc-pill" id="qs-pill-rd" data-active="false">Real-Debrid</div>
-        </label>
-      </div>
+      <div style="margin-bottom:0.75rem;font-size:0.79rem;color:var(--qs-text-muted)">Serviço: <strong style="color:var(--qs-text)">TorBox</strong></div>
       <div class="field" style="margin-bottom:0.35rem">
         <label for="qs-debrid-key" style="font-size:0.79rem;color:var(--qs-text-muted)">API Key</label>
         <input type="password" id="qs-debrid-key" placeholder="Cole aqui a tua API Key" autocomplete="off">
@@ -648,14 +639,9 @@
       <div style="min-height:1.3em;margin-bottom:0.4rem">
         <span id="qs-torbox-validation" style="font-size:0.8125rem"></span>
       </div>
-      <div id="qs-debrid-links" style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
-        <span id="qs-debrid-link-torbox">
-          <a href="https://app.torbox.app/settings" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API key →</a>
-          · Sem conta? <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a>
-        </span>
-        <span id="qs-debrid-link-rd" style="display:none">
-          Sem conta? <a href="https://real-debrid.com/?id=9483829" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta Real-Debrid</a>
-        </span>
+      <div style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
+        <a href="https://app.torbox.app/settings" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API key →</a>
+        · Sem conta? <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a>
       </div>
     </div>
 
@@ -761,7 +747,7 @@
 
   // Cloudflare Worker proxy — resolve CORS no /api/v1/user do AIOStreams e /api/create-session do SubMaker
   // Ver instruções de deploy em static/tools/quickstart/worker/index.js
-  const PROXY_URL = 'https://aiostreams-pt-proxy.rattle-hill.workers.dev';
+  const PROXY_URL = 'https://aiostreams-pt-proxy.mire-freckle.workers.dev';
 
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
@@ -772,6 +758,7 @@
 
   let authKey = null;
   let currentAddons = [];
+  let qsFailedAddonIds = [];
   let generatedEmail = null;
 
   // Modo Debrid / P2P
@@ -782,16 +769,6 @@
     document.getElementById('qs-debrid-section').style.display = isDebrid ? 'block' : 'none';
     document.getElementById('qs-p2p-section').style.display = isDebrid ? 'none' : 'block';
   };
-
-  // Debrid service pills
-  document.querySelectorAll('input[name="qs-debrid-svc"]').forEach(radio => {
-    radio.closest('label').addEventListener('click', () => {
-      document.querySelectorAll('.qs-svc-pill').forEach(p => p.setAttribute('data-active', 'false'));
-      document.getElementById('qs-pill-' + (radio.value === 'torbox' ? 'torbox' : 'rd')).setAttribute('data-active', 'true');
-      document.getElementById('qs-debrid-link-torbox').style.display = radio.value === 'torbox' ? 'inline' : 'none';
-      document.getElementById('qs-debrid-link-rd').style.display = radio.value === 'realdebrid' ? 'inline' : 'none';
-    });
-  });
 
   // TorBox API key validation on blur — via Worker (TorBox bloqueia CORS directo)
   async function validateTorboxKey(apiKey) {
@@ -1535,6 +1512,8 @@
     const skipCount    = results.filter(r => r.skipped).length;
     const totalOk      = results.filter(r => r.ok).length;
 
+    qsFailedAddonIds = results.filter(r => !r.ok).map(r => r.addon.id);
+
     if (failCount === 0) authKey = null;
 
     const resultBox = document.getElementById('qs-result-box');
@@ -1597,7 +1576,7 @@
       <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
         <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
       </a>
-      ${partial ? '<button class="btn btn-ghost" onclick="qsResetToStep2()" style="width:auto;padding:0 1.1rem">↺ Tentar falhados</button>' : ''}
+      ${partial ? '<button class="btn btn-ghost" onclick="qsRetryFailed()" style="width:auto;padding:0 1.1rem">↺ Tentar falhados</button>' : ''}
     `;
   }
 
@@ -1618,6 +1597,15 @@
     qsSetStepState(3, 'inactive');
     qsActivateCard('qs-card-pack');
     qsScrollTo('qs-card-pack');
+  };
+
+  window.qsRetryFailed = function() {
+    // Reset UI to step 2, then check only the addons that failed
+    window.qsResetToStep2();
+    PT_PACK.forEach(a => {
+      const chk = document.getElementById('qs-chk-' + a.id);
+      if (chk) chk.checked = qsFailedAddonIds.includes(a.id);
+    });
   };
 
   function qsSetStatus(el, type, msg) {

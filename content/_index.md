@@ -3,6 +3,10 @@ title: "Denuncia Stremio"
 description: "Guias de Stremio e Nuvio em português: simples, diretos e atualizados."
 ---
 
+<div style="background:rgba(91,141,238,0.08);border:1px solid rgba(91,141,238,0.25);border-radius:8px;padding:0.85rem 1.1rem;margin-bottom:1.5rem;font-size:0.9rem;line-height:1.55">
+  <strong>Primeira vez aqui?</strong> Lê o <a href="guias/comecar-aqui/" style="color:#5b8dee">Guia Completo</a> para perceber o que cada addon faz antes de instalares. Se já sabes o que queres, usa o instalador automático abaixo.
+</div>
+
 <div style="text-align:center; margin-bottom: 2rem;">
   <p style="color: var(--muted, #7a8aaa); font-size: 1rem; margin: 0;">Setup do Stremio em português. Escolhe como queres começar:</p>
 </div>

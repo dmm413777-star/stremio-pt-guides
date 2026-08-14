@@ -10,6 +10,8 @@ tempo: "5 min"
 
 O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artificial. É o addon certo para quando não existem legendas em português disponíveis. Gera a tradução em tempo real, dentro do próprio Stremio.
 
+> **Nuvio:** O SubMaker funciona também no Nuvio. O processo de instalação é igual — instala o addon via URL do manifest e funciona da mesma forma.
+
 **Tempo estimado: 5 min**
 
 {{< callout type="warning" >}}
