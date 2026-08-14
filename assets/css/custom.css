@@ -60,11 +60,8 @@ html.dark [class*="dark:bg-dark"] {
 ::selection { background: rgba(91,141,238,.22); color: var(--text); }
 
 /* ─── NAVBAR ─────────────────────────────────────────────────────────────── */
-html.dark nav:first-of-type,
-html.dark header > nav,
-html.dark .hx\:sticky > nav,
-html.dark [class*="navbar"],
-html.dark nav.hx\:flex {
+html.dark .hextra-nav-container nav,
+html.dark nav.hextra-max-navbar-width {
   background-color: var(--surface) !important;
   border-bottom: 1px solid var(--border) !important;
 }
@@ -91,11 +88,17 @@ html.dark nav a:not([href="/"]):hover {
   color: var(--accent) !important;
 }
 
+/* ─── FUNDO UNIFORME — corrige colunas com tons diferentes ──────────────── */
+html.dark article,
+html.dark nav.hextra-toc {
+  background-color: var(--bg) !important;
+}
+
 /* ─── SIDEBAR ────────────────────────────────────────────────────────────── */
 html.dark aside,
 html.dark [class*="sidebar"] {
   background-color: var(--bg) !important;
-  border-right: 1px solid var(--border) !important;
+  border-right: none !important;
 }
 
 html.dark aside a,
@@ -356,7 +359,7 @@ html.dark input::placeholder { color: var(--muted) !important; }
 html.dark .hextra-toc,
 html.dark [class*="toc"] {
   font-size: 12px !important;
-  border-left: 1px solid var(--border) !important;
+  border-left: none !important;
 }
 html.dark .hextra-toc a,
 html.dark [class*="toc"] a {
