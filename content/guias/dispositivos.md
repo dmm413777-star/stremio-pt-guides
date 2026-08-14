@@ -2,7 +2,7 @@
 title: "Dispositivos Recomendados para Stremio e Nuvio"
 date: 2025-01-01
 description: "Guia de hardware para usar Stremio e Nuvio na televisão: desde o melhor custo-benefício até à opção mais potente, com onde comprar em Portugal."
-tags: ["dispositivos", "android-tv", "fire-stick", "chromecast", "hardware", "stremio", "nuvio"]
+tags: ["dispositivos", "android-tv", "fire-stick", "hardware", "stremio", "nuvio"]
 categorias: ["setup", "hardware"]
 weight: 15
 tempo: "leitura"
@@ -18,43 +18,47 @@ tempo: "leitura"
 
 | Dispositivo | Preço aprox. | Para quem |
 |---|---|---|
-| **Chromecast com Google TV 4K** | ~60€ | Melhor custo-benefício para a maioria |
-| **Fire TV Stick 4K Max** | ~65€ | Boa alternativa, Alexa integrada |
-| **NVIDIA Shield TV Pro** | ~200€ | Máxima performance, uso intensivo |
-| **Fire TV Stick HD** | ~30€ | Orçamento limitado, sem 4K |
+| [**Xiaomi TV Box S (3ª geração)**](https://www.kuantokusta.pt/p/11718346/xiaomi-tv-box-s-3rd-gen-4k-32gb-wifi) | ~56€ | Melhor custo-benefício para a maioria |
+| [**Fire TV Stick 4K Max**](https://www.kuantokusta.pt/p/10450054/amazon-fire-tv-stick-4k-max-2023) | ~64€ | Boa alternativa, Alexa integrada |
+| [**NVIDIA Shield TV Pro**](https://www.kuantokusta.pt/p/222187/nvidia-shield-tv-pro-2019-4k-hdr) | ~219€ | Máxima performance, uso intensivo |
+| [**Fire TV Stick Full HD**](https://www.kuantokusta.pt/p/11532006/amazon-fire-tv-stick-full-hd-2024) | ~30€ | Orçamento limitado, sem 4K |
 | **Telemóvel/Tablet Android** | — | Nuvio disponível na Play Store |
 
 ---
 
 ## Melhor Custo-Benefício
 
-### Chromecast com Google TV 4K
+### Xiaomi TV Box S (3ª geração)
 
-O mais recomendado pela comunidade PT para uso com Stremio e Nuvio. Corre Android TV nativo — os dois apps estão na Play Store. Suporta 4K, HDR, Dolby Vision e Dolby Atmos.
+A recomendação principal para a comunidade PT. Corre Google TV — o Stremio e o Nuvio estão disponíveis directamente na Play Store, sem sideload. Suporta 4K Ultra HD, HDR10+, Dolby Vision e Dolby Atmos. Armazenamento de 32 GB com WiFi dual-band.
 
-O **Nuvio está disponível directamente na Play Store** em Android TV/Google TV, o que facilita muito a instalação.
+O **Nuvio está na Play Store em Google TV**, o que torna a instalação simples.
 
-**Onde comprar em Portugal:** FNAC, Worten, Amazon.es (~50-60€).
+**[Ver no KuantoKusta →](https://www.kuantokusta.pt/p/11718346/xiaomi-tv-box-s-3rd-gen-4k-32gb-wifi)**
+
+---
+
+## Alternativa Sólida
 
 ### Fire TV Stick 4K Max
 
-Alternativa sólida. Mais rápido do que o Stick HD normal, suporta 4K HDR. O Stremio e o Nuvio instalam-se via sideload (com o Downloader) — ver [guia Nuvio](/guias/nuvio) para instruções de instalação.
+Boa alternativa se já estás no ecossistema Amazon. Mais rápido do que o Stick HD, suporta 4K HDR e WiFi 6E. O Stremio e o Nuvio instalam-se via sideload com o Downloader — ver [guia Nuvio](/guias/nuvio) para instruções.
 
 {{< callout type="warning" >}}
 A segunda geração do Fire TV Stick 4K Max tem um bug de compatibilidade com Dolby Vision Profile 7 — alguns streams aparecem com o ecrã dividido. Selecciona um stream alternativo se isso acontecer.
 {{< /callout >}}
 
-**Onde comprar:** Amazon.es (~55-70€, frequentemente em promoção).
+**[Ver no KuantoKusta →](https://www.kuantokusta.pt/p/10450054/amazon-fire-tv-stick-4k-max-2023)**
 
 ---
 
 ## Opção Económica
 
-### Fire TV Stick HD (3ª geração)
+### Fire TV Stick Full HD
 
-Para quem tem televisão sem 4K ou quer gastar o mínimo. Sem suporte 4K, mas corre o Stremio e o Nuvio sem problemas para conteúdo HD.
+Para quem tem televisão sem 4K ou quer gastar o mínimo. Sem suporte 4K, mas corre o Stremio e o Nuvio sem problemas para conteúdo HD. Instalação por sideload com o Downloader.
 
-**Onde comprar:** Amazon.es (~25-35€).
+**[Ver no KuantoKusta →](https://www.kuantokusta.pt/p/11532006/amazon-fire-tv-stick-full-hd-2024)**
 
 ---
 
@@ -62,11 +66,11 @@ Para quem tem televisão sem 4K ou quer gastar o mínimo. Sem suporte 4K, mas co
 
 ### NVIDIA Shield TV Pro
 
-O melhor dispositivo Android TV do mercado. CPU e GPU muito mais potentes do que qualquer stick — ideal para quem vê muito conteúdo 4K com upscaling por IA, Dolby Vision, e tem uma colecção Plex/Jellyfin local.
+O melhor dispositivo Android TV do mercado. CPU e GPU muito mais potentes do que qualquer stick — ideal para 4K com upscaling por IA, Dolby Vision, e colecções Plex/Jellyfin locais.
 
-Para uso com Stremio e Debrid, a diferença face ao Chromecast não é visível no dia-a-dia. Vale a pena se já usas o dispositivo para mais do que streaming.
+Para uso com Stremio e Debrid, a diferença face à Xiaomi Box não é visível no dia-a-dia. Vale a pena se usas o dispositivo para mais do que streaming.
 
-**Onde comprar:** Amazon.es, Amazon.de (~180-220€).
+**[Ver no KuantoKusta →](https://www.kuantokusta.pt/p/222187/nvidia-shield-tv-pro-2019-4k-hdr)**
 
 ---
 
@@ -95,6 +99,6 @@ O Stremio OS está disponível para Raspberry Pi 4 e 5 com o Stremio pré-instal
 
 ## Recomendação Final
 
-Para a maioria dos utilizadores portugueses: **Chromecast com Google TV 4K**. Tem o melhor equilíbrio entre preço, facilidade de instalação (Stremio e Nuvio na Play Store sem sideload) e performance para conteúdo 4K com Debrid.
+Para a maioria dos utilizadores portugueses: **[Xiaomi TV Box S (3ª geração)](https://www.kuantokusta.pt/p/11718346/xiaomi-tv-box-s-3rd-gen-4k-32gb-wifi)**. Tem o melhor equilíbrio entre preço (~56€), facilidade de instalação (Stremio e Nuvio na Play Store sem sideload) e performance para conteúdo 4K com Debrid.
 
-Se queres gastar menos: **Fire TV Stick HD**. Se queres o melhor sem orçamento: **NVIDIA Shield TV Pro**.
+Se queres gastar menos: **[Fire TV Stick Full HD](https://www.kuantokusta.pt/p/11532006/amazon-fire-tv-stick-full-hd-2024)**. Se queres o melhor sem orçamento: **[NVIDIA Shield TV Pro](https://www.kuantokusta.pt/p/222187/nvidia-shield-tv-pro-2019-4k-hdr)**.
