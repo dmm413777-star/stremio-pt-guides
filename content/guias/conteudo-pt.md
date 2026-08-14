@@ -1,14 +1,14 @@
 ---
 title: "Conteúdo Português: Filmes, Séries, Novelas e Animação"
 date: 2026-08-11
-description: "Addons de catálogo com conteúdo em Português de Portugal: Filmes/Séries/Novelas PT, Animação PT-PT e Pipocas TV: todos instalados automaticamente pelo QuickStart PT."
-tags: ["filmes", "séries", "novelas", "animação", "português", "stremio", "catálogo", "pipocas"]
+description: "Addons de catálogo com conteúdo em Português de Portugal: Filmes/Séries/Novelas PT, Animação PT-PT e PTGDrive — todos instalados automaticamente pelo QuickStart PT."
+tags: ["filmes", "séries", "novelas", "animação", "português", "stremio", "catálogo", "ptgdrive"]
 categorias: ["addons", "conteúdo-pt"]
 weight: 20
 tempo: "2 min"
 ---
 
-Estes três addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração, são instalados automaticamente pelo [QuickStart PT](/).
+Estes addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração, são instalados automaticamente pelo [QuickStart PT](/).
 
 ---
 
@@ -41,15 +41,15 @@ Suporta pesquisa e paginação.
 
 ---
 
-## Pipocas TV
+## PTGDrive
 
-**Addon:** Pipocas TV (Stremio)
+**Addon:** PTGDrive (v2.0.4) — criado por Viren, mantido por Phen0menal0ne
 
-Catálogo e streams de filmes e séries em Português de Portugal.
+Catálogo de filmes e séries em português alojado no Google Drive. Boa cobertura de conteúdo PT com múltiplas formas de navegação.
 
-{{< callout type="warning" >}}
-O servidor do Pipocas TV está alojado no Render.com (plano gratuito), que pode entrar em modo de espera quando não está a ser utilizado. Se a instalação pelo QuickStart falhar com erro de timeout, aguarda um minuto e tenta novamente. O servidor arranca automaticamente ao primeiro pedido.
-{{< /callout >}}
+**Oito catálogos:**
+- Filmes: por género, por ano, ordem alfabética, adicionados recentemente
+- Séries: por género, por ano, ordem alfabética, adicionadas recentemente
 
 ---
 
@@ -61,7 +61,7 @@ Todos estes addons são instalados automaticamente pelo [QuickStart PT](/). Para
 |---|---|
 | Filmes/Séries/Novelas PT | `filme-series-e-novelas-portuguesas.vercel.app/manifest.json` |
 | Animação PT-PT | `anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json` |
-| Pipocas TV | `pipocas-tv-stremio-addonv1.onrender.com/manifest.json` |
+| PTGDrive | `pt-pt-gdrive.newptdrive.workers.dev/manifest.json` |
 
 ---
 
