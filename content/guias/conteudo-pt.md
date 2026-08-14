@@ -1,14 +1,14 @@
 ---
-title: "Conteúdo Português — Filmes, Séries, Novelas e Animação"
+title: "Conteúdo Português: Filmes, Séries, Novelas e Animação"
 date: 2026-08-11
-description: "Addons de catálogo com conteúdo em Português de Portugal: Filmes/Séries/Novelas PT, Animação PT-PT e Pipocas TV — todos instalados automaticamente pelo QuickStart PT."
+description: "Addons de catálogo com conteúdo em Português de Portugal: Filmes/Séries/Novelas PT, Animação PT-PT e Pipocas TV: todos instalados automaticamente pelo QuickStart PT."
 tags: ["filmes", "séries", "novelas", "animação", "português", "stremio", "catálogo", "pipocas"]
 categorias: ["addons", "conteúdo-pt"]
 weight: 20
 tempo: "2 min"
 ---
 
-Estes três addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração — são instalados automaticamente pelo [QuickStart PT](/).
+Estes três addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração, são instalados automaticamente pelo [QuickStart PT](/).
 
 ---
 
@@ -31,7 +31,7 @@ Cada catálogo suporta pesquisa, filtro por género e paginação.
 
 **Addon:** `Kids Filmes e Series de Animacao PT-PT Addon Stremio` (v1.0.0)
 
-Filmes e séries de animação em PT-PT — indicado para crianças, mas com títulos para todas as idades.
+Filmes e séries de animação em PT-PT, indicado para crianças, mas com títulos para todas as idades.
 
 **Dois catálogos:**
 - Filmes Animação PT-PT
@@ -48,7 +48,7 @@ Suporta pesquisa e paginação.
 Catálogo e streams de filmes e séries em Português de Portugal.
 
 {{< callout type="warning" >}}
-O servidor do Pipocas TV está alojado no Render.com (plano gratuito), que pode entrar em modo de espera quando não está a ser utilizado. Se a instalação pelo QuickStart falhar com erro de timeout, aguarda um minuto e tenta novamente — o servidor arranca automaticamente ao primeiro pedido.
+O servidor do Pipocas TV está alojado no Render.com (plano gratuito), que pode entrar em modo de espera quando não está a ser utilizado. Se a instalação pelo QuickStart falhar com erro de timeout, aguarda um minuto e tenta novamente. O servidor arranca automaticamente ao primeiro pedido.
 {{< /callout >}}
 
 ---
@@ -67,5 +67,5 @@ Todos estes addons são instalados automaticamente pelo [QuickStart PT](/). Para
 
 ## Ver também
 
-- [Cotonet](/guias/cotonet) — filmes em português com catálogo extenso e múltiplas formas de ordenação
-- [TugaKids](/guias/tugakids) — conteúdo infantil em português com registo por e-mail
+- [Cotonet](/guias/cotonet): filmes em português com catálogo extenso e múltiplas formas de ordenação
+- [TugaKids](/guias/tugakids): conteúdo infantil em português com registo por e-mail

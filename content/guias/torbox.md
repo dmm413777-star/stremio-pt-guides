@@ -1,5 +1,5 @@
 ---
-title: "TorBox — Alternativa ao Real Debrid"
+title: "TorBox: Alternativa ao Real Debrid"
 date: 2025-01-01
 description: "Como comprar, ativar e configurar o TorBox no Stremio e Nuvio. O debrid mais económico, sem bloqueios por IP, ideal para partilhar com família."
 tags: ["torbox", "debrid", "real-debrid", "stremio", "torrentio"]
@@ -39,7 +39,7 @@ Usa **[este link](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a0
 Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
 {{< /callout >}}
 
-{{< fig-mobile src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" >}}TorBox pede confirmação para aplicar o código de referência — clica "Yes" para garantir os +84 dias.{{< /fig-mobile >}}
+{{< fig-mobile src="/images/torbox-referral-dialog.jpg" alt="Dialog de confirmação do código de referência TorBox" >}}TorBox pede confirmação para aplicar o código de referência. Clica "Yes" para garantir os +84 dias.{{< /fig-mobile >}}
 
 ### 2. Escolhe o plano
 
@@ -78,7 +78,7 @@ O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecere
 
 ## Resultado Final
 
-Após a instalação, os links com a tag **`[TB+]`** estão em **cache** — correm instantaneamente sem depender de seeds. Qualidade máxima, sem espera.
+Após a instalação, os links com a tag **`[TB+]`** estão em **cache** e correm instantaneamente sem depender de seeds. Qualidade máxima, sem espera.
 
 {{< img src="/images/stremio-tb-streams.jpg" alt="Lista de streams no Stremio com tags TB+ do TorBox" >}}
 
@@ -86,17 +86,17 @@ Após a instalação, os links com a tag **`[TB+]`** estão em **cache** — cor
 
 ## Configurar no AIOStreams
 
-Se usas o AIOStreams com o template do Tam-Taro, seleciona **TorBox** durante o assistente de configuração e cola a API Key quando pedida. O template adapta-se automaticamente — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+Se usas o AIOStreams com o template do Tam-Taro, seleciona **TorBox** durante o assistente de configuração e cola a API Key quando pedida. O template adapta-se automaticamente. Ver [guia AIOStreams](/guias/aiostreams-tamtaro).
 
 ---
 
 ## Se algo correr mal
 
-**Streams `[TB+]` não abrem ou dão erro** — a API Key pode ter expirado ou a subscrição acabou. Vai a [torbox.app/settings](https://torbox.app/settings?section=account), copia a chave actual e reinstala o addon com a nova key.
+**Streams `[TB+]` não abrem ou dão erro**. A API Key pode ter expirado ou a subscrição acabou. Vai a [torbox.app/settings](https://torbox.app/settings?section=account), copia a chave actual e reinstala o addon com a nova key.
 
-**Não aparecem streams `[TB+]`** — o ficheiro ainda não está em cache no TorBox. Tenta outro stream do mesmo conteúdo; o cache varia por ficheiro, não por título.
+**Não aparecem streams `[TB+]`:** o ficheiro ainda não está em cache no TorBox. Tenta outro stream do mesmo conteúdo; o cache varia por ficheiro, não por título.
 
-**Ecrã vermelho ao carregar stream** — verifica se a subscrição TorBox ainda está activa em [torbox.app](https://torbox.app).
+**Ecrã vermelho ao carregar stream**. Verifica se a subscrição TorBox ainda está activa em [torbox.app](https://torbox.app).
 
 ---
 

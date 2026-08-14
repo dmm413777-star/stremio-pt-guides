@@ -1,5 +1,5 @@
 ---
-title: "Cotonet — Filmes em Português de Portugal"
+title: "Cotonet: Filmes em Português de Portugal"
 date: 2026-08-11
 description: "O Cotonet disponibiliza um catálogo extenso de filmes em Português de Portugal no Stremio, com pesquisa, géneros e múltiplas formas de ordenação."
 tags: ["cotonet", "filmes", "português", "stremio", "catálogo"]
@@ -8,7 +8,7 @@ weight: 19
 tempo: "2 min"
 ---
 
-O **Cotonet** é um addon de catálogo e streams de filmes em Português de Portugal. É instalado automaticamente pelo QuickStart PT — não requer configuração.
+O **Cotonet** é um addon de catálogo e streams de filmes em Português de Portugal. É instalado automaticamente pelo QuickStart PT. Não requer configuração.
 
 {{< callout type="info" >}}
 Para mais informação sobre o Cotonet e novidades do addon, junta-te ao canal Telegram: [t.me/CotonetStremio](https://t.me/CotonetStremio)
@@ -22,11 +22,11 @@ O Cotonet disponibiliza **cinco catálogos** no ecrã inicial do Stremio:
 
 | Catálogo | Descrição |
 |---|---|
-| **Cotonet — Todos** | Todos os filmes disponíveis, com pesquisa e filtro por género |
-| **Cotonet — A-Z** | Ordenado alfabeticamente |
-| **Cotonet — Mais Recentes** | Filmes adicionados mais recentemente |
-| **Cotonet — Mais Antigos** | Filmes mais antigos da biblioteca |
-| **Cotonet — Melhor Avaliação** | Ordenado por avaliação |
+| Todos | Todos os filmes disponíveis, com pesquisa e filtro por género |
+| A-Z | Ordenado alfabeticamente |
+| Mais Recentes | Filmes adicionados mais recentemente |
+| Mais Antigos | Filmes mais antigos da biblioteca |
+| Melhor Avaliação | Ordenado por avaliação |
 
 **Géneros disponíveis:** Ação, Animação, Aventura, Comédia, Crime, Documentário, Drama, Fantasia, Ficção científica, Guerra, História, Mistério, Musical, Romance, Terror, Thriller, Western.
 
@@ -46,8 +46,8 @@ Para instalar manualmente:
 ## Notas
 
 - O Cotonet disponibiliza apenas **filmes** (não séries).
-- Os streams são externos — a disponibilidade pode variar por título.
-- O servidor está alojado no Hugging Face Spaces (gratuito) — pode haver momentos de latência acrescida durante a arranque.
+- Os streams são externos. A disponibilidade pode variar por título.
+- O servidor está alojado no Hugging Face Spaces (gratuito). Pode haver momentos de latência acrescida durante a arranque.
 
 ---
 

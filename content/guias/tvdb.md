@@ -1,5 +1,5 @@
 ---
-title: "TVDB API Key — Como Criar"
+title: "TVDB API Key: Como Criar"
 date: 2025-01-01
 description: "Como criar gratuitamente a tua API Key do TheTVDB, necessária para o AIOStreams e o AIOMetadata identificarem séries correctamente."
 tags: ["tvdb", "api-key", "metadata", "stremio"]
@@ -12,7 +12,7 @@ tempo: "5 min"
 **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio).
 {{< /callout >}}
 
-O TheTVDB é a base de dados de séries de televisão. O AIOStreams e o AIOMetadata usam esta chave para identificar correctamente séries, temporadas e episódios — especialmente útil para séries com nomes ambíguos ou animação.
+O TheTVDB é a base de dados de séries de televisão. O AIOStreams e o AIOMetadata usam esta chave para identificar correctamente séries, temporadas e episódios. Especialmente útil para séries com nomes ambíguos ou animação.
 
 **Tempo estimado: 5 min**
 
@@ -41,14 +41,14 @@ O TheTVDB é a base de dados de séries de televisão. O AIOStreams e o AIOMetad
 
 ## Onde Usar
 
-- **AIOStreams:** Cola no campo **TVDB API Key** durante o passo "Enter Credentials" do assistente — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
-- **AIOMetadata:** Cola no campo **TheTVDB** no separador Integrations — ver [guia AIOMetadata](/guias/aiometadata).
+- **AIOStreams:** Cola no campo **TVDB API Key** durante o passo "Enter Credentials" do assistente. Ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+- **AIOMetadata:** Cola no campo **TheTVDB** no separador Integrations. Ver [guia AIOMetadata](/guias/aiometadata).
 
 ---
 
 ## Próximo passo
 
-→ [AIOStreams + Template SEL](/guias/aiostreams-tamtaro) — instala e configura o addon principal de streams
+→ [AIOStreams + Template SEL](/guias/aiostreams-tamtaro). Instala e configura o addon principal de streams
 
 ---
 

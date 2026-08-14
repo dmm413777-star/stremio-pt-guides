@@ -22,7 +22,7 @@ tempo: "leitura"
 | [**Fire TV Stick 4K Max**](https://www.kuantokusta.pt/p/10450054/amazon-fire-tv-stick-4k-max-2023) | ~64€ | Boa alternativa, Alexa integrada |
 | [**NVIDIA Shield TV Pro**](https://www.kuantokusta.pt/p/222187/nvidia-shield-tv-pro-2019-4k-hdr) | ~219€ | Máxima performance, uso intensivo |
 | [**Fire TV Stick Full HD**](https://www.kuantokusta.pt/p/11532006/amazon-fire-tv-stick-full-hd-2024) | ~30€ | Orçamento limitado, sem 4K |
-| **Telemóvel/Tablet Android** | — | Nuvio disponível na Play Store |
+| **Telemóvel/Tablet Android** | n/a | Nuvio disponível na Play Store |
 
 ---
 
@@ -30,7 +30,7 @@ tempo: "leitura"
 
 ### Xiaomi TV Box S (3ª geração)
 
-A recomendação principal para a comunidade PT. Corre Google TV — o Stremio e o Nuvio estão disponíveis directamente na Play Store, sem sideload. Suporta 4K Ultra HD, HDR10+, Dolby Vision e Dolby Atmos. Armazenamento de 32 GB com WiFi dual-band.
+A recomendação principal para a comunidade PT. Corre Google TV. O Stremio e o Nuvio estão disponíveis directamente na Play Store, sem sideload. Suporta 4K Ultra HD, HDR10+, Dolby Vision e Dolby Atmos. Armazenamento de 32 GB com WiFi dual-band.
 
 O **Nuvio está na Play Store em Google TV**, o que torna a instalação simples.
 
@@ -42,10 +42,10 @@ O **Nuvio está na Play Store em Google TV**, o que torna a instalação simples
 
 ### Fire TV Stick 4K Max
 
-Boa alternativa se já estás no ecossistema Amazon. Mais rápido do que o Stick HD, suporta 4K HDR e WiFi 6E. O Stremio e o Nuvio instalam-se via sideload com o Downloader — ver [guia Nuvio](/guias/nuvio) para instruções.
+Boa alternativa se já estás no ecossistema Amazon. Mais rápido do que o Stick HD, suporta 4K HDR e WiFi 6E. O Stremio e o Nuvio instalam-se via sideload com o Downloader. Ver [guia Nuvio](/guias/nuvio) para instruções.
 
 {{< callout type="warning" >}}
-A segunda geração do Fire TV Stick 4K Max tem um bug de compatibilidade com Dolby Vision Profile 7 — alguns streams aparecem com o ecrã dividido. Selecciona um stream alternativo se isso acontecer.
+A segunda geração do Fire TV Stick 4K Max tem um bug de compatibilidade com Dolby Vision Profile 7. Alguns streams aparecem com o ecrã dividido. Selecciona um stream alternativo se isso acontecer.
 {{< /callout >}}
 
 **[Ver no KuantoKusta →](https://www.kuantokusta.pt/p/10450054/amazon-fire-tv-stick-4k-max-2023)**
@@ -66,7 +66,7 @@ Para quem tem televisão sem 4K ou quer gastar o mínimo. Sem suporte 4K, mas co
 
 ### NVIDIA Shield TV Pro
 
-O melhor dispositivo Android TV do mercado. CPU e GPU muito mais potentes do que qualquer stick — ideal para 4K com upscaling por IA, Dolby Vision, e colecções Plex/Jellyfin locais.
+O melhor dispositivo Android TV do mercado. CPU e GPU muito mais potentes do que qualquer stick: ideal para 4K com upscaling por IA, Dolby Vision, e colecções Plex/Jellyfin locais.
 
 Para uso com Stremio e Debrid, a diferença face à Xiaomi Box não é visível no dia-a-dia. Vale a pena se usas o dispositivo para mais do que streaming.
 
@@ -76,7 +76,7 @@ Para uso com Stremio e Debrid, a diferença face à Xiaomi Box não é visível 
 
 ## iPhone e iPad
 
-O Stremio está disponível na App Store como **Stremio Lite** — sem suporte a torrents directamente. Funciona bem com Debrid (HTTP streams). Para P2P tens de configurar um servidor de streaming noutro dispositivo.
+O Stremio está disponível na App Store como **Stremio Lite**: sem suporte a torrents directamente. Funciona bem com Debrid (HTTP streams). Para P2P tens de configurar um servidor de streaming noutro dispositivo.
 
 O **Nuvio não tem app iOS** de momento.
 
@@ -87,7 +87,7 @@ O **Nuvio não tem app iOS** de momento.
 - **Samsung Tizen** (2019+) e **LG WebOS** (2020+): Stremio disponível nas respectivas lojas de apps.
 - Modelos mais antigos: usa o Stremio Web em [web.stremio.com](https://web.stremio.com) pelo browser da TV, ou liga um stick externo.
 
-O desempenho do Stremio em TVs inteligentes costuma ser inferior ao de um stick externo — o hardware das TVs é menos potente e as apps recebem actualizações com mais atraso.
+O desempenho do Stremio em TVs inteligentes costuma ser inferior ao de um stick externo. O hardware das TVs é menos potente e as apps recebem actualizações com mais atraso.
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "AIOStreams — Legendas PT Incorporadas"
+title: "AIOStreams: Legendas PT Incorporadas"
 date: 2025-01-01
 description: "Como configurar o AIOStreams para dar prioridade a streams com legendas em português já embutidas no ficheiro, sem depender de addons externos."
 tags: ["aiostreams", "legendas", "português", "filtros", "stremio"]
@@ -15,7 +15,7 @@ tempo: "5 min"
 **Tempo estimado: 5 min**
 
 {{< callout type="warning" >}}
-**Antes de começares:** O AIOStreams já tem de estar instalado e configurado — ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+**Antes de começares:** O AIOStreams já tem de estar instalado e configurado. Ver [guia AIOStreams](/guias/aiostreams-tamtaro).
 {{< /callout >}}
 
 ---
@@ -27,7 +27,7 @@ Há dois modos:
 | Modo | O que faz |
 |---|---|
 | **Preferred** | Streams com legendas PT aparecem primeiro; os restantes também ficam visíveis |
-| **Required** | Só aparecem streams com legendas PT — lista mais limpa, mas pode estar vazia para conteúdo raro |
+| **Required** | Só aparecem streams com legendas PT. Lista mais limpa, mas pode estar vazia para conteúdo raro |
 
 ---
 
@@ -43,7 +43,7 @@ Antes de activar os filtros de legenda, garante que a ordenação dá prioridade
 
 ---
 
-## Modo Preferred — Legendas PT em Primeiro
+## Modo Preferred: Legendas PT em Primeiro
 
 Neste modo vês todos os streams, mas os que têm legendas PT aparecem no início da lista.
 
@@ -60,7 +60,7 @@ Nas definições do AIOStreams, vai a **Subtitle Filters → Preferred Subtitles
 
 ---
 
-## Modo Required — Só Streams com Legendas PT
+## Modo Required: Só Streams com Legendas PT
 
 Neste modo o AIOStreams cria um grupo separado ("Legendado PT") que mostra exclusivamente streams com legendas PT incorporadas. Os outros streams ficam num grupo diferente.
 
@@ -90,11 +90,11 @@ Podes combinar os dois: activa **Preferred** como base e testa **Required** para
 
 Se o conteúdo que queres não tiver legendas em PT embutidas, usa o SubMaker para gerar a tradução em tempo real:
 
-→ [SubMaker — Tradução de Legendas por IA](/guias/submaker)
+→ [SubMaker: Legendas por IA](/guias/submaker)
 
 ---
 
 ## Links
 
-- [Guia AIOStreams + Tam-Taro](/guias/aiostreams-tamtaro) — configuração base do AIOStreams
-- [SubMaker](/guias/submaker) — alternativa para traduzir legendas com IA quando não há legendas incorporadas
+- [Guia AIOStreams + Tam-Taro](/guias/aiostreams-tamtaro): configuração base
+- [SubMaker](/guias/submaker): alternativa quando não há legendas incorporadas

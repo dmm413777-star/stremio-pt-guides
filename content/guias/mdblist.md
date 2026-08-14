@@ -1,5 +1,5 @@
 ---
-title: "MDBList API Key — Como Criar"
+title: "MDBList API Key: Como Criar"
 date: 2025-01-01
 description: "Como criar gratuitamente a tua API Key do MDBList, necessária para o AIOMetadata ter acesso a listas curadas e catálogos personalizados."
 tags: ["mdblist", "api-key", "catálogos", "stremio"]
@@ -37,13 +37,13 @@ A conta gratuita tem um limite de pedidos por minuto suficiente para uso pessoal
 
 ## Onde Usar
 
-- **AIOMetadata:** Cola no campo **MDBList** no separador **Integrations** da página de configuração — ver [guia AIOMetadata](/guias/aiometadata).
+- **AIOMetadata:** Cola no campo **MDBList** no separador **Integrations** da página de configuração. Ver [guia AIOMetadata](/guias/aiometadata).
 
 ---
 
 ## Próximo passo
 
-→ [AIOMetadata — Catálogos Organizados](/guias/aiometadata)
+→ [AIOMetadata: Catálogos Organizados](/guias/aiometadata)
 
 ---
 

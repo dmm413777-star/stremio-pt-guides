@@ -13,7 +13,7 @@ weight: 18
 
 ---
 
-## SubMaker — Tradução de Legendas por IA
+## SubMaker: Tradução de Legendas por IA
 
 O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artificial (Google Gemini, ChatGPT, etc.). Ideal para quando não existem legendas PT disponíveis.
 
@@ -27,14 +27,14 @@ O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artifi
 
 ### Como Usar no Stremio
 
-O SubMaker não mostra a legenda imediatamente — funciona por pedido dentro do stream:
+O SubMaker não mostra a legenda imediatamente. Funciona por pedido dentro do stream:
 
 1. Abre o filme ou série.
 2. Na lista de legendas, vês opções com **"Criar [Portuguese]"**.
 3. **Antes de clicar:** Testa uma legenda em inglês para confirmar qual está sincronizada.
 4. Clica em **"Criar [Portuguese]"** correspondente à legenda correta.
 5. **Aguarda 20 a 30 segundos** (o sistema está a traduzir).
-6. Volta a selecionar a mesma legenda — o texto já aparece em português.
+6. Volta a selecionar a mesma legenda. O texto já aparece em português.
 
 {{< callout type="info" >}}
 **Dica:** Se a tradução parecer estranha ou falhar, clica **3 vezes rapidamente** na mesma legenda para forçar uma nova tradução.
@@ -42,11 +42,11 @@ O SubMaker não mostra a legenda imediatamente — funciona por pedido dentro do
 
 ---
 
-## Toast Translator + RPDB — Sinopses em PT e Ratings nos Posters
+## Toast Translator + RPDB: Sinopses em PT e Ratings nos Posters
 
 Este combo traduz títulos e sinopses para **Português de Portugal** e adiciona as pontuações do IMDb/Rotten Tomatoes diretamente nas capas dos filmes.
 
-### Passo 1 — Criar API Key TMDB (para as traduções)
+### Passo 1: Criar API Key TMDB (para as traduções)
 
 1. Cria conta e faz login em [themoviedb.org](https://www.themoviedb.org/).
 2. Clica no ícone de perfil → **Settings → API** (menu lateral).
@@ -62,7 +62,7 @@ Este combo traduz títulos e sinopses para **Português de Portugal** e adiciona
 Para um guia mais completo sobre a TMDB API Key, vê [aqui](/guias/tmdb).
 {{< /callout >}}
 
-### Passo 2 — Configurar o Toast Translator
+### Passo 2: Configurar o Toast Translator
 
 1. Abre a [Página de Configuração do Toast](https://0f693ad7dcba-toast-translator.baby-beamup.club/configure).
 2. **TMDB API Key:** Cola a key do passo anterior.
@@ -72,9 +72,9 @@ Para um guia mais completo sobre a TMDB API Key, vê [aqui](/guias/tmdb).
 
 ---
 
-## TugaKids — Conteúdo Infantil PT
+## TugaKids: Conteúdo Infantil PT
 
-O **TugaKids** é um addon com conteúdo infantil em português. O acesso é **automatizado** — ao registares, é gerado um link de instalação único enviado para o teu e-mail.
+O **TugaKids** é um addon com conteúdo infantil em português. O acesso é **automatizado**: ao registares, é gerado um link de instalação único enviado para o teu e-mail.
 
 ### Como Obter Acesso
 
@@ -86,7 +86,7 @@ O **TugaKids** é um addon com conteúdo infantil em português. O acesso é **a
 
 - **E-mail deve ser válido** e com espaço disponível.
 - **Evita padrões de spam:** e-mails com letras aleatórias ou muitos números são frequentemente bloqueados automaticamente.
-- **Evita aliases e domínios temporários** (Guerrilla Mail, etc.) — fazem parte de listas de spam e o acesso não é enviado mesmo que o sistema diga que foi.
+- **Evita aliases e domínios temporários** (Guerrilla Mail, etc.). Fazem parte de listas de spam e o acesso não é enviado mesmo que o sistema diga que foi.
 
 ---
 

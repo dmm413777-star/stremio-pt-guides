@@ -12,7 +12,7 @@ tempo: "15 min"
 **Créditos:** Templates SEL criados por **[Tam-Taro](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)** ([Ko-fi](https://ko-fi.com/tamtaro)). Guia adaptado em português pela comunidade.
 {{< /callout >}}
 
-O **AIOStreams** com o template SEL do Tam-Taro é o addon principal para obter streams no Stremio — agrega dezenas de fontes num só, com filtros e ordenação automáticos. É o primeiro addon a instalar depois do TorBox.
+O **AIOStreams** com o template SEL do Tam-Taro é o addon principal para obter streams no Stremio: agrega dezenas de fontes num só, com filtros e ordenação automáticos. É o primeiro addon a instalar depois do TorBox.
 
 **Tempo estimado: 15 min**
 
@@ -26,11 +26,11 @@ O **AIOStreams** com o template SEL do Tam-Taro é o addon principal para obter 
 
 O **AIOStreams** agrega dezenas de addons num só. Em vez de depender apenas do Torrentio ou do Real Debrid, consulta simultaneamente o Comet, MediaFusion, Peerflix, STorz e muitos outros.
 
-Com o **template SEL do Tam-Taro**, os filtros e ordenação são configurados automaticamente — sem teres de perceber cada opção. E o mais importante: tem um **modo P2P de fallback** que funciona mesmo quando o Debrid falha.
+Com o **template SEL do Tam-Taro**, os filtros e ordenação são configurados automaticamente: sem teres de perceber cada opção. E o mais importante: tem um **modo P2P de fallback** que funciona mesmo quando o Debrid falha.
 
 ---
 
-## Passo 1 — Escolher uma instância
+## Passo 1: Escolher uma instância
 
 Usa uma versão **Nightly** para teres as funcionalidades mais recentes:
 
@@ -44,7 +44,7 @@ Garante que a instância que escolhes tem o addon Torrentio a funcionar. Se não
 
 ---
 
-## Passo 2 — Importar o Template SEL
+## Passo 2: Importar o Template SEL
 
 Na página inicial do AIOStreams, vai à secção **Featured Templates** e seleciona **"Tamtaro Complete SEL Setup"**.
 
@@ -58,13 +58,13 @@ https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/
 
 {{< callout type="info" >}}
 **Template atual:** v3.0.4. Há dois disponíveis:
-- **Complete SEL Setup** — configuração completa (addons + filtros + formatter). Recomendado para quem começa.
-- **Partial SEL Setup** — importa apenas filtros/formatter, mantendo os teus addons atuais.
+- **Complete SEL Setup:** configuração completa (addons + filtros + formatter). Recomendado para quem começa.
+- **Partial SEL Setup:** importa apenas filtros/formatter, mantendo os teus addons atuais.
 {{< /callout >}}
 
 ---
 
-## Passo 3 — Assistente de Configuração
+## Passo 3: Assistente de Configuração
 
 Após importar, o AIOStreams abre um assistente. Seleciona **"Tamtaro Complete SEL Setup"** e percorre as opções:
 
@@ -88,7 +88,7 @@ Quer Debrid ativo **e** fallback P2P? Instala a instância duas vezes: uma com D
 
 ---
 
-## Passo 4 — Credenciais TMDB e TVDB
+## Passo 4: Credenciais TMDB e TVDB
 
 São **obrigatórias** para o matching correto de títulos e episódios:
 
@@ -105,11 +105,11 @@ Deixa as restantes opções nos valores padrão para o setup testado e recomenda
 
 ---
 
-## Passo 5 — Guardar e Instalar
+## Passo 5: Guardar e Instalar
 
 1. Clica em **Load Template**.
 2. Na página principal do AIOStreams, clica em **Save**.
-3. Clica em **Install** — o Stremio abre e adiciona o addon automaticamente.
+3. Clica em **Install**. O Stremio abre e adiciona o addon automaticamente.
 
 ---
 
@@ -130,11 +130,11 @@ Usar P2P direto sem Debrid expõe o teu IP na rede torrent. Em Portugal o impact
 
 ## Se algo correr mal
 
-**Não aparecem streams** — confirma que a instância que escolheste está online em [status.dinsden.top](https://status.dinsden.top/status/stremio-addons). Se estiver em baixo, muda para outra instância e reinstala.
+**Não aparecem streams**. Confirma que a instância que escolheste está online em [status.dinsden.top](https://status.dinsden.top/status/stremio-addons). Se estiver em baixo, muda para outra instância e reinstala.
 
-**Streams sem qualidade (só 480p/720p)** — sem Debrid, os streams dependem de seeders activos. Configura o [TorBox](/guias/torbox) para ter streams em cache de qualidade garantida.
+**Streams sem qualidade (só 480p/720p)**: sem Debrid, os streams dependem de seeders activos. Configura o [TorBox](/guias/torbox) para ter streams em cache de qualidade garantida.
 
-**Episódio errado ou série não identificada** — falta a TVDB API Key. Volta ao assistente, insere a chave no passo "Enter Credentials" e reinstala.
+**Episódio errado ou série não identificada?** Falta a TVDB API Key. Volta ao assistente, insere a chave no passo "Enter Credentials" e reinstala.
 
 ---
 
@@ -142,7 +142,7 @@ Usar P2P direto sem Debrid expõe o teu IP na rede torrent. Em Portugal o impact
 
 Com o AIOStreams configurado, organiza os catálogos do ecrã inicial:
 
-→ [AIOMetadata — Catálogos Organizados](/guias/aiometadata)
+→ [AIOMetadata: Catálogos Organizados](/guias/aiometadata)
 
 ---
 
@@ -151,4 +151,4 @@ Com o AIOStreams configurado, organiza os catálogos do ecrã inicial:
 - [GitHub do Tam-Taro (SEL)](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting)
 - [Ko-fi do Tam-Taro](https://ko-fi.com/tamtaro)
 - [Lista de instâncias AIOStreams](https://status.dinsden.top/status/stremio-addons)
-- [Guia AIOMetadata](/guias/aiometadata) — para catálogos organizados
+- [Guia AIOMetadata](/guias/aiometadata): catálogos organizados
