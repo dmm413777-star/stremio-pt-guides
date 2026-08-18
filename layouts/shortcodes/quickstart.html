@@ -556,6 +556,38 @@
 
   #qs-widget #qs-instance-select:focus { border-color: var(--qs-accent-light); }
   #qs-widget #qs-instance-select option { background: #1a1d27; }
+
+  #qs-widget .qs-svc-pill {
+    padding: 0.28rem 0.7rem;
+    border-radius: 16px;
+    font-size: 0.77rem;
+    border: 1.5px solid var(--qs-border);
+    background: var(--qs-surface2);
+    color: var(--qs-text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  #qs-widget .qs-svc-pill.active {
+    border-color: var(--qs-accent-light);
+    color: var(--qs-accent-light);
+    background: rgba(124, 58, 237, 0.1);
+  }
+
+  #qs-widget .fb-hint {
+    font-size: 0.78rem;
+    color: var(--qs-text-muted);
+    margin-top: 0.65rem;
+  }
+  #qs-widget .fb-hint summary {
+    cursor: pointer;
+    color: var(--qs-text-muted);
+    list-style: none;
+    padding: 0.1rem 0;
+  }
+  #qs-widget .fb-hint summary::before { content: '▸ '; }
+  #qs-widget .fb-hint[open] summary::before { content: '▾ '; }
+  #qs-widget .fb-hint p { margin: 0.4rem 0 0; line-height: 1.55; }
 </style>
 
 <div class="qs-intro">
@@ -597,6 +629,10 @@
   <div class="info-box">
     🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
   </div>
+  <details class="fb-hint">
+    <summary>Criaste conta com Facebook?</summary>
+    <p>O login com Facebook não é suportado aqui. Vai a <a href="https://www.stremio.com/reset-password" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">stremio.com/reset-password</a>, recupera a password por e-mail e usa essa password aqui. Os teus addons e preferências ficam intactos — o reset só define a password.</p>
+  </details>
 </div>
 
 <!-- Passo 2: Selecionar Pack -->
@@ -625,21 +661,39 @@
   <div style="margin-top:1rem;border-top:1px solid var(--qs-border);padding-top:0.85rem">
     <div style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.6rem">Modo de streams</div>
     <div style="display:flex;gap:0.5rem">
-      <button class="qs-mode-btn active" id="qs-mode-debrid" onclick="qsSetMode('debrid')">● Com TorBox (Debrid)</button>
+      <button class="qs-mode-btn active" id="qs-mode-debrid" onclick="qsSetMode('debrid')">● Com Debrid</button>
       <button class="qs-mode-btn" id="qs-mode-p2p" onclick="qsSetMode('p2p')">○ Sem Debrid (P2P)</button>
     </div>
 
     <!-- Debrid config -->
     <div id="qs-debrid-section" style="margin-top:0.75rem;background:var(--qs-surface2);border:1px solid var(--qs-border);border-radius:8px;padding:0.85rem">
-      <div style="margin-bottom:0.75rem;font-size:0.79rem;color:var(--qs-text-muted)">Serviço: <strong style="color:var(--qs-text)">TorBox</strong></div>
+      <!-- Seletor de serviço -->
+      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.75rem">
+        <label class="qs-svc-pill active" id="qs-svc-label-torbox" onclick="selectDebridService('torbox')">
+          <input type="radio" name="qs-debrid-svc" value="torbox" checked style="position:absolute;opacity:0;pointer-events:none">
+          TorBox <span style="font-size:0.65rem;background:var(--qs-accent);color:#fff;border-radius:3px;padding:0 0.3rem;margin-left:0.2rem;vertical-align:middle">Rec.</span>
+        </label>
+        <label class="qs-svc-pill" id="qs-svc-label-realdebrid" onclick="selectDebridService('realdebrid')">
+          <input type="radio" name="qs-debrid-svc" value="realdebrid" style="position:absolute;opacity:0;pointer-events:none">
+          Real-Debrid
+        </label>
+        <label class="qs-svc-pill" id="qs-svc-label-alldebrid" onclick="selectDebridService('alldebrid')">
+          <input type="radio" name="qs-debrid-svc" value="alldebrid" style="position:absolute;opacity:0;pointer-events:none">
+          AllDebrid
+        </label>
+        <label class="qs-svc-pill" id="qs-svc-label-premiumize" onclick="selectDebridService('premiumize')">
+          <input type="radio" name="qs-debrid-svc" value="premiumize" style="position:absolute;opacity:0;pointer-events:none">
+          Premiumize
+        </label>
+      </div>
       <div class="field" style="margin-bottom:0.35rem">
         <label for="qs-debrid-key" style="font-size:0.79rem;color:var(--qs-text-muted)">API Key</label>
-        <input type="password" id="qs-debrid-key" placeholder="Cole aqui a tua API Key" autocomplete="off">
+        <input type="password" id="qs-debrid-key" placeholder="API Key do TorBox" autocomplete="off">
       </div>
       <div style="min-height:1.3em;margin-bottom:0.4rem">
-        <span id="qs-torbox-validation" style="font-size:0.8125rem"></span>
+        <span id="qs-debrid-validation" style="font-size:0.8125rem"></span>
       </div>
-      <div style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
+      <div id="qs-debrid-links" style="font-size:0.76rem;color:var(--qs-text-muted);line-height:1.6">
         <a href="https://app.torbox.app/settings" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API key →</a>
         · Sem conta? <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a>
       </div>
@@ -754,6 +808,43 @@
   let qsFailedAddonIds = [];
   let generatedEmail = null;
 
+  const DEBRID_SERVICES = {
+    torbox: {
+      name: 'TorBox',
+      placeholder: 'API Key do TorBox',
+      links: '<a href="https://app.torbox.app/settings" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API key →</a> · Sem conta? <a href="https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Criar conta TorBox</a>',
+    },
+    realdebrid: {
+      name: 'Real-Debrid',
+      placeholder: 'API Token do Real-Debrid',
+      links: '<a href="https://real-debrid.com/apitoken" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API Token →</a>',
+    },
+    alldebrid: {
+      name: 'AllDebrid',
+      placeholder: 'API Key do AllDebrid',
+      links: '<a href="https://alldebrid.com/apikeys" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API Key →</a>',
+    },
+    premiumize: {
+      name: 'Premiumize',
+      placeholder: 'API Key do Premiumize',
+      links: '<a href="https://www.premiumize.me/account" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">Obter API Key →</a>',
+    },
+  };
+
+  window.selectDebridService = function(svc) {
+    const radio = document.querySelector(`input[name="qs-debrid-svc"][value="${svc}"]`);
+    if (radio) radio.checked = true;
+    document.querySelectorAll('.qs-svc-pill').forEach(p => p.classList.remove('active'));
+    const label = document.getElementById('qs-svc-label-' + svc);
+    if (label) label.classList.add('active');
+    const info = DEBRID_SERVICES[svc];
+    if (!info) return;
+    document.getElementById('qs-debrid-key').placeholder = info.placeholder;
+    document.getElementById('qs-debrid-key').value = '';
+    document.getElementById('qs-debrid-links').innerHTML = info.links;
+    document.getElementById('qs-debrid-validation').textContent = '';
+  };
+
   // Modo Debrid / P2P
   window.qsSetMode = function(mode) {
     const isDebrid = mode === 'debrid';
@@ -763,9 +854,9 @@
     document.getElementById('qs-p2p-section').style.display = isDebrid ? 'none' : 'block';
   };
 
-  // TorBox API key validation on blur — via Worker (TorBox bloqueia CORS directo)
+  // TorBox validation — via Worker (TorBox bloqueia CORS directo)
   async function validateTorboxKey(apiKey) {
-    const indicator = document.getElementById('qs-torbox-validation');
+    const indicator = document.getElementById('qs-debrid-validation');
     if (!apiKey) { indicator.textContent = ''; return; }
     indicator.textContent = '…';
     indicator.style.color = 'var(--qs-text-muted)';
@@ -790,9 +881,84 @@
     }
   }
 
+  // Real-Debrid — tem CORS aberto, valida directamente
+  async function validateRealDebridKey(apiKey) {
+    const indicator = document.getElementById('qs-debrid-validation');
+    if (!apiKey) { indicator.textContent = ''; return; }
+    indicator.textContent = '…';
+    indicator.style.color = 'var(--qs-text-muted)';
+    try {
+      const res = await qsFetchTimeout('https://api.real-debrid.com/rest/1.0/user', 8000, {
+        headers: { 'Authorization': 'Bearer ' + apiKey },
+      });
+      const data = await res.json();
+      if (data.username) {
+        indicator.textContent = '✅ Key válida · ' + data.username;
+        indicator.style.color = 'var(--qs-success)';
+      } else {
+        indicator.textContent = '❌ Key inválida';
+        indicator.style.color = 'var(--qs-error)';
+      }
+    } catch {
+      indicator.textContent = '⚠️ Não foi possível verificar';
+      indicator.style.color = 'var(--qs-warning)';
+    }
+  }
+
+  async function validateAllDebridKey(apiKey) {
+    const indicator = document.getElementById('qs-debrid-validation');
+    if (!apiKey) { indicator.textContent = ''; return; }
+    indicator.textContent = '…';
+    indicator.style.color = 'var(--qs-text-muted)';
+    try {
+      const res = await qsFetchTimeout(
+        'https://api.alldebrid.com/v4/user?agent=QuickStartPT&apikey=' + encodeURIComponent(apiKey), 8000
+      );
+      const data = await res.json();
+      if (data.status === 'success' && data.data?.user?.username) {
+        indicator.textContent = '✅ Key válida · ' + data.data.user.username;
+        indicator.style.color = 'var(--qs-success)';
+      } else {
+        indicator.textContent = '❌ Key inválida — ' + (data.error?.message || '');
+        indicator.style.color = 'var(--qs-error)';
+      }
+    } catch {
+      indicator.textContent = '⚠️ Não foi possível verificar';
+      indicator.style.color = 'var(--qs-warning)';
+    }
+  }
+
+  async function validatePremiumizeKey(apiKey) {
+    const indicator = document.getElementById('qs-debrid-validation');
+    if (!apiKey) { indicator.textContent = ''; return; }
+    indicator.textContent = '…';
+    indicator.style.color = 'var(--qs-text-muted)';
+    try {
+      const res = await qsFetchTimeout(
+        'https://www.premiumize.me/api/account/info?apikey=' + encodeURIComponent(apiKey), 8000
+      );
+      const data = await res.json();
+      if (data.status === 'success' && data.customer_id) {
+        indicator.textContent = '✅ Key válida';
+        indicator.style.color = 'var(--qs-success)';
+      } else {
+        indicator.textContent = '❌ Key inválida';
+        indicator.style.color = 'var(--qs-error)';
+      }
+    } catch {
+      indicator.textContent = '⚠️ Não foi possível verificar';
+      indicator.style.color = 'var(--qs-warning)';
+    }
+  }
+
   document.getElementById('qs-debrid-key').addEventListener('blur', e => {
     const svc = document.querySelector('input[name="qs-debrid-svc"]:checked')?.value;
-    if (svc === 'torbox') validateTorboxKey(e.target.value.trim());
+    const key = e.target.value.trim();
+    if (!key || !svc) return;
+    if (svc === 'torbox') validateTorboxKey(key);
+    else if (svc === 'realdebrid') validateRealDebridKey(key);
+    else if (svc === 'alldebrid') validateAllDebridKey(key);
+    else if (svc === 'premiumize') validatePremiumizeKey(key);
   });
 
   function getSelectedInstance() {
@@ -995,7 +1161,7 @@
     { type: 'opensubtitles-v3-plus', instanceId: '262', enabled: true, category: 'Subs', options: { name: 'OpenSubtitles V3+', timeout: 5000, resources: ['subtitles'], language: ['pt', 'en'], sources: 'all', includeAiTranslated: false, movieHashPlusAutoAdjustment: false } },
   ];
 
-  function buildAIOStreamsConfig(isDebrid, torboxKey) {
+  function buildAIOStreamsConfig(isDebrid, debridSvc, debridKey) {
     return {
       formatter: { id: 'tamtaro' },
       addonName: 'AIOStreams PT',
@@ -1021,8 +1187,8 @@
         cached: [],
         uncached: [],
       },
-      services: isDebrid && torboxKey
-        ? [{ id: 'torbox', enabled: true, credentials: { apiKey: torboxKey } }]
+      services: isDebrid && debridKey
+        ? [{ id: debridSvc, enabled: true, credentials: { apiKey: debridKey } }]
         : [],
       presets: isDebrid ? PRESETS_DEBRID : PRESETS_P2P,
       // Em modo debrid: esconde streams não-cached (evita "a fazer download" e "invalid token")
@@ -1227,10 +1393,12 @@
 
     const isDebrid = document.getElementById('qs-mode-debrid').classList.contains('active');
     const debridKey = document.getElementById('qs-debrid-key').value.trim();
+    const debridSvc = document.querySelector('input[name="qs-debrid-svc"]:checked')?.value || 'torbox';
     const aioSelected = selected.find(a => a.id === 'aiostreams');
 
     if (aioSelected && isDebrid && !debridKey) {
-      packErrorEl.textContent = 'Introduz a tua API key do TorBox para continuar em modo Debrid.';
+      const svcName = DEBRID_SERVICES[debridSvc]?.name || debridSvc;
+      packErrorEl.textContent = `Introduz a API key do ${svcName} para continuar em modo Debrid.`;
       packErrorEl.style.display = 'block';
       return;
     }
@@ -1265,7 +1433,7 @@
     if (aioSelected) {
       const aioRow = qsAddProgressRow(progressList, 'loading', '📡 AIOStreams — a criar configuração Tam-Taro SEL…');
       try {
-        const config = buildAIOStreamsConfig(isDebrid, debridKey);
+        const config = buildAIOStreamsConfig(isDebrid, debridSvc, debridKey);
         aioPassword = generateAIOPassword();
 
         // Chama o Worker proxy (resolve CORS — /api/v1/user não tem CORS headers)
@@ -1301,7 +1469,8 @@
         if (setData.error) throw new Error(setData.error);
 
         currentAddons = workingAddons;
-        const modeLabel = isDebrid ? ' + TorBox' : ' — modo P2P';
+        const svcName = DEBRID_SERVICES[debridSvc]?.name || debridSvc;
+        const modeLabel = isDebrid ? ` + ${svcName}` : ' — modo P2P';
         qsUpdateRow(aioRow, 'done', `📡 AIOStreams instalado com Tam-Taro SEL${modeLabel}`);
         results.push({ addon: aioSelected, ok: true });
         aioInstalled = true;
@@ -1563,7 +1732,7 @@
     const btnRow = document.getElementById('qs-btn-row-result');
     btnRow.style.display = 'flex';
     btnRow.innerHTML = `
-      <a href="https://app.strem.io" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
+      <a href="https://web.stremio.com" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
         <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
       </a>
       <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
