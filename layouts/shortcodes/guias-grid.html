@@ -20,6 +20,7 @@
   transform: translateY(-1px);
   text-decoration: none;
 }
+.gg-card[hidden] { display: none; }
 .gg-meta {
   font-size: 0.72rem;
   font-weight: 700;
@@ -51,100 +52,170 @@
   font-family: 'IBM Plex Mono', monospace;
 }
 .gg-section-label:first-child { margin-top: 0; }
+.gg-section-label[data-empty="true"] { display: none; }
+
+/* Filtros */
+.gg-filters {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.gg-filter-btn {
+  background: #1e2336;
+  border: 1px solid #2a3050;
+  border-radius: 20px;
+  color: #7a8aaa;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  letter-spacing: 0.03em;
+}
+.gg-filter-btn:hover {
+  background: #252c45;
+  color: #c0ccee;
+}
+.gg-filter-btn.active {
+  background: #2a3a6a;
+  border-color: #5b8dee;
+  color: #a8c0ff;
+}
 </style>
 
-<div class="gg-section-label">Essencial</div>
-<div class="gg-grid">
-  <a class="gg-card" href="{{ "guias/comecar-aqui/" | relURL }}" style="--gg-color:#5b8dee">
+<div class="gg-filters" id="gg-filters">
+  <button class="gg-filter-btn active" data-filter="tudo" onclick="ggFilter('tudo')">Tudo</button>
+  <button class="gg-filter-btn" data-filter="streams" onclick="ggFilter('streams')">📡 Streams</button>
+  <button class="gg-filter-btn" data-filter="debrid" onclick="ggFilter('debrid')">💾 Debrid</button>
+  <button class="gg-filter-btn" data-filter="catalogos" onclick="ggFilter('catalogos')">🗂️ Catálogos</button>
+  <button class="gg-filter-btn" data-filter="legendas" onclick="ggFilter('legendas')">💬 Legendas</button>
+  <button class="gg-filter-btn" data-filter="nuvio" onclick="ggFilter('nuvio')">📺 Nuvio</button>
+  <button class="gg-filter-btn" data-filter="familia" onclick="ggFilter('familia')">👨‍👩‍👧 Família</button>
+  <button class="gg-filter-btn" data-filter="referencia" onclick="ggFilter('referencia')">🔑 Referência</button>
+</div>
+
+<div class="gg-section-label" data-section="essencial">Essencial</div>
+<div class="gg-grid" data-section="essencial">
+  <a class="gg-card" href="{{ "guias/comecar-aqui/" | relURL }}" style="--gg-color:#5b8dee" data-cat="inicio">
     <div class="gg-meta">🚀 Início</div>
     <div class="gg-title">Começa Aqui</div>
     <div class="gg-desc">Nunca ouviste falar de Stremio? Em 5 minutos sabes o que é e qual o caminho mais rápido.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/aiostreams-tamtaro/" | relURL }}" style="--gg-color:#5b8dee">
+  <a class="gg-card" href="{{ "guias/aiostreams-tamtaro/" | relURL }}" style="--gg-color:#5b8dee" data-cat="streams">
     <div class="gg-meta">📡 Streams</div>
     <div class="gg-title">AIOStreams + Template Tam-Taro (SEL)</div>
     <div class="gg-desc">O addon principal. Template SEL pré-configurado com modo P2P e suporte a Debrid.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/torbox/" | relURL }}" style="--gg-color:#f0a500">
+  <a class="gg-card" href="{{ "guias/torbox/" | relURL }}" style="--gg-color:#f0a500" data-cat="debrid">
     <div class="gg-meta">💾 Debrid</div>
     <div class="gg-title">TorBox — Alternativa ao Real-Debrid</div>
     <div class="gg-desc">Streams 4K instantâneos sem P2P. ~28€/ano, conta partilhável com a família.</div>
   </a>
 </div>
 
-<div class="gg-section-label">Português</div>
-<div class="gg-grid">
-  <a class="gg-card" href="{{ "guias/aiometadata/" | relURL }}" style="--gg-color:#4ecb8d">
+<div class="gg-section-label" data-section="portugues">Português</div>
+<div class="gg-grid" data-section="portugues">
+  <a class="gg-card" href="{{ "guias/aiometadata/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="catalogos">
     <div class="gg-meta">🗂️ Catálogos</div>
     <div class="gg-title">AIOMetadata — Catálogos Organizados</div>
     <div class="gg-desc">Netflix, Disney+, Prime Video e Tendências no ecrã inicial do Stremio.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/submaker/" | relURL }}" style="--gg-color:#4ecb8d">
+  <a class="gg-card" href="{{ "guias/submaker/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="legendas">
     <div class="gg-meta">💬 Legendas</div>
     <div class="gg-title">SubMaker — Tradução por IA</div>
     <div class="gg-desc">Legendas automáticas em Português de Portugal geradas em tempo real por IA.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/toast-translator/" | relURL }}" style="--gg-color:#4ecb8d">
+  <a class="gg-card" href="{{ "guias/toast-translator/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="legendas">
     <div class="gg-meta">🌐 Interface</div>
     <div class="gg-title">Toast Translator</div>
     <div class="gg-desc">Sinopses e títulos em Português + ratings IMDb/Rotten Tomatoes nas capas.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/tugakids/" | relURL }}" style="--gg-color:#4ecb8d">
+  <a class="gg-card" href="{{ "guias/tugakids/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="familia">
     <div class="gg-meta">🧸 Família</div>
     <div class="gg-title">TugaKids — Conteúdo Infantil PT</div>
     <div class="gg-desc">Filmes e séries infantis dobrados em Português de Portugal.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/conteudo-pt/" | relURL }}" style="--gg-color:#4ecb8d">
+  <a class="gg-card" href="{{ "guias/conteudo-pt/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="catalogos">
     <div class="gg-meta">🎬 Conteúdo</div>
     <div class="gg-title">Filmes, Séries e Novelas PT</div>
     <div class="gg-desc">Addons com catálogo de conteúdo em Português: Cotonet, Animação PT-PT e mais.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/aiostreams-legendas-pt/" | relURL }}" style="--gg-color:#4ecb8d">
+  <a class="gg-card" href="{{ "guias/aiostreams-legendas-pt/" | relURL }}" style="--gg-color:#4ecb8d" data-cat="legendas">
     <div class="gg-meta">🏷️ Filtros</div>
     <div class="gg-title">AIOStreams — Legendas PT Embutidas</div>
     <div class="gg-desc">Configurar o AIOStreams para dar prioridade a streams com legendas já incorporadas.</div>
   </a>
 </div>
 
-<div class="gg-section-label">Nuvio</div>
-<div class="gg-grid">
-  <a class="gg-card" href="{{ "guias/nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+<div class="gg-section-label" data-section="nuvio">Nuvio</div>
+<div class="gg-grid" data-section="nuvio">
+  <a class="gg-card" href="{{ "guias/nuvio/" | relURL }}" style="--gg-color:#e05d7a" data-cat="nuvio">
     <div class="gg-meta">📺 App</div>
     <div class="gg-title">Nuvio — Guia de Início</div>
     <div class="gg-desc">Alternativa ao Stremio, popular em Android TV. Autoplay, interface limpa.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/clonar-perfil-nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+  <a class="gg-card" href="{{ "guias/clonar-perfil-nuvio/" | relURL }}" style="--gg-color:#e05d7a" data-cat="nuvio familia">
     <div class="gg-meta">👥 Família</div>
     <div class="gg-title">Clonar Perfil Nuvio</div>
     <div class="gg-desc">Copiar a tua configuração para um familiar sem repetir o setup do zero.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/migrar-para-nuvio/" | relURL }}" style="--gg-color:#e05d7a">
+  <a class="gg-card" href="{{ "guias/migrar-para-nuvio/" | relURL }}" style="--gg-color:#e05d7a" data-cat="nuvio">
     <div class="gg-meta">🔄 Migração</div>
     <div class="gg-title">Migrar do Stremio para Nuvio</div>
     <div class="gg-desc">Mover biblioteca, histórico e addons do Stremio para o Nuvio sem perder nada.</div>
   </a>
 </div>
 
-<div class="gg-section-label">Referência</div>
-<div class="gg-grid">
-  <a class="gg-card" href="{{ "guias/faq/" | relURL }}" style="--gg-color:#9b8dee">
+<div class="gg-section-label" data-section="referencia">Referência</div>
+<div class="gg-grid" data-section="referencia">
+  <a class="gg-card" href="{{ "guias/faq/" | relURL }}" style="--gg-color:#9b8dee" data-cat="referencia">
     <div class="gg-meta">❓ FAQ</div>
     <div class="gg-title">Perguntas Frequentes</div>
     <div class="gg-desc">Dúvidas comuns sobre Debrid, VPN, addons e o Stremio em geral.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/dispositivos/" | relURL }}" style="--gg-color:#9b8dee">
+  <a class="gg-card" href="{{ "guias/dispositivos/" | relURL }}" style="--gg-color:#9b8dee" data-cat="referencia">
     <div class="gg-meta">📱 Hardware</div>
     <div class="gg-title">Dispositivos Recomendados</div>
     <div class="gg-desc">O melhor hardware para usar Stremio e Nuvio na televisão, com preços PT.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/tmdb/" | relURL }}" style="--gg-color:#4a5578">
+  <a class="gg-card" href="{{ "guias/tmdb/" | relURL }}" style="--gg-color:#4a5578" data-cat="referencia">
     <div class="gg-meta">🔑 API</div>
     <div class="gg-title">TMDB API Key</div>
     <div class="gg-desc">Como criar a API Key gratuita do TMDB, necessária para o AIOMetadata.</div>
   </a>
-  <a class="gg-card" href="{{ "guias/mdblist/" | relURL }}" style="--gg-color:#4a5578">
+  <a class="gg-card" href="{{ "guias/mdblist/" | relURL }}" style="--gg-color:#4a5578" data-cat="referencia">
     <div class="gg-meta">🔑 API</div>
     <div class="gg-title">MDBList API Key</div>
     <div class="gg-desc">API Key gratuita do MDBList para listas curadas e catálogos personalizados.</div>
   </a>
 </div>
+
+<script>
+function ggFilter(cat) {
+  // update active button
+  document.querySelectorAll('.gg-filter-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.filter === cat);
+  });
+
+  var cards = document.querySelectorAll('.gg-card');
+  cards.forEach(function(card) {
+    if (cat === 'tudo') {
+      card.hidden = false;
+    } else {
+      var cats = (card.dataset.cat || '').split(' ');
+      card.hidden = !cats.includes(cat);
+    }
+  });
+
+  // hide section labels and grids that have no visible cards
+  document.querySelectorAll('[data-section]').forEach(function(el) {
+    var section = el.dataset.section;
+    var grid = document.querySelector('.gg-grid[data-section="' + section + '"]');
+    if (!grid) return;
+    var hasVisible = Array.from(grid.querySelectorAll('.gg-card')).some(function(c) { return !c.hidden; });
+    el.dataset.empty = hasVisible ? 'false' : 'true';
+    grid.hidden = !hasVisible;
+  });
+}
+</script>
