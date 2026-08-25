@@ -1246,7 +1246,7 @@
   const AIOMETADATA_URL = 'https://aiometadata.elfhosted.com';
 
   function buildAIOMetadataConfig() {
-    // Template do Tam-Taro para AIOMetadata (sem Hulu/Paramount+ — não disponíveis em PT)
+    // Sincronizado com a template do Tam-Taro (60 catálogos, sem Hulu — não disponível em PT)
     // Fonte: https://github.com/Tam-Taro/SEL-Filtering-and-Sorting
     const catalogs = [
       // ── Lançamentos e tendências globais ──────────────────────────────────
@@ -1254,7 +1254,7 @@
       {id:'mdblist.88434',  type:'series', name:'Trakt Trending',        enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.87667',  type:'movie',  name:'Trakt Trending',        enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.86710',  type:'series', name:'Latest Airing',         enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86934',  type:'movie',  name:'Latest Digital',        enabled:true, showInHome:true,  source:'mdblist', sort:'releasedigital',order:'asc',cacheTTL:43200},
+      {id:'mdblist.86934',  type:'movie',  name:'Latest Digital Release',enabled:true, showInHome:true,  source:'mdblist', sort:'releasedigital',order:'asc',cacheTTL:43200},
       {id:'tmdb.top',       type:'series', name:'TMDB Popular',          enabled:true, showInHome:true,  source:'tmdb',    sort:'default',      order:'asc'},
       {id:'tmdb.top',       type:'movie',  name:'TMDB Popular',          enabled:true, showInHome:true,  source:'tmdb',    sort:'default',      order:'asc'},
       {id:'tmdb.year',      type:'movie',  name:'TMDB By Year',          enabled:true, showInHome:false, source:'tmdb',    sort:'default',      order:'asc'},
@@ -1280,17 +1280,19 @@
       {id:'streaming.sst',  type:'series', name:'SkyShowtime (Paramount+) — Séries', enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      // ── Streaming MDBList (listas globais curadas) ────────────────────────
-      {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.88328',  type:'movie',  name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.86753',  type:'series', name:'Amazon Prime Latest',   enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86755',  type:'movie',  name:'Amazon Prime Latest',   enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.88319',  type:'series', name:'Apple TV+ Latest',      enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.88317',  type:'movie',  name:'Apple TV+ Latest',      enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.86758',  type:'series', name:'Disney+ Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86759',  type:'movie',  name:'Disney+ Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.89649',  type:'series', name:'HBO Max Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.89647',  type:'movie',  name:'HBO Max Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      // ── Streaming MDBList (listas curadas — sincronizadas com Tam-Taro) ──
+      {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88328',  type:'movie',  name:'Netflix Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86753',  type:'series', name:'Amazon Prime Latest',   enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86755',  type:'movie',  name:'Amazon Prime Latest',   enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.88319',  type:'series', name:'Apple TV+ Latest',      enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88317',  type:'movie',  name:'Apple TV+ Latest',      enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86758',  type:'series', name:'Disney+ Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86759',  type:'movie',  name:'Disney+ Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86761',  type:'series', name:'Paramount+ Latest',     enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86762',  type:'movie',  name:'Paramount+ Latest',     enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.89649',  type:'series', name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.89647',  type:'movie',  name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
       // ── Géneros ───────────────────────────────────────────────────────────
       {id:'mdblist.91213',  type:'series', name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.91211',  type:'movie',  name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
@@ -1354,7 +1356,10 @@
         ai_enabled: true,
         providers: { movie: 'tmdb.search', series: 'tvdb.search', anime_movie: 'mal.search.movie', anime_series: 'mal.search.series' },
         engineEnabled: { 'tmdb.search': true, 'tvdb.search': true, 'tvdb.collections.search': true, 'tvmaze.search': true, 'mal.search.movie': false, 'mal.search.series': false },
+        providerNames: { 'gemini.search': 'Smart Search' },
       },
+      streaming: ['cru'],
+      displayTypeOverrides: { movie: 'movie', series: 'series' },
       mdblistWatchTracking: true,
       hideUnreleasedDigitalSearch: false,
       catalogs,
