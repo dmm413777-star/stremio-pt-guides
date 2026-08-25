@@ -1267,19 +1267,19 @@
       // ── Kids ──────────────────────────────────────────────────────────────
       {id:'mdblist.88309',  type:'series', name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.88307',  type:'movie',  name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
-      // ── Streaming PT (disponibilidade por região) ─────────────────────────
-      {id:'streaming.nfx',  type:'movie',  name:'Netflix — Filmes',      enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.nfx',  type:'series', name:'Netflix — Séries',      enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.dnp',  type:'movie',  name:'Disney+ — Filmes',      enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.dnp',  type:'series', name:'Disney+ — Séries',      enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.amp',  type:'movie',  name:'Prime Video — Filmes',  enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.amp',  type:'series', name:'Prime Video — Séries',  enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.hbm',  type:'movie',  name:'Max — Filmes',          enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.hbm',  type:'series', name:'Max — Séries',          enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.sst',  type:'movie',  name:'SkyShowtime — Filmes',  enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.sst',  type:'series', name:'SkyShowtime — Séries',  enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',    enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',    enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      // ── Streaming PT (plataformas disponíveis em Portugal) ───────────────
+      {id:'streaming.nfx',  type:'movie',  name:'Netflix — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.nfx',  type:'series', name:'Netflix — Séries',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.dnp',  type:'movie',  name:'Disney+ — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.dnp',  type:'series', name:'Disney+ — Séries',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.amp',  type:'movie',  name:'Prime Video — Filmes',       enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.amp',  type:'series', name:'Prime Video — Séries',       enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.hbm',  type:'movie',  name:'Max — Filmes',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.hbm',  type:'series', name:'Max — Séries',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.sst',  type:'movie',  name:'SkyShowtime (Paramount+) — Filmes', enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.sst',  type:'series', name:'SkyShowtime (Paramount+) — Séries', enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
+      {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       // ── Streaming MDBList (listas globais curadas) ────────────────────────
       {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.88328',  type:'movie',  name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
@@ -1510,7 +1510,8 @@
 
           const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
           if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-          workingAddons = [...workingAddons, { transportUrl: aioMetaUrl, transportName: 'http', manifest, flags: {} }];
+          // Inserir no início para que os catálogos do AIOMetadata apareçam no topo do ecrã inicial
+          workingAddons = [{ transportUrl: aioMetaUrl, transportName: 'http', manifest, flags: {} }, ...workingAddons];
 
           const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
             method: 'POST',
@@ -1522,7 +1523,7 @@
           if (setData.error) throw new Error(setData.error);
 
           currentAddons = workingAddons;
-          qsUpdateRow(row, 'done', '🗂️ AIOMetadata configurado para PT — Netflix, Disney+, Max, TMDB e mais');
+          qsUpdateRow(row, 'done', '🗂️ AIOMetadata configurado — Netflix, Disney+, Max, Prime Video, SkyShowtime/Paramount+, Apple TV+ e mais');
           results.push({ addon, ok: true });
         } catch (err) {
           qsUpdateRow(row, 'err', '🗂️ AIOMetadata — ' + err.message);

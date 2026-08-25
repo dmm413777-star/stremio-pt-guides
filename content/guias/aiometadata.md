@@ -18,7 +18,7 @@ tempo: "10 min"
 
 ## O que é o AIOMetadata?
 
-O **AIOMetadata** é um addon **separado** do AIOStreams. O AIOStreams gere os streams (links de vídeo); o AIOMetadata gere os **catálogos** que aparecem no ecrã inicial do Stremio: Tendências globais, tops da Netflix, Disney+, Prime Video, listas sazonais e pesquisa por IA.
+O **AIOMetadata** é um addon **separado** do AIOStreams. O AIOStreams gere os streams (links de vídeo); o AIOMetadata gere os **catálogos** que aparecem no ecrã inicial do Stremio: Tendências globais, tops da Netflix, Disney+, Max (HBO), Prime Video, SkyShowtime/Paramount+, Apple TV+, listas sazonais e pesquisa por IA.
 
 {{< callout type="warning" >}}
 **Antes de começares:** Precisas de ter criado as tuas API Keys do [TMDB](/guias/tmdb), [TVDB](/guias/tvdb) e [MDBList](/guias/mdblist). Sem elas não consegues completar a configuração.
@@ -118,7 +118,9 @@ Se alterares algo no AIOMetadata mais tarde, não precisas de desinstalar e rein
 
 **"Max descriptor size reached" no Stremio**. Instala via StremThru Sidekick em vez de clicar em Install diretamente no AIOMetadata (ver Passo 4).
 
-**Catálogos não aparecem no ecrã inicial**. Verifica se o separador Integrations tem as 3 chaves obrigatórias preenchidas (TMDB, TVDB, MDBList). Uma chave em falta bloqueia os catálogos correspondentes.
+**Catálogos não aparecem no ecrã inicial**. Verifica se o separador Integrations tem as 3 chaves obrigatórias preenchidas (TMDB, TVDB, MDBList). Uma chave em falta bloqueia os catálogos correspondentes. Confirma também que o AIOMetadata está no topo da lista de addons no Cinebye (Passo 5) — se estiver no fundo, os catálogos aparecem depois de todos os outros.
+
+**Não vejo Max, SkyShowtime/Paramount+ ou Apple TV+**. Estas plataformas estão incluídas na config PT e aparecem no ecrã inicial. Se não aparecerem, verifica que instalaste via QuickStart (versão actualizada) ou reimporta o template do Tam-Taro.
 
 **Resultados duplicados:** o Cinemeta ainda está ativo. Desativa-o via Cinebye (ver Passo 5).
 
