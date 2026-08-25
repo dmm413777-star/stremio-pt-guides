@@ -1293,6 +1293,8 @@
       {id:'mdblist.86762',  type:'movie',  name:'Paramount+ Latest',     enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
       {id:'mdblist.89649',  type:'series', name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.89647',  type:'movie',  name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.88327',  type:'series', name:'Hulu Latest',           enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88326',  type:'movie',  name:'Hulu Latest',           enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
       // ── Géneros ───────────────────────────────────────────────────────────
       {id:'mdblist.91213',  type:'series', name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.91211',  type:'movie',  name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
@@ -1430,6 +1432,25 @@
     ]);
     let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
 
+    // Helper: extrair origem de URL para deduplicação quando não há manifest guardado
+    function urlOrigin(url) { try { return new URL(url).origin; } catch { return ''; } }
+
+    // Helper: guardar addon collection sem manifests para evitar "max descriptor size reached"
+    // O Stremio vai buscar os manifests dinamicamente ao transportUrl
+    async function qsSetAddons(addons) {
+      // Tentar primeiro sem manifests (slim) — evita o erro de tamanho em qualquer caso
+      const slim = addons.map(a => ({ transportUrl: a.transportUrl, transportName: a.transportName || 'http', flags: a.flags || {} }));
+      const res = await fetch('https://api.strem.io/api/addonCollectionSet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authKey, addons: slim }),
+      });
+      if (!res.ok) throw new Error('Erro ao guardar na conta Stremio (HTTP ' + res.status + ')');
+      const data = await res.json();
+      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
+      return data;
+    }
+
     // AIOStreams: criar conta via API com config Tam-Taro pré-configurado
     let aioInstalled = false;
     let aioManifestUrl = null;
@@ -1460,19 +1481,12 @@
         if (!mRes.ok) throw new Error('Manifest inacessível após criação');
         const manifest = await mRes.json();
 
-        const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+        const aioOrigin = urlOrigin(aioManifestUrl);
+        const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (aioOrigin && urlOrigin(a.transportUrl) === aioOrigin));
         if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-        workingAddons = [...workingAddons, { transportUrl: aioManifestUrl, transportName: 'http', manifest, flags: {} }];
+        workingAddons = [...workingAddons, { transportUrl: aioManifestUrl, transportName: 'http', flags: {} }];
 
-        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ authKey, addons: workingAddons }),
-        });
-        if (!setRes.ok) throw new Error(`Erro ao guardar na conta Stremio (HTTP ${setRes.status})`);
-        const setData = await setRes.json();
-        if (setData.error) throw new Error(setData.error);
-
+        await qsSetAddons(workingAddons);
         currentAddons = workingAddons;
         const svcName = DEBRID_SERVICES[debridSvc]?.name || debridSvc;
         const modeLabel = isDebrid ? ` + ${svcName}` : ' — modo P2P';
@@ -1513,20 +1527,13 @@
           if (!mRes.ok) throw new Error('Manifest inacessível após criação');
           const manifest = await mRes.json();
 
-          const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+          const metaOrigin = urlOrigin(aioMetaUrl);
+          const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (metaOrigin && urlOrigin(a.transportUrl) === metaOrigin));
           if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-          // Inserir no início para que os catálogos do AIOMetadata apareçam no topo do ecrã inicial
-          workingAddons = [{ transportUrl: aioMetaUrl, transportName: 'http', manifest, flags: {} }, ...workingAddons];
+          // Inserir no início (sem manifest) para AIOMetadata aparecer no topo + evitar "max descriptor size"
+          workingAddons = [{ transportUrl: aioMetaUrl, transportName: 'http', flags: {} }, ...workingAddons];
 
-          const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ authKey, addons: workingAddons }),
-          });
-          if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
-          const setData = await setRes.json();
-          if (setData.error) throw new Error(setData.error);
-
+          await qsSetAddons(workingAddons);
           currentAddons = workingAddons;
           qsUpdateRow(row, 'done', '🗂️ AIOMetadata configurado — Netflix, Disney+, Max, Prime Video, SkyShowtime/Paramount+, Apple TV+ e mais');
           results.push({ addon, ok: true });
@@ -1555,19 +1562,12 @@
           if (!mRes.ok) throw new Error('Manifest Toast inacessível');
           const manifest = await mRes.json();
 
-          const existingIdx = workingAddons.findIndex(a => a.manifest?.id === manifest.id);
+          const toastOrigin = urlOrigin(toastUrl);
+          const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (toastOrigin && urlOrigin(a.transportUrl) === toastOrigin));
           if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-          workingAddons = [...workingAddons, { transportUrl: toastUrl, transportName: 'http', manifest, flags: {} }];
+          workingAddons = [...workingAddons, { transportUrl: toastUrl, transportName: 'http', flags: {} }];
 
-          const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ authKey, addons: workingAddons }),
-          });
-          if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
-          const setData = await setRes.json();
-          if (setData.error) throw new Error(setData.error);
-
+          await qsSetAddons(workingAddons);
           currentAddons = workingAddons;
           qsUpdateRow(row, 'done', '🌐 Toast Translator configurado — Cinemeta em PT-PT');
           results.push({ addon, ok: true });
@@ -1608,19 +1608,12 @@
           if (!smMRes.ok) throw new Error('SubMaker inacessível');
           const smManifest = await smMRes.json();
 
-          const smIdx = workingAddons.findIndex(a => a.manifest?.id === smManifest.id);
+          const smOrigin = urlOrigin(smManifestUrl);
+          const smIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === smManifest.id) || (smOrigin && urlOrigin(a.transportUrl) === smOrigin));
           if (smIdx !== -1) workingAddons.splice(smIdx, 1);
-          workingAddons = [...workingAddons, { transportUrl: smManifestUrl, transportName: 'http', manifest: smManifest, flags: {} }];
+          workingAddons = [...workingAddons, { transportUrl: smManifestUrl, transportName: 'http', flags: {} }];
 
-          const smSetRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ authKey, addons: workingAddons }),
-          });
-          if (!smSetRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + smSetRes.status + ')');
-          const smSetData = await smSetRes.json();
-          if (smSetData.error) throw new Error(smSetData.error);
-
+          await qsSetAddons(workingAddons);
           currentAddons = workingAddons;
           if (smConfigured) {
             qsUpdateRow(row, 'done', '💬 SubMaker configurado para PT — pronto a usar');
@@ -1641,8 +1634,11 @@
         let manifest;
         try { manifest = await mRes.json(); } catch { throw new Error('Resposta inválida do servidor do addon'); }
 
+        const addonOrigin = urlOrigin(addon.manifestUrl);
         const existingIdx = workingAddons.findIndex(
-          a => a.manifest?.id === manifest.id || a.transportUrl === addon.manifestUrl
+          a => (a.manifest?.id && a.manifest.id === manifest.id) ||
+               a.transportUrl === addon.manifestUrl ||
+               (addonOrigin && urlOrigin(a.transportUrl) === addonOrigin)
         );
         const alreadyInstalled = existingIdx !== -1;
 
@@ -1653,18 +1649,9 @@
         }
         if (alreadyInstalled && removePrevious) workingAddons.splice(existingIdx, 1);
 
-        const newAddon = { transportUrl: addon.manifestUrl, transportName: 'http', manifest, flags: {} };
-        workingAddons = [...workingAddons, newAddon];
+        workingAddons = [...workingAddons, { transportUrl: addon.manifestUrl, transportName: 'http', flags: {} }];
 
-        const setRes = await fetch('https://api.strem.io/api/addonCollectionSet', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ authKey, addons: workingAddons }),
-        });
-        if (!setRes.ok) throw new Error('Erro ao guardar na conta (HTTP ' + setRes.status + ')');
-        const setData = await setRes.json();
-        if (setData.error) throw new Error(setData.error);
-
+        await qsSetAddons(workingAddons);
         currentAddons = workingAddons;
         qsUpdateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
         results.push({ addon, ok: true });
