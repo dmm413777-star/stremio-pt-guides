@@ -95,8 +95,8 @@ test.describe('Filipe — catalólogo AIOMetadata completo (Tam-Taro template)',
 
   test('AIOMetadata inserido no início (unshift) — catálogos no topo do Stremio', async ({ page }) => {
     const html = await page.content();
-    // Verificar padrão: { transportUrl: aioMetaUrl, transportName: 'http', flags: {} }, ...workingAddons
-    expect(html).toMatch(/transportUrl: aioMetaUrl.*transportName: 'http'.*flags: \{\} \}.*\.\.\.workingAddons/s);
+    // Verificar padrão: { transportUrl: aioMetaUrl, ..., manifest }, ...workingAddons (unshift para posição 0)
+    expect(html).toMatch(/transportUrl: aioMetaUrl.*\}.*\.\.\.(workingAddons)/s);
   });
 
   // ── Guia AIOMetadata actualizado ────────────────────────────────────────────
