@@ -612,8 +612,16 @@
 <!-- Passo 1: Login -->
 <div class="card" id="qs-card-login">
   <div class="card-header">
-    <div class="card-title">Login Stremio</div>
+    <div class="card-title" id="qs-login-title">Login Stremio</div>
     <span class="account-pill" id="qs-account-pill" style="display:none" aria-live="polite"></span>
+  </div>
+  <!-- Platform toggle -->
+  <div style="margin-bottom:1rem">
+    <div style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.5rem">Instalar em</div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="qs-mode-btn active" id="qs-plat-stremio" onclick="qsSetPlatform('stremio')">🎬 Stremio</button>
+      <button class="qs-mode-btn" id="qs-plat-nuvio" onclick="qsSetPlatform('nuvio')">📺 Nuvio</button>
+    </div>
   </div>
   <div class="field">
     <label for="qs-inp-email">E-mail</label>
@@ -626,7 +634,7 @@
   <button class="btn" id="qs-btn-login">Entrar</button>
   <button class="btn btn-ghost" id="qs-btn-generate" style="margin-top:0.5rem">🎲 Criar conta gratuita aleatória</button>
   <div class="status-line" id="qs-login-status" aria-live="polite"></div>
-  <div class="info-box">
+  <div class="info-box" id="qs-login-info-box">
     🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
   </div>
   <details class="fb-hint">
@@ -731,7 +739,7 @@
   <div class="btn-row" id="qs-btn-row-result" style="display:none"></div>
 </div>
 
-<div class="qs-footer">
+<div class="qs-footer" id="qs-footer">
   Os addons são instalados na tua conta Stremio como se usasses o cliente oficial.<br>
   Para remover: Stremio → Addons → ⚙️ → Uninstall.
 </div>
@@ -796,6 +804,10 @@
   // Ver instruções de deploy em static/tools/quickstart/worker/index.js
   const PROXY_URL = 'https://aiostreams-pt-proxy.mire-freckle.workers.dev';
 
+  // Nuvio — Supabase backend (anon key é público, visível em nuvio.tv/config.js)
+  const NUVIO_API = 'https://api.nuvio.tv';
+  const NUVIO_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzgxNTIxMzQ2LCJleHAiOjE5MzkyMDEzNDZ9.tmQaj682pwzehpqlgCDMnySOqiUvpgRbrE43T4VJpDI';
+
   const INSTANCES = [
     { name: "Midnight's Nightly (recomendada)", url: "https://aiostreamsfortheweebs.midnightignite.me" },
     { name: "Yeb's Nightly",                    url: "https://aiostreams-nightly.fortheweak.cloud" },
@@ -807,6 +819,12 @@
   let currentAddons = [];
   let qsFailedAddonIds = [];
   let generatedEmail = null;
+
+  // Platform state
+  let currentPlatform = 'stremio';
+  let nuvioToken = null;
+  let nuvioUserId = null;
+  let nuvioCurrentAddons = [];
 
   const DEBRID_SERVICES = {
     torbox: {
@@ -843,6 +861,26 @@
     document.getElementById('qs-debrid-key').value = '';
     document.getElementById('qs-debrid-links').innerHTML = info.links;
     document.getElementById('qs-debrid-validation').textContent = '';
+  };
+
+  // Plataforma: Stremio / Nuvio
+  window.qsSetPlatform = function(platform) {
+    currentPlatform = platform;
+    const isNuvio = platform === 'nuvio';
+    document.getElementById('qs-plat-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('qs-plat-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('qs-login-title').textContent = isNuvio ? 'Login Nuvio' : 'Login Stremio';
+    document.getElementById('qs-btn-generate').style.display = isNuvio ? 'none' : '';
+    document.getElementById('qs-login-info-box').innerHTML = isNuvio
+      ? '🔒 As credenciais comunicam directamente com <code>api.nuvio.tv</code> — o servidor oficial do Nuvio. Não são guardadas nem registadas em lado nenhum.'
+      : '🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.';
+    document.getElementById('qs-footer').innerHTML = isNuvio
+      ? 'Os addons são instalados na tua conta Nuvio.<br>Para remover: Nuvio → Settings → Content &amp; Discovery → Addons → remover.'
+      : 'Os addons são instalados na tua conta Stremio como se usasses o cliente oficial.<br>Para remover: Stremio → Addons → ⚙️ → Uninstall.';
+    // Reset login state when switching platforms
+    authKey = null; nuvioToken = null; nuvioUserId = null;
+    document.getElementById('qs-account-pill').style.display = 'none';
+    qsSetStatus(document.getElementById('qs-login-status'), '', '');
   };
 
   // Modo Debrid / P2P
@@ -1082,9 +1120,16 @@
       return;
     }
 
+    if (currentPlatform === 'nuvio') {
+      await qsDoNuvioLogin(email, pass, statusEl, btn);
+    } else {
+      await qsDoStremioLogin(email, pass, statusEl, btn);
+    }
+  }
+
+  async function qsDoStremioLogin(email, pass, statusEl, btn) {
     btn.disabled = true;
     qsSetStatus(statusEl, '', 'A verificar conta…');
-
     try {
       const res = await fetch('https://api.strem.io/api/login', {
         method: 'POST',
@@ -1124,11 +1169,88 @@
       qsSetStepState(2, 'active');
       qsActivateCard('qs-card-pack');
       qsScrollTo('qs-card-pack');
-
     } catch (err) {
       qsSetStatus(statusEl, 'err', err.message || 'Erro ao ligar ao Stremio. Tenta novamente.');
       btn.disabled = false;
     }
+  }
+
+  async function qsDoNuvioLogin(email, pass, statusEl, btn) {
+    btn.disabled = true;
+    qsSetStatus(statusEl, '', 'A verificar conta Nuvio…');
+    try {
+      const res = await qsFetchTimeout(`${NUVIO_API}/auth/v1/token?grant_type=password`, 12000, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': NUVIO_ANON_KEY },
+        body: JSON.stringify({ email, password: pass }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error_description || d.msg || 'E-mail ou password incorretos.');
+      }
+      const data = await res.json();
+      nuvioToken = data.access_token;
+      nuvioUserId = data.user?.id;
+
+      const addonsData = await nuvioFetch(
+        `/rest/v1/addons?select=*&user_id=eq.${encodeURIComponent(nuvioUserId)}&profile_id=eq.1&order=sort_order.asc,created_at.asc`
+      );
+      nuvioCurrentAddons = Array.isArray(addonsData) ? addonsData : [];
+
+      qsSetStatus(statusEl, 'ok', '✓ Conta Nuvio verificada — ' + nuvioCurrentAddons.length + ' addon(s) instalados.');
+      const pill = document.getElementById('qs-account-pill');
+      pill.textContent = '✓ ' + (email.length > 22 ? email.slice(0, 20) + '…' : email);
+      pill.style.display = 'inline-flex';
+
+      qsSetStepState(1, 'done');
+      qsSetStepState(2, 'active');
+      qsActivateCard('qs-card-pack');
+      qsScrollTo('qs-card-pack');
+    } catch (err) {
+      qsSetStatus(statusEl, 'err', err.message || 'Erro ao ligar ao Nuvio. Tenta novamente.');
+      btn.disabled = false;
+    }
+  }
+
+  // Authenticated Nuvio Supabase REST call
+  async function nuvioFetch(path, opts = {}) {
+    const { timeout: ms = 12000, headers: extraHeaders = {}, ...rest } = opts;
+    const headers = {
+      'apikey': NUVIO_ANON_KEY,
+      'Authorization': 'Bearer ' + nuvioToken,
+      'Content-Type': 'application/json',
+      ...extraHeaders,
+    };
+    const res = await qsFetchTimeout(NUVIO_API + path, ms, { ...rest, headers });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      throw new Error(d.message || d.error || 'Erro Nuvio (HTTP ' + res.status + ')');
+    }
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  }
+
+  // Install a single addon to Nuvio; returns {skipped: bool}
+  async function nuvioInstallAddon(manifestUrl, manifest, { removePrevious = false, sortOrder = null } = {}) {
+    const addonId = manifest?.id || manifestUrl;
+    const name = manifest?.name || (new URL(manifestUrl).hostname);
+
+    const existing = nuvioCurrentAddons.find(a => a.url === manifestUrl || (addonId && a.addon_id === addonId));
+    if (existing) {
+      if (!removePrevious) return { skipped: true };
+      await nuvioFetch(`/rest/v1/addons?id=eq.${encodeURIComponent(existing.id)}&profile_id=eq.1`, { method: 'DELETE' });
+      nuvioCurrentAddons = nuvioCurrentAddons.filter(a => a.id !== existing.id);
+    }
+
+    const order = sortOrder !== null ? sortOrder : nuvioCurrentAddons.length;
+    const result = await nuvioFetch('/rest/v1/addons', {
+      method: 'POST',
+      headers: { 'Prefer': 'return=representation' },
+      body: JSON.stringify([{ user_id: nuvioUserId, profile_id: 1, addon_id: addonId, url: manifestUrl, name, enabled: true, sort_order: order }]),
+    });
+    const inserted = Array.isArray(result) ? result[0] : result;
+    if (inserted) nuvioCurrentAddons.push(inserted);
+    return { skipped: false };
   }
 
   function generateAIOPassword() {
@@ -1413,6 +1535,7 @@
 
     const removePrevious = document.getElementById('qs-opt-clean').checked;
     const instance = getSelectedInstance();
+    const isNuvio = currentPlatform === 'nuvio';
 
     qsDeactivateCard('qs-card-pack');
     qsSetStepState(2, 'done');
@@ -1523,13 +1646,16 @@
         if (!mRes.ok) throw new Error('Manifest inacessível após criação');
         const manifest = await mRes.json();
 
-        const aioOrigin = urlOrigin(aioManifestUrl);
-        const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (aioOrigin && urlOrigin(a.transportUrl) === aioOrigin));
-        if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-        workingAddons = [...workingAddons, { transportUrl: aioManifestUrl, transportName: 'http', flags: {}, manifest }];
-
-        await qsSetAddons(workingAddons);
-        currentAddons = workingAddons;
+        if (isNuvio) {
+          await nuvioInstallAddon(aioManifestUrl, manifest, { removePrevious: true });
+        } else {
+          const aioOrigin = urlOrigin(aioManifestUrl);
+          const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (aioOrigin && urlOrigin(a.transportUrl) === aioOrigin));
+          if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+          workingAddons = [...workingAddons, { transportUrl: aioManifestUrl, transportName: 'http', flags: {}, manifest }];
+          await qsSetAddons(workingAddons);
+          currentAddons = workingAddons;
+        }
         const svcName = DEBRID_SERVICES[debridSvc]?.name || debridSvc;
         const modeLabel = isDebrid ? ` + ${svcName}` : ' — modo P2P';
         qsUpdateRow(aioRow, 'done', `📡 AIOStreams instalado com Tam-Taro SEL${modeLabel}`);
@@ -1569,14 +1695,18 @@
           if (!mRes.ok) throw new Error('Manifest inacessível após criação');
           const manifest = await mRes.json();
 
-          const metaOrigin = urlOrigin(aioMetaUrl);
-          const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (metaOrigin && urlOrigin(a.transportUrl) === metaOrigin));
-          if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-          // Inserir no início para AIOMetadata aparecer no topo
-          workingAddons = [{ transportUrl: aioMetaUrl, transportName: 'http', flags: {}, manifest }, ...workingAddons];
-
-          await qsSetAddons(workingAddons);
-          currentAddons = workingAddons;
+          if (isNuvio) {
+            // sort_order 0 para AIOMetadata aparecer no topo no Nuvio
+            await nuvioInstallAddon(aioMetaUrl, manifest, { removePrevious: true, sortOrder: 0 });
+          } else {
+            const metaOrigin = urlOrigin(aioMetaUrl);
+            const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (metaOrigin && urlOrigin(a.transportUrl) === metaOrigin));
+            if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+            // Inserir no início para AIOMetadata aparecer no topo
+            workingAddons = [{ transportUrl: aioMetaUrl, transportName: 'http', flags: {}, manifest }, ...workingAddons];
+            await qsSetAddons(workingAddons);
+            currentAddons = workingAddons;
+          }
           qsUpdateRow(row, 'done', '🗂️ AIOMetadata configurado — Netflix, Disney+, Max, Prime Video, SkyShowtime/Paramount+, Apple TV+ e mais');
           results.push({ addon, ok: true });
         } catch (err) {
@@ -1604,13 +1734,16 @@
           if (!mRes.ok) throw new Error('Manifest Toast inacessível');
           const manifest = await mRes.json();
 
-          const toastOrigin = urlOrigin(toastUrl);
-          const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (toastOrigin && urlOrigin(a.transportUrl) === toastOrigin));
-          if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
-          workingAddons = [...workingAddons, { transportUrl: toastUrl, transportName: 'http', flags: {}, manifest }];
-
-          await qsSetAddons(workingAddons);
-          currentAddons = workingAddons;
+          if (isNuvio) {
+            await nuvioInstallAddon(toastUrl, manifest, { removePrevious });
+          } else {
+            const toastOrigin = urlOrigin(toastUrl);
+            const existingIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === manifest.id) || (toastOrigin && urlOrigin(a.transportUrl) === toastOrigin));
+            if (existingIdx !== -1) workingAddons.splice(existingIdx, 1);
+            workingAddons = [...workingAddons, { transportUrl: toastUrl, transportName: 'http', flags: {}, manifest }];
+            await qsSetAddons(workingAddons);
+            currentAddons = workingAddons;
+          }
           qsUpdateRow(row, 'done', '🌐 Toast Translator configurado — Cinemeta em PT-PT');
           results.push({ addon, ok: true });
         } catch (err) {
@@ -1650,13 +1783,16 @@
           if (!smMRes.ok) throw new Error('SubMaker inacessível');
           const smManifest = await smMRes.json();
 
-          const smOrigin = urlOrigin(smManifestUrl);
-          const smIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === smManifest.id) || (smOrigin && urlOrigin(a.transportUrl) === smOrigin));
-          if (smIdx !== -1) workingAddons.splice(smIdx, 1);
-          workingAddons = [...workingAddons, { transportUrl: smManifestUrl, transportName: 'http', flags: {}, manifest: smManifest }];
-
-          await qsSetAddons(workingAddons);
-          currentAddons = workingAddons;
+          if (isNuvio) {
+            await nuvioInstallAddon(smManifestUrl, smManifest, { removePrevious });
+          } else {
+            const smOrigin = urlOrigin(smManifestUrl);
+            const smIdx = workingAddons.findIndex(a => (a.manifest?.id && a.manifest.id === smManifest.id) || (smOrigin && urlOrigin(a.transportUrl) === smOrigin));
+            if (smIdx !== -1) workingAddons.splice(smIdx, 1);
+            workingAddons = [...workingAddons, { transportUrl: smManifestUrl, transportName: 'http', flags: {}, manifest: smManifest }];
+            await qsSetAddons(workingAddons);
+            currentAddons = workingAddons;
+          }
           if (smConfigured) {
             qsUpdateRow(row, 'done', '💬 SubMaker configurado para PT — pronto a usar');
           } else {
@@ -1676,25 +1812,31 @@
         let manifest;
         try { manifest = await mRes.json(); } catch { throw new Error('Resposta inválida do servidor do addon'); }
 
-        const addonOrigin = urlOrigin(addon.manifestUrl);
-        const existingIdx = workingAddons.findIndex(
-          a => (a.manifest?.id && a.manifest.id === manifest.id) ||
-               a.transportUrl === addon.manifestUrl ||
-               (addonOrigin && urlOrigin(a.transportUrl) === addonOrigin)
-        );
-        const alreadyInstalled = existingIdx !== -1;
-
-        if (alreadyInstalled && !removePrevious) {
-          qsUpdateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
-          results.push({ addon, ok: true, skipped: true });
-          continue;
+        if (isNuvio) {
+          const { skipped } = await nuvioInstallAddon(addon.manifestUrl, manifest, { removePrevious });
+          if (skipped) {
+            qsUpdateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
+            results.push({ addon, ok: true, skipped: true });
+            continue;
+          }
+        } else {
+          const addonOrigin = urlOrigin(addon.manifestUrl);
+          const existingIdx = workingAddons.findIndex(
+            a => (a.manifest?.id && a.manifest.id === manifest.id) ||
+                 a.transportUrl === addon.manifestUrl ||
+                 (addonOrigin && urlOrigin(a.transportUrl) === addonOrigin)
+          );
+          const alreadyInstalled = existingIdx !== -1;
+          if (alreadyInstalled && !removePrevious) {
+            qsUpdateRow(row, 'skip', addon.icon + ' ' + addon.name + ' — já instalado, ignorado');
+            results.push({ addon, ok: true, skipped: true });
+            continue;
+          }
+          if (alreadyInstalled && removePrevious) workingAddons.splice(existingIdx, 1);
+          workingAddons = [...workingAddons, { transportUrl: addon.manifestUrl, transportName: 'http', flags: {}, manifest }];
+          await qsSetAddons(workingAddons);
+          currentAddons = workingAddons;
         }
-        if (alreadyInstalled && removePrevious) workingAddons.splice(existingIdx, 1);
-
-        workingAddons = [...workingAddons, { transportUrl: addon.manifestUrl, transportName: 'http', flags: {}, manifest }];
-
-        await qsSetAddons(workingAddons);
-        currentAddons = workingAddons;
         qsUpdateRow(row, 'done', addon.icon + ' ' + addon.name + ' instalado');
         results.push({ addon, ok: true });
 
@@ -1711,7 +1853,7 @@
 
     qsFailedAddonIds = results.filter(r => !r.ok).map(r => r.addon.id);
 
-    if (failCount === 0) authKey = null;
+    if (failCount === 0) { authKey = null; nuvioToken = null; nuvioUserId = null; }
 
     const resultBox = document.getElementById('qs-result-box');
     resultBox.style.display = 'block';
@@ -1747,6 +1889,7 @@
     const container = document.getElementById('qs-next-steps');
     container.style.display = 'block';
     const steps = [];
+    const isNuvioResult = currentPlatform === 'nuvio';
 
     if (aioInstalled && aioManifestUrl && aioPassword) {
       const configureUrl = aioManifestUrl.replace('/manifest.json', '/configure');
@@ -1758,18 +1901,25 @@
       );
     }
 
-    steps.push('<strong>Reinicia o Stremio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados. Se vires o erro <em>"UserAddonsLocked"</em>, faz logout e login novamente dentro do Stremio.');
-    steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado com IA — tradução automática pronta a usar.');
+    if (isNuvioResult) {
+      steps.push('<strong>Reinicia o Nuvio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados.');
+      steps.push('Para legendas em português no Nuvio: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado com IA — tradução automática pronta a usar.');
+    } else {
+      steps.push('<strong>Reinicia o Stremio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados. Se vires o erro <em>"UserAddonsLocked"</em>, faz logout e login novamente dentro do Stremio.');
+      steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado com IA — tradução automática pronta a usar.');
+    }
 
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
       steps.map((s, i) => `<div class="next-step-item" style="margin-bottom:0.4rem"><div class="ns-num">${i + 1}</div><div>${s}</div></div>`).join('');
 
+    const openBtn = isNuvioResult
+      ? `<a href="https://nuvioapp.space" target="_blank" rel="noopener" style="flex:1;text-decoration:none"><button class="btn btn-success" style="width:100%">Abrir Nuvio →</button></a>`
+      : `<a href="https://web.stremio.com" target="_blank" rel="noopener" style="flex:1;text-decoration:none"><button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button></a>`;
+
     const btnRow = document.getElementById('qs-btn-row-result');
     btnRow.style.display = 'flex';
     btnRow.innerHTML = `
-      <a href="https://web.stremio.com" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
-        <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
-      </a>
+      ${openBtn}
       <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
         <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
       </a>
