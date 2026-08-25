@@ -1435,10 +1435,18 @@
     // Helper: extrair origem de URL para deduplicação quando não há manifest guardado
     function urlOrigin(url) { try { return new URL(url).origin; } catch { return ''; } }
 
-    // Cria um manifest stub válido (sem catalogs) para evitar "max descriptor size reached"
-    // enquanto garante que o parser Rust do Stremio não falha com manifest:null
+    // Cria um manifest slim para evitar "max descriptor size reached" E garantir que
+    // o parser Rust do Stremio não falha com manifest:null.
+    // Mantém os catalogs (necessários para a homepage do Stremio mostrar rows de conteúdo)
+    // mas remove o campo "extra" de cada catálogo (listas de géneros/skip/filtros) que
+    // representa a maior parte do tamanho — reduz AIOMetadata de ~32KB para ~5KB.
     function makeSlimManifest(m) {
       if (!m) return null;
+      const slimCatalogs = (m.catalogs || []).map(c => ({
+        type: c.type,
+        id: c.id,
+        name: c.name,
+      }));
       return {
         id: m.id,
         version: m.version || '0.0.1',
@@ -1447,7 +1455,7 @@
         logo: m.logo || undefined,
         resources: m.resources || [],
         types: m.types || [],
-        catalogs: [],
+        catalogs: slimCatalogs,
         behaviorHints: m.behaviorHints || undefined,
       };
     }
