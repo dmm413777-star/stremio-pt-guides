@@ -1442,11 +1442,12 @@
     // representa a maior parte do tamanho — reduz AIOMetadata de ~32KB para ~5KB.
     function makeSlimManifest(m) {
       if (!m) return null;
-      const slimCatalogs = (m.catalogs || []).map(c => ({
-        type: c.type,
-        id: c.id,
-        name: c.name,
-      }));
+      const slimCatalogs = (m.catalogs || []).map(c => {
+        const slimExtra = (c.extra || []).filter(e => e.name !== 'genre');
+        const cat = { type: c.type, id: c.id, name: c.name };
+        if (slimExtra.length) cat.extra = slimExtra;
+        return cat;
+      });
       return {
         id: m.id,
         version: m.version || '0.0.1',
