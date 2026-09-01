@@ -11,10 +11,10 @@ test.describe('Tomás — utilizador que clica para abrir o Stremio', () => {
     expect(html).not.toContain('app.strem.io');
   });
 
-  test('o código-fonte do QuickStart referencia web.stremio.com', async ({ page }) => {
+  test('o código-fonte do QuickStart referencia api.strem.io', async ({ page }) => {
     await page.goto(QS_URL);
     const html = await page.content();
-    expect(html).toContain('web.stremio.com');
+    expect(html).toContain('api.strem.io');
   });
 
   test('nenhuma página principal tem href para app.strem.io', async ({ page }) => {

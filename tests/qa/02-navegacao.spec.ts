@@ -14,13 +14,17 @@ test.describe('Navegação — Maria navega todos os menus', () => {
 
   test('Navbar tem links "Guias" e "Links"', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('nav a:has-text("Guias")').first()).toBeVisible();
-    await expect(page.locator('nav a:has-text("Links")').first()).toBeVisible();
+    // Links existem no DOM — no mobile ficam ocultos pelo hextra (hamburger menu)
+    await expect(page.locator('a[href="/guias"]').first()).toBeAttached();
+    await expect(page.locator('a[href="/links"]').first()).toBeAttached();
   });
 
   test('Link "Guias" na navbar navega para /guias', async ({ page }) => {
     await page.goto('/');
-    await page.locator('nav a:has-text("Guias")').first().click();
+    // No mobile, clicar no hamburger primeiro
+    const hamburger = page.locator('.hextra-hamburger-menu, button[aria-label="Menu"]').first();
+    if (await hamburger.isVisible()) await hamburger.click();
+    await page.locator('a[href="/guias"]').first().click();
     await expect(page).toHaveURL(/\/guias/);
   });
 
