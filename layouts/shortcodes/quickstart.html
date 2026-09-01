@@ -1355,10 +1355,10 @@
       searchEnabled: true,
       search: {
         enabled: true,
-        ai_enabled: true,
+        ai_enabled: false,
         providers: { movie: 'tmdb.search', series: 'tvdb.search', anime_movie: 'mal.search.movie', anime_series: 'mal.search.series' },
-        engineEnabled: { 'tmdb.search': true, 'tvdb.search': true, 'tvdb.collections.search': true, 'tvmaze.search': true, 'mal.search.movie': false, 'mal.search.series': false },
-        providerNames: { 'gemini.search': 'Smart Search' },
+        engineEnabled: { 'tmdb.search': true, 'tvdb.search': true, 'tvdb.collections.search': true, 'tvmaze.search': true, 'mal.search.movie': true, 'mal.search.series': true },
+        providerNames: {},
       },
       streaming: ['cru'],
       displayTypeOverrides: { movie: 'movie', series: 'series' },
