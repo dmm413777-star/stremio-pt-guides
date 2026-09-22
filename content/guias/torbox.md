@@ -33,7 +33,7 @@ O **TorBox Essential Anual** (~$33) dá para **cerca de 15 meses** com o bónus 
 
 ### 1. Entra pelo link de referência
 
-Usa **[este link](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd)** para garantir **+84 dias de bónus** na primeira compra.
+Usa **[este link](https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6)** para garantir **+84 dias de bónus** na primeira compra.
 
 {{< callout type="warning" >}}
 Se verificares a conta pelo e-mail de confirmação **antes de pagar**, o código de referência pode ser removido. Volta a clicar no link acima antes de finalizar o pagamento.
@@ -110,6 +110,6 @@ Com o TorBox configurado, é altura de instalar o AIOStreams para tirares partid
 
 ## Links
 
-- [TorBox (com link de referência +84 dias)](https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd)
+- [TorBox (com link de referência +84 dias)](https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6)
 - [API Key TorBox](https://torbox.app/settings?section=account)
 - [Torrentio](https://torrentio.strem.fun/configure)

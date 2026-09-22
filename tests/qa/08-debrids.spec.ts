@@ -35,7 +35,7 @@ test.describe('Rodrigo — utilizador Real-Debrid a explorar opções', () => {
   });
 
   test('só TorBox tem link de referral', async ({ page }) => {
-    const referralLinks = page.locator('a[href*="referral=444bd704"]');
+    const referralLinks = page.locator('a[href*="referral=92f7e5bb"]');
     await expect(referralLinks.first()).toBeVisible();
     const count = await referralLinks.count();
     expect(count).toBe(1);
@@ -95,7 +95,7 @@ test.describe('Rodrigo — utilizador Real-Debrid a explorar opções', () => {
     await selectDebrid(page, 'realdebrid');
     expect(await page.locator('a[href*="referral"]').count()).toBe(0);
     await selectDebrid(page, 'torbox');
-    expect(await page.locator('a[href*="referral=444bd704"]').count()).toBe(1);
+    expect(await page.locator('a[href*="referral=92f7e5bb"]').count()).toBe(1);
   });
 
   test('mobile — pills não causam scroll horizontal em 390px', async ({ page }) => {

@@ -49,7 +49,7 @@ Nenhuma. Os 134 testes anteriores continuam a passar nos mesmos 3 browsers.
 
 **08-debrids (Rodrigo):**
 - 4 pills visíveis, TorBox activo por defeito com badge "Rec."
-- Só TorBox tem link de referral (444bd704) — os outros 3 não têm
+- Só TorBox tem link de referral (92f7e5bb) — os outros 3 não têm
 - `selectDebridService()` actualiza placeholder, links e estado do seletor
 - Campo limpa ao mudar de serviço (evita chaves erradas)
 - Cada debrid tem link "Obter API key" apontando para o site correcto

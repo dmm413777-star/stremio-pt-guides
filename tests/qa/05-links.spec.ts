@@ -53,7 +53,7 @@ test.describe('Links e recursos — André clica em tudo', () => {
 
   test('TorBox referral link correcto em /guias/torbox', async ({ page }) => {
     await page.goto('/guias/torbox');
-    const correct = 'torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd';
+    const correct = 'torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6';
     const links = await page.locator(`a[href*="torbox.app/subscription"]`).all();
     expect(links.length, 'Link de referral TorBox não encontrado').toBeGreaterThan(0);
     for (const link of links) {

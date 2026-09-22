@@ -63,7 +63,7 @@ Lê todos os ficheiros em `content/guias/` e verifica:
 - Cada guia baseado em trabalho alheio deve ter créditos visíveis no topo
 - Tam-Taro: GitHub (https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) + Ko-fi (https://ko-fi.com/tamtaro)
 - u/WildRabbitz: crédito no guia Nuvio
-- TorBox referral link CORRECTO: https://torbox.app/subscription?referral=444bd704-e54d-45d7-a058-5f1b4b3350cd
+- TorBox referral link CORRECTO: https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6
 
 **Consistência:**
 - Terminologia consistente entre guias (ex: "addon" vs "add-on" — escolhe um e usa sempre)

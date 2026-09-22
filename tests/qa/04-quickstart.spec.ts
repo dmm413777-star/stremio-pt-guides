@@ -88,7 +88,7 @@ test.describe('QuickStart PT — Sofia testa a ferramenta', () => {
     const hrefs = await Promise.all(
       (await referralLinks.all()).map(l => l.getAttribute('href'))
     );
-    expect(hrefs.some(h => h?.includes('444bd704'))).toBe(true);
+    expect(hrefs.some(h => h?.includes('92f7e5bb'))).toBe(true);
   });
 
   test('localStorage não contém debrid keys após interacção', async ({ page }) => {
