@@ -612,9 +612,19 @@
 <!-- Passo 1: Login -->
 <div class="card" id="qs-card-login">
   <div class="card-header">
-    <div class="card-title">Login Stremio</div>
+    <div class="card-title" id="qs-login-title">Login Stremio</div>
     <span class="account-pill" id="qs-account-pill" style="display:none" aria-live="polite"></span>
   </div>
+
+  <!-- Toggle de plataforma -->
+  <div style="margin-bottom:0.9rem">
+    <div style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.5rem">Instalar em</div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="qs-mode-btn active" id="qs-platform-stremio" onclick="qsSetPlatform('stremio')" type="button">● Stremio</button>
+      <button class="qs-mode-btn" id="qs-platform-nuvio" onclick="qsSetPlatform('nuvio')" type="button">○ Nuvio</button>
+    </div>
+  </div>
+
   <div class="field">
     <label for="qs-inp-email">E-mail</label>
     <input type="email" id="qs-inp-email" placeholder="o-teu@email.com" autocomplete="email">
@@ -626,10 +636,10 @@
   <button class="btn" id="qs-btn-login">Entrar</button>
   <button class="btn btn-ghost" id="qs-btn-generate" style="margin-top:0.5rem">🎲 Criar conta gratuita aleatória</button>
   <div class="status-line" id="qs-login-status" aria-live="polite"></div>
-  <div class="info-box">
+  <div class="info-box" id="qs-login-info">
     🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.
   </div>
-  <details class="fb-hint">
+  <details class="fb-hint" id="qs-fb-hint">
     <summary>Criaste conta com Facebook?</summary>
     <p>O login com Facebook não é suportado aqui. Vai a <a href="https://www.stremio.com/reset-password" target="_blank" rel="noopener" style="color:var(--qs-accent-light)">stremio.com/reset-password</a>, recupera a password por e-mail e usa essa password aqui. Os teus addons e preferências ficam intactos — o reset só define a password.</p>
   </details>
@@ -807,6 +817,78 @@
   let currentAddons = [];
   let qsFailedAddonIds = [];
   let generatedEmail = null;
+  let platform = 'stremio'; // 'stremio' | 'nuvio'
+  let nuvioToken = null;
+  let nuvioProfileId = null;
+
+  // API Nuvio (Supabase) — porta fiel da implementação pública em
+  // https://duck-tools.pages.dev/js-bundles/quackstart.bundle.js (NuvioAPIProvider)
+  const NuvioAPI = {
+    publishableKey: 'sb_publishable_1Clq8rlTVACkdcZuqr6_AD__xUUC_EN',
+    authUrl: 'https://api.nuvio.tv/auth/v1',
+    restUrl: 'https://api.nuvio.tv/rest/v1',
+
+    async _call(baseUrl, endpoint, method, body, token) {
+      const headers = { 'Content-Type': 'application/json', apikey: this.publishableKey };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await qsFetchTimeout(baseUrl + endpoint, 12000, {
+        method, headers, body: body ? JSON.stringify(body) : undefined,
+      });
+      let json = {};
+      try { json = await res.json(); } catch {}
+      if (json?.error) throw new Error(json.error.message || json.error_description || JSON.stringify(json.error));
+      if (json?.code && json?.message && typeof json.code === 'string') throw new Error(json.message);
+      if (json?.msg && typeof json.code === 'number') throw new Error(json.msg);
+      if (!res.ok) throw new Error('Erro Nuvio (HTTP ' + res.status + ')');
+      return json;
+    },
+
+    async login(email, password) {
+      const data = await this._call(this.authUrl, '/token?grant_type=password', 'POST', { email, password });
+      if (!data.access_token) throw new Error('Login falhou — sem access token.');
+      return data.access_token;
+    },
+
+    async register(email, password) {
+      await this._call(this.authUrl, '/signup', 'POST', { email, password });
+    },
+
+    async getProfiles(token) {
+      try {
+        const data = await this._call(this.restUrl, '/rpc/sync_pull_profiles', 'POST', {}, token);
+        return (Array.isArray(data) ? data : []).map(p => ({ ...p, id: p.profile_index }));
+      } catch { return []; }
+    },
+
+    async setProfiles(profiles, token) {
+      const formatted = profiles.map((p, i) => ({ ...p, profile_index: parseInt(p.profile_index || (i + 1), 10) }));
+      await this._call(this.restUrl, '/rpc/sync_push_profiles', 'POST', { p_client_max_profiles: 6, p_profiles: formatted }, token);
+    },
+
+    async ensureRealProfiles(token) {
+      let profiles = await this.getProfiles(token);
+      if (profiles.length === 0) {
+        await this.setProfiles([{ profile_index: 1, name: 'Main', avatar_url: '' }], token);
+        profiles = await this.getProfiles(token);
+      }
+      return profiles;
+    },
+
+    async getAddons(profileId, token) {
+      const data = await this._call(this.restUrl, `/addons?select=*&profile_id=eq.${profileId}&order=sort_order`, 'GET', null, token);
+      return (Array.isArray(data) ? data : []).map(item => ({ ...item, transportUrl: item.url }));
+    },
+
+    async setAddons(addons, profileId, token) {
+      const formatted = addons.map((a, i) => ({
+        url: a.url || a.transportUrl,
+        name: a.name || a.manifest?.name || 'Addon',
+        enabled: a.enabled !== false,
+        sort_order: i,
+      }));
+      await this._call(this.restUrl, '/rpc/sync_push_addons', 'POST', { p_profile_id: parseInt(profileId, 10), p_addons: formatted }, token);
+    },
+  };
 
   const DEBRID_SERVICES = {
     torbox: {
@@ -852,6 +934,22 @@
     document.getElementById('qs-mode-p2p').classList.toggle('active', !isDebrid);
     document.getElementById('qs-debrid-section').style.display = isDebrid ? 'block' : 'none';
     document.getElementById('qs-p2p-section').style.display = isDebrid ? 'none' : 'block';
+  };
+
+  // Plataforma de instalação: Stremio ou Nuvio
+  window.qsSetPlatform = function(p) {
+    platform = p;
+    const isNuvio = p === 'nuvio';
+    document.getElementById('qs-platform-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('qs-platform-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('qs-login-title').textContent = isNuvio ? 'Login Nuvio' : 'Login Stremio';
+    document.getElementById('qs-login-info').innerHTML = isNuvio
+      ? '🔒 As credenciais comunicam directamente com <code>api.nuvio.tv</code> — o mesmo servidor que o Nuvio usa. Não são guardadas nem registadas em lado nenhum.'
+      : '🔒 As credenciais comunicam directamente com <code>api.strem.io</code> — o mesmo servidor que o Stremio usa. Não são guardadas nem registadas em lado nenhum.';
+    document.getElementById('qs-fb-hint').style.display = isNuvio ? 'none' : '';
+    document.getElementById('qs-inp-email').value = '';
+    document.getElementById('qs-inp-pass').value = '';
+    qsSetStatus(document.getElementById('qs-login-status'), '', '');
   };
 
   // TorBox validation — via Worker (TorBox bloqueia CORS directo)
@@ -974,10 +1072,42 @@
     btn.disabled = true;
     qsSetStatus(statusEl, '', 'A criar conta aleatória…');
 
+    const rand = Math.random().toString(36).slice(2, 10);
+    const pass = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2).toUpperCase() + '!1';
+
+    if (platform === 'nuvio') {
+      const email = `nuvio.${rand}@proton.me`;
+      try {
+        await NuvioAPI.register(email, pass);
+        nuvioToken = await NuvioAPI.login(email, pass);
+        generatedEmail = email;
+
+        const profiles = await NuvioAPI.ensureRealProfiles(nuvioToken);
+        if (profiles.length === 0) throw new Error('Não foi possível criar o perfil Nuvio.');
+        nuvioProfileId = profiles[0].id;
+        currentAddons = await NuvioAPI.getAddons(nuvioProfileId, nuvioToken);
+
+        document.getElementById('qs-inp-email').value = email;
+        document.getElementById('qs-inp-pass').value = pass;
+
+        qsSetStatus(statusEl, 'ok', `✓ Conta criada — ${email}\nGuarda estas credenciais: password ${pass}`);
+        const pill = document.getElementById('qs-account-pill');
+        pill.textContent = '✓ Nova conta';
+        pill.style.display = 'inline-flex';
+
+        qsSetStepState(1, 'done');
+        qsSetStepState(2, 'active');
+        qsActivateCard('qs-card-pack');
+        qsScrollTo('qs-card-pack');
+      } catch (err) {
+        qsSetStatus(statusEl, 'err', '⚠ ' + (err.message || 'Erro ao criar conta Nuvio.'));
+        btn.disabled = false;
+      }
+      return;
+    }
+
     try {
-      const rand = Math.random().toString(36).slice(2, 10);
       const email = `stremio.${rand}@proton.me`;
-      const pass = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2).toUpperCase() + '!1';
 
       const res = await qsFetchTimeout('https://api.strem.io/api/register', 8000, {
         method: 'POST',
@@ -1084,6 +1214,30 @@
 
     btn.disabled = true;
     qsSetStatus(statusEl, '', 'A verificar conta…');
+
+    if (platform === 'nuvio') {
+      try {
+        nuvioToken = await NuvioAPI.login(email, pass);
+        const profiles = await NuvioAPI.ensureRealProfiles(nuvioToken);
+        if (profiles.length === 0) throw new Error('Esta conta não tem perfis Nuvio.');
+        nuvioProfileId = profiles[0].id;
+        currentAddons = await NuvioAPI.getAddons(nuvioProfileId, nuvioToken);
+
+        qsSetStatus(statusEl, 'ok', '✓ Conta verificada — ' + currentAddons.length + ' addon(s) actualmente instalados no perfil "' + (profiles[0].name || 'Main') + '".');
+        const pill = document.getElementById('qs-account-pill');
+        pill.textContent = '✓ ' + (email.length > 22 ? email.slice(0, 20) + '…' : email);
+        pill.style.display = 'inline-flex';
+
+        qsSetStepState(1, 'done');
+        qsSetStepState(2, 'active');
+        qsActivateCard('qs-card-pack');
+        qsScrollTo('qs-card-pack');
+      } catch (err) {
+        qsSetStatus(statusEl, 'err', err.message || 'Erro ao ligar ao Nuvio. Tenta novamente.');
+        btn.disabled = false;
+      }
+      return;
+    }
 
     try {
       const res = await fetch('https://api.strem.io/api/login', {
@@ -1430,7 +1584,8 @@
       'org.stremio.pubdomainmovies',
       'org.stremio.local',
     ]);
-    let workingAddons = currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
+    // STRIP_IDS só se aplica a addons padrão do Stremio — o Nuvio não os expõe via tabela addons
+    let workingAddons = platform === 'nuvio' ? [...currentAddons] : currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
 
     // Helper: extrair origem de URL para deduplicação quando não há manifest guardado
     function urlOrigin(url) { try { return new URL(url).origin; } catch { return ''; } }
@@ -1466,6 +1621,13 @@
     // 2. manifest completo com 60+ catálogos → "max descriptor size reached"
     // Solução: guardar stub válido (sem catalogs) — Stremio busca manifest real do transportUrl
     async function qsSetAddons(addons) {
+      // Nuvio: substituição total e simples — a tabela addons só guarda url/name/enabled/sort_order,
+      // não há limite de tamanho de manifest nem problema de manifest:null como no Stremio.
+      if (platform === 'nuvio') {
+        await NuvioAPI.setAddons(addons, nuvioProfileId, nuvioToken);
+        return;
+      }
+
       // Buscar manifests em falta (addons existentes vindos do addonCollectionGet com manifest:null)
       const withManifests = await Promise.all(addons.map(async a => {
         if (a.manifest) return a;
@@ -1712,7 +1874,7 @@
 
     qsFailedAddonIds = results.filter(r => !r.ok).map(r => r.addon.id);
 
-    if (failCount === 0) authKey = null;
+    if (failCount === 0) { authKey = null; nuvioToken = null; }
 
     const resultBox = document.getElementById('qs-result-box');
     resultBox.style.display = 'block';
@@ -1759,7 +1921,11 @@
       );
     }
 
-    steps.push('<strong>Reinicia o Stremio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados. Se vires o erro <em>"UserAddonsLocked"</em>, faz logout e login novamente dentro do Stremio.');
+    if (platform === 'nuvio') {
+      steps.push('<strong>Reinicia o Nuvio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados no perfil.');
+    } else {
+      steps.push('<strong>Reinicia o Stremio</strong> (fecha completamente e abre de novo) — é necessário para carregar os addons instalados. Se vires o erro <em>"UserAddonsLocked"</em>, faz logout e login novamente dentro do Stremio.');
+    }
     steps.push('Para legendas em português: abre qualquer conteúdo → Legendas → <strong>"Criar [Portuguese]"</strong>. O SubMaker já está configurado com IA — tradução automática pronta a usar.');
 
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--qs-text-dim);margin-bottom:0.5rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">Próximos passos</div>' +
@@ -1767,10 +1933,11 @@
 
     const btnRow = document.getElementById('qs-btn-row-result');
     btnRow.style.display = 'flex';
+    const openBtn = platform === 'nuvio'
+      ? '<button class="btn btn-success" style="width:100%" disabled title="Abre a app Nuvio no telemóvel ou Android TV">Abre a app Nuvio</button>'
+      : `<a href="https://web.stremio.com" target="_blank" rel="noopener" style="flex:1;text-decoration:none"><button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button></a>`;
     btnRow.innerHTML = `
-      <a href="https://web.stremio.com" target="_blank" rel="noopener" style="flex:1;text-decoration:none">
-        <button class="btn btn-success" style="width:100%">Abrir Stremio Web →</button>
-      </a>
+      ${openBtn}
       <a href="{{ "guias/" | relURL }}" style="text-decoration:none">
         <button class="btn btn-ghost" style="width:auto;padding:0 1.1rem">Guias</button>
       </a>
