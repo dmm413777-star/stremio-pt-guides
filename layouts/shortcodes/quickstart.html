@@ -538,41 +538,102 @@
 
   #qs-widget .qs-platform-card {
     flex: 1;
+    min-width: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    padding: 0.85rem 0.8rem 0.7rem;
-    border-radius: 10px;
+    gap: 0.5rem;
+    padding: 0.65rem 0.7rem;
+    border-radius: 12px;
     border: 1.5px solid var(--qs-border);
     background: var(--qs-surface2);
-    color: var(--qs-text-muted);
+    color: var(--qs-text);
     cursor: pointer;
-    transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.15s;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.1s;
   }
 
   #qs-widget .qs-platform-card:hover {
+    border-color: var(--qs-border-light, var(--qs-border));
     transform: translateY(-1px);
   }
 
   #qs-widget .qs-platform-card img {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     flex-shrink: 0;
   }
 
-  #qs-widget .qs-platform-card span {
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-align: center;
+  #qs-widget .qs-platform-card .qs-platform-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #qs-widget .qs-platform-card .qs-platform-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--qs-border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  #qs-widget .qs-platform-card .qs-platform-dot svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.15s, transform 0.15s;
   }
 
   #qs-widget .qs-platform-card.active {
     border-color: var(--qs-accent);
+    background: rgba(124, 58, 237, 0.12);
+    box-shadow: 0 0 0 1px var(--qs-accent), 0 0 18px rgba(124, 58, 237, 0.35);
+  }
+
+  #qs-widget .qs-platform-card.active span {
     color: var(--qs-accent-light);
-    background: rgba(124, 58, 237, 0.1);
+  }
+
+  #qs-widget .qs-platform-card.active .qs-platform-dot {
+    border-color: var(--qs-accent);
+    background: var(--qs-accent);
+  }
+
+  #qs-widget .qs-platform-card.active .qs-platform-dot svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 420px) {
+    #qs-widget .qs-platform-card {
+      gap: 0.4rem;
+      padding: 0.6rem 0.55rem;
+    }
+    #qs-widget .qs-platform-card img {
+      width: 28px;
+      height: 28px;
+    }
+    #qs-widget .qs-platform-card .qs-platform-name {
+      font-size: 0.78rem;
+    }
+    #qs-widget .qs-platform-card .qs-platform-dot {
+      width: 16px;
+      height: 16px;
+    }
+    #qs-widget .qs-platform-card .qs-platform-dot svg {
+      width: 10px;
+      height: 10px;
+    }
   }
 
   #qs-widget #qs-instance-select {
@@ -661,11 +722,13 @@
     <div style="display:flex;gap:0.5rem">
       <button class="qs-platform-card active" id="qs-platform-stremio" onclick="qsSetPlatform('stremio')" type="button">
         <img src="{{ "images/apps/stremio.png" | relURL }}" alt="" loading="lazy">
-        <span>Stremio</span>
+        <span class="qs-platform-name">Stremio</span>
+        <span class="qs-platform-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
       </button>
       <button class="qs-platform-card" id="qs-platform-nuvio" onclick="qsSetPlatform('nuvio')" type="button">
         <img src="{{ "images/apps/nuvio.png" | relURL }}" alt="" loading="lazy">
-        <span>Nuvio</span>
+        <span class="qs-platform-name">Nuvio</span>
+        <span class="qs-platform-dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
       </button>
     </div>
   </div>
