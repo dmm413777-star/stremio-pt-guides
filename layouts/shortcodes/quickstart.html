@@ -539,27 +539,34 @@
   #qs-widget .qs-platform-card {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.55rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 9px;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.85rem 0.8rem 0.7rem;
+    border-radius: 10px;
     border: 1.5px solid var(--qs-border);
     background: var(--qs-surface2);
     color: var(--qs-text-muted);
     cursor: pointer;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.15s;
+  }
+
+  #qs-widget .qs-platform-card:hover {
+    transform: translateY(-1px);
   }
 
   #qs-widget .qs-platform-card img {
-    width: 26px;
-    height: 26px;
-    border-radius: 7px;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
     flex-shrink: 0;
   }
 
   #qs-widget .qs-platform-card span {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 600;
+    text-align: center;
   }
 
   #qs-widget .qs-platform-card.active {
