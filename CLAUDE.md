@@ -1,15 +1,18 @@
-# Stremio PT — Contexto do Projeto para Claude Code
+# Stremio PT — Contexto do Projecto para Claude Code
 
-Site de guias de Stremio e Nuvio em português + ferramenta QuickStart PT.
-Hospedado gratuitamente em GitHub Pages. Deploy automático via GitHub Actions a cada push para `main`.
+Site de guias de Stremio e Nuvio em português + ferramenta QuickStart PT
+(instalador automático de addons, suporta contas Stremio e Nuvio).
+Hospedado em GitHub Pages. Deploy automático via GitHub Actions a cada push para `main`.
+
+Repo: `git@github.com:dmm413777-star/stremio-pt-guides.git`
 
 ---
 
 ## Stack
 
-- **Site:** Hugo + tema PaperMod
-- **Ferramenta:** HTML + Vanilla JS puro em `/static/tools/quickstart/`
-- **Hosting:** GitHub Pages gratuito
+- **Site:** Hugo + tema **Hextra** (não PaperMod — o projecto começou com PaperMod mas migrou)
+- **QuickStart:** HTML + Vanilla JS puro, embebido como Hugo shortcode em `layouts/shortcodes/quickstart.html`
+- **Hosting:** GitHub Pages (grátis). Também existe um `netlify.toml` para deploy alternativo no Netlify, mas o site de produção é o GitHub Pages.
 
 ## Estrutura
 
@@ -23,174 +26,133 @@ content/guias/
   toast-translator.md     Toast Translator + RPDB
   tugakids.md             TugaKids
   tmdb.md                 TMDB API Key
+  migrar-para-nuvio.md    Migração Stremio → Nuvio (NuvioSync)
+  clonar-perfil-nuvio.md  Clonar perfil Nuvio para família
+
+layouts/shortcodes/
+  quickstart.html         QuickStart PT — FONTE DA VERDADE, é o que corre na homepage
+  guias-grid.html         Grid de cards na página /guias
 
 static/
-  images/                 Screenshots dos guias
-  tools/quickstart/       QuickStart PT (Fase 2)
+  images/                 Screenshots dos guias + images/apps/ (ícones Stremio/Nuvio)
+  tools/quickstart/       Versão standalone ANTIGA e DESINCRONIZADA — não editar,
+                           não é a versão usada; a fonte real é o shortcode acima
+
+tests/qa/                 Suite Playwright (14 ficheiros, ~380 testes) — ver secção QA abaixo
 
 .github/workflows/hugo.yml
 hugo.toml
+netlify.toml
 ```
 
----
-
-## Missão Principal do Agente
-
-Quando abrires este projecto, faz o seguinte **por esta ordem, com o mínimo de interrupções ao utilizador**:
-
-### 1. Auditoria de Qualidade (antes de qualquer outra coisa)
-
-Lê todos os ficheiros em `content/guias/` e verifica:
-
-**Linguagem e tom:**
-- Substitui linguagem de AI por escrita humana natural. Sinais a eliminar:
-  - Frases com "— " (travessão largo) como separador → substitui por vírgula, ponto ou reescreve
-  - "É importante notar que...", "Vale a pena referir...", "Não esqueças que..." → corta ou reescreve directamente
-  - Listas excessivas onde prosa seria mais natural
-  - Adjectivos redundantes ("simples e directo", "fácil e rápido")
-  - Frases demasiado longas com múltiplas subordinadas → parte em frases curtas
-- O tom deve ser: comunidade portuguesa a falar com comunidade portuguesa. Directo, informal mas não desleixado.
-
-**Precisão técnica — simula um utilizador real a seguir cada guia:**
-- Percorre cada guia como se fosses alguém que nunca fez isto
-- Verifica se os passos estão na ordem correcta e sem saltos
-- Confirma que todos os URLs referenciados existem (faz fetch quando necessário)
-- Verifica se os nomes de botões/opções nos guias correspondem ao que existe nas ferramentas reais
-- Identifica passos ambíguos ("clica no botão de instalação" — qual botão exactamente?)
-- Verifica se os screenshots `<!-- SCREENSHOT: ... -->` estão nos sítios certos e com descrições úteis
-
-**Créditos:**
-- Cada guia baseado em trabalho alheio deve ter créditos visíveis no topo
-- Tam-Taro: GitHub (https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) + Ko-fi (https://ko-fi.com/tamtaro)
-- u/WildRabbitz: crédito no guia Nuvio
-- TorBox referral link CORRECTO: https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6
-
-**Consistência:**
-- Terminologia consistente entre guias (ex: "addon" vs "add-on" — escolhe um e usa sempre)
-- Versões referenciadas actualizadas (template Tam-Taro = v3.0.4)
-- Português de Portugal em todo o lado (não brasileiro)
-
-Faz todas as correcções directamente nos ficheiros. Não perguntes confirmação para correcções de linguagem ou precisão — faz e regista o que mudaste.
+**Importante:** `static/tools/quickstart/index.html` é uma versão legada que ficou
+desincronizada da versão real. O QuickStart que aparece no site é o shortcode
+`layouts/shortcodes/quickstart.html`, embebido na homepage. Qualquer alteração ao
+QuickStart faz-se **só** nesse ficheiro.
 
 ---
 
-### 2. Setup do Repositório e Deploy
+## QuickStart PT — como funciona hoje
+
+Instala um pack de addons PT numa conta **Stremio ou Nuvio**, à escolha do utilizador
+(toggle no passo de login, com ícones estilo duck-tools). Suporta login com conta
+existente ou gerar conta aleatória, para ambas as plataformas.
+
+**Fluxo (3 passos):** Login (Stremio/Nuvio) → Seleccionar pack + modo Debrid/P2P → Instalação automática.
+
+**Pack instalado:** AIOStreams (template Tam-Taro SEL), AIOMetadata PT, SubMaker,
+Toast Translator, Animação PT-PT, Cotonet, PTGDrive.
+
+### Stremio
+- Login/registo via `api.strem.io` (`/api/login`, `/api/register`, `/api/addonCollectionGet`, `/api/addonCollectionSet`)
+- authKey só em memória, nunca em localStorage
+- **Manifests guardados em versão "slim"**: o Stremio desktop (parser Rust) rejeita
+  `manifest:null`, e um manifest completo com 60+ catálogos excede o limite de tamanho
+  ("max descriptor size reached"). A função `makeSlimManifest()` mantém os catalogs
+  (necessários para a homepage mostrar rows) mas remove o campo `extra` de géneros
+  (mantém `search`/`skip` — removê-los partia a pesquisa do Stremio)
+
+### Nuvio
+- API Supabase em `api.nuvio.tv`, publishable key pública `sb_publishable_1Clq8rlTVACkdcZuqr6_AD__xUUC_EN`
+- Login: `POST /auth/v1/token?grant_type=password`. Registo: `POST /auth/v1/signup`
+- Perfis e addons via RPC: `rpc/sync_pull_profiles`, `rpc/sync_push_profiles`,
+  `rpc/sync_push_addons` (ver objecto `NuvioAPI` em quickstart.html)
+- A tabela `addons` do Nuvio só guarda `url`/`name`/`enabled`/`sort_order` — **sem**
+  limite de tamanho de manifest nem problema de `manifest:null`, por isso não precisa
+  de slim manifests como o Stremio
+- Implementação espelhada da ferramenta pública duck-tools
+  (`duck-tools.pages.dev/quackstart`, classe `NuvioAPIProvider`)
+- **Nunca criar contas Nuvio reais via automação** (API ou browser) — é um serviço de
+  produção de terceiros. Só o utilizador deve gerar contas lá; testar com conta que
+  o utilizador fornecer explicitamente
+
+### AIOStreams (PRESETS_P2P / PRESETS_DEBRID em quickstart.html)
+- Chama o Worker proxy `aiostreams-pt-proxy.mire-freckle.workers.dev` (CORS)
+- A AIOStreams valida o manifest de **cada preset** antes de aceitar a config — se um
+  preset estiver offline, a instalação inteira falha. Já aconteceu com `torrents-db`
+  (torrentsdb.com devolvia 502) — foi removido da lista. Se o AIOStreams parar de
+  instalar outra vez, suspeitar primeiro de um preset offline, não do código
+
+### AIOMetadata (buildAIOMetadataConfig em quickstart.html)
+- Catálogos sincronizados com a template Tam-Taro (SEL-Filtering-and-Sorting)
+- Search: `ai_enabled: false` (sem chave Gemini configurada, dava resultados errados),
+  `mal.search.movie`/`mal.search.series: true` (melhora pesquisa de anime)
+- Os catálogos reais de pesquisa no manifest são `search.movie`/`search.series` —
+  **não** `tmdb.search`/`tvdb.search` (esses devolvem trending, não pesquisa real)
+
+---
+
+## Testes (QA)
 
 ```bash
-# Na pasta do projecto:
-git init
-git remote add origin [URL_DO_REPOSITÓRIO_GITHUB]
-git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
-hugo server -D   # testa localmente, confirma que não há erros
-git add -A
-git commit -m "feat: initial site with PT guides"
-git push -u origin main
+npx playwright test                    # suite completa (~380 testes, 3 browsers)
+npx playwright test tests/qa/XX-nome.spec.ts --project="Desktop Chrome"
 ```
 
-Depois do push, instrui o utilizador a activar GitHub Pages:
-> Settings → Pages → Source → GitHub Actions → Save
-> URL final: https://[username].github.io/stremio-pt-guides
+14 ficheiros em `tests/qa/`, cobrindo homepage, navegação, conteúdo dos guias,
+QuickStart (UI + instalação), links, mobile, SEO, debrids, URLs Stremio, tags,
+catálogos AIOMetadata, pesquisa (One Piece S23, via API directa), e o toggle Nuvio.
+
+Corre a suite completa antes de dar qualquer alteração ao QuickStart como terminada.
+Testes reais de instalação (login Stremio/Nuvio, addons a instalar) só com contas de
+teste que o utilizador fornecer explicitamente — nunca criar contas por conta própria.
 
 ---
 
-### 3. QuickStart PT
+## Créditos obrigatórios
 
-Cria `/static/tools/quickstart/index.html` — ferramenta que instala um pack PT pré-configurado numa conta Stremio com o mínimo de cliques possível.
+- Tam-Taro: GitHub (https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) + Ko-fi (https://ko-fi.com/tamtaro)
+- u/WildRabbitz: crédito no guia Nuvio
+- TorBox referral link correcto (actualizar aqui sempre que mudar):
+  `https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6`
 
-**Princípios de UX:**
-- Máximo 3 cliques do utilizador até os addons estarem instalados
-- Zero configuração manual — tudo pré-configurado para PT
-- Feedback visual em tempo real de cada passo
-- Se algo falhar, mensagem clara do que fazer a seguir
-- Não guardar credenciais — só usar o authKey em memória durante a sessão
+## Linguagem e tom (guias em `content/guias/`)
 
-**Fluxo (3 passos):**
-
-```
-[PASSO 1] Login Stremio
-  Email + Password → POST https://api.strem.io/api/login
-  → guarda authKey em memória (nunca em localStorage)
-  → mostra: "✓ Conta verificada — [email]"
-
-[PASSO 2] Seleccionar Pack (pré-seleccionado: tudo)
-  Checkboxes já marcadas por defeito:
-  ☑ AIOStreams + Template Tam-Taro SEL (v3.0.4) — streams principais
-  ☑ AIOMetadata — catálogos organizados (Netflix, Disney+, etc.)
-  ☑ SubMaker — legendas automáticas PT por IA
-  ☑ Toast Translator — sinopses e títulos em PT
-  Botão: "Instalar Agora →"
-
-[PASSO 3] Instalação automática
-  Para cada addon:
-    GET manifest URL → valida que responde
-    POST addonCollectionSet com lista actualizada
-    → mostra progresso: "✓ AIOStreams instalado", "✓ AIOMetadata instalado"...
-  Resultado final: "✓ X addons instalados. Abre o Stremio e já está."
-```
-
-**API Stremio:**
-```javascript
-// Login
-const login = await fetch('https://api.strem.io/api/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email, password, facebook: false })
-})
-const { result } = await login.json()
-const authKey = result.authKey
-
-// Ler addons actuais
-const current = await fetch(
-  `https://api.strem.io/api/addonCollectionGet?authKey=${authKey}&type=User&_=${Date.now()}`
-)
-const { result: { addons } } = await current.json()
-
-// Instalar (merge com os existentes, sem apagar)
-await fetch('https://api.strem.io/api/addonCollectionSet', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ authKey, addons: [...addons, ...newAddons] })
-})
-```
-
-**Manifest URLs do pack PT** (usa as instâncias públicas mais estáveis):
-```javascript
-const PT_PACK = [
-  // AIOStreams com template Tam-Taro pré-configurado (instância Viren, nightly)
-  // Nota: o manifest URL do AIOStreams inclui a config — usa uma config PT base
-  // sem debrid (o utilizador adiciona o seu depois no AIOStreams)
-  'https://aiostreams.viren070.me/stremio/manifest.json',
-
-  // AIOMetadata (ElfHosted)
-  'https://aiometadata.elfhosted.com/manifest.json',
-
-  // SubMaker
-  'https://submaker.elfhosted.com/manifest.json',
-
-  // Toast Translator (PT por defeito)
-  'https://0f693ad7dcba-toast-translator.baby-beamup.club/manifest.json',
-]
-```
-
-**Importante:** Antes de instalar, faz GET a cada manifest URL para confirmar que o serviço está online. Se algum falhar, instala os que funcionam e indica quais falharam.
-
-**Design:** Dark, minimalista, consistente com o site principal. Sem dependências externas — CSS e JS inline no mesmo ficheiro HTML.
+- Escrita humana, não "cheiro a AI": nada de "— " como separador, "é importante notar
+  que...", listas onde prosa seria melhor, adjectivos redundantes
+- Comunidade PT a falar com comunidade PT: directo, informal mas não desleixado
+- Português de Portugal em todo o lado, nunca brasileiro
+- Terminologia consistente entre guias (ex: "addon", não "add-on")
 
 ---
 
 ## Referências Técnicas
 
 - Tam-Taro SEL: https://github.com/Tam-Taro/SEL-Filtering-and-Sorting
-- NuvioSync (referência para API Nuvio): https://nuviosync.com
-- Duck Guides (referência de estrutura): https://duckkota.gitlab.io/guides/
-- Viren070 (referência técnica): https://guides.viren070.me/stremio
+- duck-tools QuackStart (referência para fluxo Nuvio): https://duck-tools.pages.dev/quackstart/
+- NuvioSync (migração/clonagem de perfis): https://nuviosync.com
+- Viren070 (referência técnica Stremio): https://guides.viren070.me/stremio
 
 ---
 
 ## O que NÃO fazer
 
-- Não construir Cloner ou Backup — o NuvioSync (nuviosync.com) já faz isso melhor
-- Não pedir confirmação ao utilizador para cada pequena correcção de texto
-- Não usar frameworks JS (React, Vue) — HTML + JS puro é suficiente e sem build step
-- Não guardar passwords ou tokens em localStorage/sessionStorage
+- Não criar contas reais (Stremio ou Nuvio) por automação para testar — só com contas
+  que o utilizador forneça explicitamente
+- Não implementar OAuth Facebook — direccionar para reset-password do Stremio
+- Não guardar passwords, tokens ou authKeys em localStorage/sessionStorage — só em
+  variáveis JS em memória durante a sessão
+- Não usar frameworks JS (React, Vue) no QuickStart — HTML + JS puro, sem build step
+- Não editar `static/tools/quickstart/` à espera que afecte o site — é legado morto
 - Não traduzir para português do Brasil
+- Não remover o referral TorBox nem os créditos Tam-Taro/WildRabbitz
