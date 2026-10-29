@@ -536,6 +536,38 @@
     background: rgba(124, 58, 237, 0.1);
   }
 
+  #qs-widget .qs-platform-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 9px;
+    border: 1.5px solid var(--qs-border);
+    background: var(--qs-surface2);
+    color: var(--qs-text-muted);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+  }
+
+  #qs-widget .qs-platform-card img {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    flex-shrink: 0;
+  }
+
+  #qs-widget .qs-platform-card span {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  #qs-widget .qs-platform-card.active {
+    border-color: var(--qs-accent);
+    color: var(--qs-accent-light);
+    background: rgba(124, 58, 237, 0.1);
+  }
+
   #qs-widget #qs-instance-select {
     width: 100%;
     background: var(--qs-surface2);
@@ -620,8 +652,14 @@
   <div style="margin-bottom:0.9rem">
     <div style="font-size:0.79rem;font-weight:500;color:var(--qs-text-muted);margin-bottom:0.5rem">Instalar em</div>
     <div style="display:flex;gap:0.5rem">
-      <button class="qs-mode-btn active" id="qs-platform-stremio" onclick="qsSetPlatform('stremio')" type="button">● Stremio</button>
-      <button class="qs-mode-btn" id="qs-platform-nuvio" onclick="qsSetPlatform('nuvio')" type="button">○ Nuvio</button>
+      <button class="qs-platform-card active" id="qs-platform-stremio" onclick="qsSetPlatform('stremio')" type="button">
+        <img src="{{ "images/apps/stremio.png" | relURL }}" alt="" loading="lazy">
+        <span>Stremio</span>
+      </button>
+      <button class="qs-platform-card" id="qs-platform-nuvio" onclick="qsSetPlatform('nuvio')" type="button">
+        <img src="{{ "images/apps/nuvio.png" | relURL }}" alt="" loading="lazy">
+        <span>Nuvio</span>
+      </button>
     </div>
   </div>
 
