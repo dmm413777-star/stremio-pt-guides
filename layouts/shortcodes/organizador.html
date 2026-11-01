@@ -1,0 +1,275 @@
+<div id="og-widget">
+<style>
+  #og-widget {
+    --og-bg: #0f1117; --og-surface: #1a1d27; --og-surface2: #22263a; --og-border: #2e3450;
+    --og-accent: #7c3aed; --og-accent-light: #a78bfa; --og-success: #10b981; --og-error: #ef4444;
+    --og-text: #e2e8f0; --og-text-muted: #94a3b8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem; color: var(--og-text);
+  }
+  #og-widget .og-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
+  #og-widget .og-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+  #og-widget .og-intro p { color: var(--og-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #og-widget .card {
+    width: 100%; max-width: 560px; background: var(--og-surface); border: 1px solid var(--og-border);
+    border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  #og-widget .card.inactive { opacity: 0.45; pointer-events: none; }
+  #og-widget .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.9rem; display:flex; justify-content:space-between; align-items:center; }
+  #og-widget .field { margin-bottom: 0.75rem; }
+  #og-widget .field label { display: block; font-size: 0.8rem; color: var(--og-text-muted); margin-bottom: 0.3rem; }
+  #og-widget input[type="email"], #og-widget input[type="password"] {
+    width: 100%; background: var(--og-surface2); border: 1px solid var(--og-border); border-radius: 8px;
+    padding: 0.65rem 0.8rem; color: var(--og-text); font-size: 0.9rem; box-sizing: border-box;
+  }
+  #og-widget .btn {
+    background: var(--og-accent); color: #fff; border: none; border-radius: 9px;
+    padding: 0.65rem 0.9rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; width: 100%;
+  }
+  #og-widget .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #og-widget .btn-ghost { background: var(--og-surface2); border: 1px solid var(--og-border); color: var(--og-text); }
+  #og-widget .btn-row { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
+  #og-widget .btn-row .btn { width: auto; flex: 1; }
+  #og-widget .status-line { font-size: 0.82rem; margin-top: 0.6rem; min-height: 1.2em; }
+  #og-widget .status-line.ok { color: var(--og-success); }
+  #og-widget .status-line.err { color: var(--og-error); }
+  #og-widget .platform-row { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+  #og-widget .platform-card {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.7rem;
+    border-radius: 12px; border: 1.5px solid var(--og-border); background: var(--og-surface2);
+    color: var(--og-text); cursor: pointer;
+  }
+  #og-widget .platform-card img { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; }
+  #og-widget .platform-card span { font-size: 0.85rem; font-weight: 700; flex: 1; }
+  #og-widget .platform-card.active { border-color: var(--og-accent); background: rgba(124,58,237,0.12); box-shadow: 0 0 0 1px var(--og-accent); }
+  #og-widget select#og-profile-select {
+    width: 100%; background: var(--og-surface2); border: 1px solid var(--og-border); border-radius: 8px;
+    padding: 0.6rem 0.8rem; color: var(--og-text); font-size: 0.85rem; margin-bottom: 0.7rem;
+  }
+  #og-widget .addon-row {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.7rem; border: 1px solid var(--og-border);
+    border-radius: 9px; background: var(--og-surface2); margin-bottom: 0.45rem;
+  }
+  #og-widget .addon-row .addon-pos { font-size: 0.72rem; color: var(--og-text-muted); width: 1.4rem; flex-shrink: 0; }
+  #og-widget .addon-row .addon-name { flex: 1; font-size: 0.85rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #og-widget .addon-row button {
+    background: var(--og-surface); border: 1px solid var(--og-border); color: var(--og-text);
+    border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 0.85rem; flex-shrink: 0;
+  }
+  #og-widget .addon-row button:disabled { opacity: 0.3; cursor: not-allowed; }
+  #og-widget .addon-row button.danger { color: var(--og-error); }
+</style>
+
+<div class="og-intro">
+  <h2>↕️ Organizador de Addons</h2>
+  <p>Reordena ou remove addons da tua conta. Qualquer alteração é guardada com uma cópia de segurança — podes desfazer até fechares a página.</p>
+</div>
+
+<div class="card" id="og-card-login">
+  <div class="card-title" id="og-login-title">Login Stremio</div>
+  <div class="platform-row">
+    <button class="platform-card active" id="og-platform-stremio" type="button" onclick="ogSetPlatform('stremio')">
+      <img src="{{ "images/apps/stremio.png" | relURL }}" alt=""><span>Stremio</span>
+    </button>
+    <button class="platform-card" id="og-platform-nuvio" type="button" onclick="ogSetPlatform('nuvio')">
+      <img src="{{ "images/apps/nuvio.png" | relURL }}" alt=""><span>Nuvio</span>
+    </button>
+  </div>
+  <div class="field">
+    <label for="og-inp-email">E-mail</label>
+    <input type="email" id="og-inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="og-inp-pass">Password</label>
+    <input type="password" id="og-inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="og-btn-login">Entrar</button>
+  <div class="status-line" id="og-login-status"></div>
+</div>
+
+<div class="card inactive" id="og-card-list">
+  <div class="card-title">
+    <span>Addons</span>
+    <span id="og-dirty-badge" style="display:none;font-size:0.7rem;color:var(--og-text-muted)">por guardar</span>
+  </div>
+  <select id="og-profile-select" style="display:none"></select>
+  <div id="og-addon-list"></div>
+  <div class="btn-row">
+    <button class="btn btn-ghost" id="og-btn-recommend">✨ Ordem recomendada</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn" id="og-btn-save">Guardar alterações</button>
+    <button class="btn btn-ghost" id="og-btn-undo" disabled>↺ Desfazer</button>
+  </div>
+  <div class="status-line" id="og-save-status"></div>
+</div>
+
+</div><!-- #og-widget -->
+
+<script src="{{ "js/conta/util.js" | relURL }}"></script>
+<script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/organizer.js" | relURL }}"></script>
+<script>
+(function () {
+  let platform = 'stremio';
+  let token = null;
+  let nuvioProfileId = null;
+  let nuvioProfiles = [];
+  let workingList = [];        // estado actual em ecrã (pode ter alterações por gravar)
+  let lastKnownServerState = null; // o que está AGORA gravado no servidor
+  let preSaveBackup = null;    // o que estava gravado ANTES da última gravação — alvo do "Desfazer"
+  let localDirty = false;      // há alterações em ecrã ainda não gravadas
+
+  function setStatus(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  function markLocalDirty(d) {
+    localDirty = d;
+    document.getElementById('og-dirty-badge').style.display = d ? 'inline' : 'none';
+  }
+
+  // "Desfazer" fica disponível sempre que há uma gravação anterior para reverter —
+  // continua activo DEPOIS de gravar (é para isso que serve), só fica inactivo
+  // quando não há nenhuma gravação feita nesta sessão ainda.
+  function updateUndoButton() {
+    document.getElementById('og-btn-undo').disabled = !preSaveBackup;
+  }
+
+  window.ogSetPlatform = function (p) {
+    platform = p;
+    const isNuvio = p === 'nuvio';
+    document.getElementById('og-platform-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('og-platform-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('og-login-title').textContent = isNuvio ? 'Login Nuvio' : 'Login Stremio';
+    document.getElementById('og-inp-email').value = '';
+    document.getElementById('og-inp-pass').value = '';
+    setStatus('og-login-status', '', '');
+    document.getElementById('og-card-list').classList.add('inactive');
+  };
+
+  function addonLabel(a) {
+    return a.manifest?.name || a.name || a.transportUrl || a.url || 'addon';
+  }
+
+  function renderList() {
+    const box = document.getElementById('og-addon-list');
+    box.innerHTML = workingList.map((a, i) => `
+      <div class="addon-row" data-i="${i}">
+        <span class="addon-pos">${i + 1}</span>
+        <span class="addon-name">${addonLabel(a)}</span>
+        <button data-action="up" ${i === 0 ? 'disabled' : ''} aria-label="Mover para cima">↑</button>
+        <button data-action="down" ${i === workingList.length - 1 ? 'disabled' : ''} aria-label="Mover para baixo">↓</button>
+        <button data-action="remove" class="danger" aria-label="Remover">✕</button>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('og-addon-list').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const row = btn.closest('.addon-row');
+    const i = parseInt(row.dataset.i, 10);
+    const action = btn.dataset.action;
+    if (action === 'up') workingList = AddonOrganizer.moveUp(workingList, i);
+    else if (action === 'down') workingList = AddonOrganizer.moveDown(workingList, i);
+    else if (action === 'remove') workingList = AddonOrganizer.removeAt(workingList, i);
+    markLocalDirty(true);
+    renderList();
+  });
+
+  document.getElementById('og-btn-recommend').addEventListener('click', () => {
+    workingList = AddonOrganizer.recommendedOrder(workingList);
+    markLocalDirty(true);
+    renderList();
+  });
+
+  async function loadList() {
+    if (platform === 'nuvio') {
+      workingList = await NuvioAccountAPI.getAddons(token, nuvioProfileId);
+    } else {
+      workingList = await StremioAccountAPI.getAddons(token);
+    }
+    lastKnownServerState = [...workingList];
+    markLocalDirty(false);
+    renderList();
+  }
+
+  document.getElementById('og-btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('og-inp-email').value.trim();
+    const pass = document.getElementById('og-inp-pass').value;
+    if (!email || !pass) { setStatus('og-login-status', 'err', 'Preenche o e-mail e a password.'); return; }
+
+    setStatus('og-login-status', '', 'A ligar…');
+    try {
+      if (platform === 'nuvio') {
+        token = await NuvioAccountAPI.login(email, pass);
+        nuvioProfiles = await NuvioAccountAPI.ensureRealProfiles(token);
+        nuvioProfileId = nuvioProfiles[0].id;
+        const sel = document.getElementById('og-profile-select');
+        if (nuvioProfiles.length > 1) {
+          sel.style.display = 'block';
+          sel.innerHTML = nuvioProfiles.map(p => `<option value="${p.id}">${p.name || ('Perfil ' + p.id)}</option>`).join('');
+          sel.onchange = async () => { nuvioProfileId = sel.value; preSaveBackup = null; updateUndoButton(); await loadList(); };
+        } else {
+          sel.style.display = 'none';
+        }
+      } else {
+        token = await StremioAccountAPI.login(email, pass);
+      }
+      preSaveBackup = null; // nova conta/perfil — nada desta sessão para desfazer ainda
+      updateUndoButton();
+      await loadList();
+      setStatus('og-login-status', 'ok', '✓ Conta verificada — ' + workingList.length + ' addon(s).');
+      document.getElementById('og-card-list').classList.remove('inactive');
+    } catch (err) {
+      setStatus('og-login-status', 'err', err.message || 'Erro ao ligar.');
+    }
+  });
+
+  document.getElementById('og-btn-save').addEventListener('click', async () => {
+    setStatus('og-save-status', '', 'A guardar…');
+    try {
+      // Backup do que está gravado agora, ANTES de o substituir — é isto que o
+      // "Desfazer" repõe. Guardado mesmo depois de gravar com sucesso.
+      const aboutToOverwrite = lastKnownServerState;
+      if (platform === 'nuvio') {
+        await NuvioAccountAPI.setAddons(workingList, token, nuvioProfileId);
+      } else {
+        await StremioAccountAPI.setAddons(workingList, token);
+      }
+      preSaveBackup = aboutToOverwrite;
+      lastKnownServerState = [...workingList];
+      markLocalDirty(false);
+      updateUndoButton();
+      setStatus('og-save-status', 'ok', '✓ Guardado. Reinicia a app para veres o efeito.');
+    } catch (err) {
+      setStatus('og-save-status', 'err', err.message || 'Erro ao guardar.');
+    }
+  });
+
+  document.getElementById('og-btn-undo').addEventListener('click', async () => {
+    if (!preSaveBackup) return;
+    setStatus('og-save-status', '', 'A desfazer…');
+    try {
+      if (platform === 'nuvio') {
+        await NuvioAccountAPI.restore(preSaveBackup, token, nuvioProfileId);
+      } else {
+        await StremioAccountAPI.restore(preSaveBackup, token);
+      }
+      workingList = [...preSaveBackup];
+      lastKnownServerState = [...preSaveBackup];
+      preSaveBackup = null; // um nível de desfazer — evita alternar infinitamente
+      markLocalDirty(false);
+      updateUndoButton();
+      renderList();
+      setStatus('og-save-status', 'ok', '✓ Desfeito — conta reposta ao estado anterior.');
+    } catch (err) {
+      setStatus('og-save-status', 'err', err.message || 'Erro ao desfazer.');
+    }
+  });
+})();
+</script>
