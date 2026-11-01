@@ -1,0 +1,213 @@
+<div id="dg-widget">
+<style>
+  #dg-widget {
+    --dg-bg: #0f1117; --dg-surface: #1a1d27; --dg-surface2: #22263a; --dg-border: #2e3450;
+    --dg-accent: #7c3aed; --dg-accent-light: #a78bfa; --dg-success: #10b981; --dg-warning: #f59e0b;
+    --dg-error: #ef4444; --dg-text: #e2e8f0; --dg-text-muted: #94a3b8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem; color: var(--dg-text);
+  }
+  #dg-widget .dg-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
+  #dg-widget .dg-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+  #dg-widget .dg-intro p { color: var(--dg-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #dg-widget .card {
+    width: 100%; max-width: 560px; background: var(--dg-surface); border: 1px solid var(--dg-border);
+    border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  #dg-widget .card.inactive { opacity: 0.45; pointer-events: none; }
+  #dg-widget .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.9rem; }
+  #dg-widget .field { margin-bottom: 0.75rem; }
+  #dg-widget .field label { display: block; font-size: 0.8rem; color: var(--dg-text-muted); margin-bottom: 0.3rem; }
+  #dg-widget input[type="email"], #dg-widget input[type="password"] {
+    width: 100%; background: var(--dg-surface2); border: 1px solid var(--dg-border); border-radius: 8px;
+    padding: 0.65rem 0.8rem; color: var(--dg-text); font-size: 0.9rem; box-sizing: border-box;
+  }
+  #dg-widget .btn {
+    width: 100%; background: var(--dg-accent); color: #fff; border: none; border-radius: 9px;
+    padding: 0.7rem; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+  }
+  #dg-widget .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #dg-widget .btn-ghost { background: var(--dg-surface2); border: 1px solid var(--dg-border); color: var(--dg-text); }
+  #dg-widget .status-line { font-size: 0.82rem; margin-top: 0.6rem; min-height: 1.2em; }
+  #dg-widget .status-line.ok { color: var(--dg-success); }
+  #dg-widget .status-line.err { color: var(--dg-error); }
+  #dg-widget .status-line.warn { color: var(--dg-warning); }
+  #dg-widget .platform-row { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+  #dg-widget .platform-card {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.7rem;
+    border-radius: 12px; border: 1.5px solid var(--dg-border); background: var(--dg-surface2);
+    color: var(--dg-text); cursor: pointer;
+  }
+  #dg-widget .platform-card img { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; }
+  #dg-widget .platform-card span { font-size: 0.85rem; font-weight: 700; flex: 1; }
+  #dg-widget .platform-card.active { border-color: var(--dg-accent); background: rgba(124,58,237,0.12); box-shadow: 0 0 0 1px var(--dg-accent); }
+  #dg-widget .issue-row {
+    display: flex; gap: 0.6rem; padding: 0.7rem; border-radius: 9px; margin-bottom: 0.5rem;
+    border: 1px solid var(--dg-border); background: var(--dg-surface2); font-size: 0.85rem; line-height: 1.45;
+  }
+  #dg-widget .issue-row.erro { border-color: rgba(239,68,68,0.35); }
+  #dg-widget .issue-row.aviso { border-color: rgba(245,158,11,0.35); }
+  #dg-widget .issue-row .badge {
+    flex-shrink: 0; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; padding: 0.15rem 0.4rem;
+    border-radius: 5px; height: fit-content;
+  }
+  #dg-widget .issue-row.erro .badge { background: rgba(239,68,68,0.2); color: #f87171; }
+  #dg-widget .issue-row.aviso .badge { background: rgba(245,158,11,0.2); color: #fbbf24; }
+  #dg-widget .issue-row.info .badge { background: rgba(124,58,237,0.2); color: var(--dg-accent-light); }
+  #dg-widget .issue-row a { color: var(--dg-accent-light); }
+  #dg-widget textarea#dg-report-text {
+    width: 100%; min-height: 220px; background: var(--dg-surface2); border: 1px solid var(--dg-border);
+    border-radius: 8px; padding: 0.7rem; color: var(--dg-text); font-family: monospace; font-size: 0.78rem;
+    box-sizing: border-box; margin-top: 0.7rem;
+  }
+  #dg-widget select#dg-profile-select {
+    width: 100%; background: var(--dg-surface2); border: 1px solid var(--dg-border); border-radius: 8px;
+    padding: 0.6rem 0.8rem; color: var(--dg-text); font-size: 0.85rem; margin-bottom: 0.7rem;
+  }
+</style>
+
+<div class="dg-intro">
+  <h2>🔍 Diagnóstico da conta</h2>
+  <p>Verifica a tua conta Stremio ou Nuvio por problemas comuns — addons duplicados, offline ou mal configurados. Só lê a tua conta, nunca escreve nada.</p>
+</div>
+
+<div class="card" id="dg-card-login">
+  <div class="card-title" id="dg-login-title">Login Stremio</div>
+  <div class="platform-row">
+    <button class="platform-card active" id="dg-platform-stremio" type="button" onclick="dgSetPlatform('stremio')">
+      <img src="{{ "images/apps/stremio.png" | relURL }}" alt=""><span>Stremio</span>
+    </button>
+    <button class="platform-card" id="dg-platform-nuvio" type="button" onclick="dgSetPlatform('nuvio')">
+      <img src="{{ "images/apps/nuvio.png" | relURL }}" alt=""><span>Nuvio</span>
+    </button>
+  </div>
+  <div class="field">
+    <label for="dg-inp-email">E-mail</label>
+    <input type="email" id="dg-inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="dg-inp-pass">Password</label>
+    <input type="password" id="dg-inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="dg-btn-login">Verificar conta</button>
+  <div class="status-line" id="dg-login-status"></div>
+  <div class="status-line" id="dg-login-info" style="color:var(--dg-text-muted)">
+    🔒 Só lê a tua conta — nenhuma escrita é feita. As credenciais não são guardadas nem registadas.
+  </div>
+</div>
+
+<div class="card inactive" id="dg-card-result">
+  <div class="card-title">Resultado</div>
+  <select id="dg-profile-select" style="display:none"></select>
+  <div id="dg-issues"></div>
+  <button class="btn btn-ghost" id="dg-btn-report" style="margin-top:0.5rem">📋 Copiar relatório para pedir ajuda</button>
+  <textarea id="dg-report-text" readonly style="display:none"></textarea>
+</div>
+
+</div><!-- #dg-widget -->
+
+<script src="{{ "js/conta/util.js" | relURL }}"></script>
+<script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/diagnostico.js" | relURL }}"></script>
+<script>
+(function () {
+  let platform = 'stremio';
+  let token = null;
+  let nuvioProfiles = [];
+  let currentAddons = [];
+  let currentIssues = [];
+
+  window.dgSetPlatform = function (p) {
+    platform = p;
+    const isNuvio = p === 'nuvio';
+    document.getElementById('dg-platform-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('dg-platform-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('dg-login-title').textContent = isNuvio ? 'Login Nuvio' : 'Login Stremio';
+    document.getElementById('dg-inp-email').value = '';
+    document.getElementById('dg-inp-pass').value = '';
+    setStatus('dg-login-status', '', '');
+    document.getElementById('dg-card-result').classList.add('inactive');
+  };
+
+  function setStatus(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  async function runDiagnostic(addons) {
+    document.getElementById('dg-issues').innerHTML = '<div class="status-line">A verificar addons…</div>';
+    currentAddons = addons;
+    currentIssues = await AccountDiagnostico.analyzeAddons(addons);
+    renderIssues();
+  }
+
+  function renderIssues() {
+    const box = document.getElementById('dg-issues');
+    if (currentIssues.length === 0) {
+      box.innerHTML = '<div class="status-line ok">✓ Nenhum problema encontrado.</div>';
+      return;
+    }
+    box.innerHTML = currentIssues.map(iss => `
+      <div class="issue-row ${iss.severity}">
+        <span class="badge">${iss.severity}</span>
+        <span>${iss.message}${iss.link ? ` <a href="${iss.link}">Resolver →</a>` : ''}</span>
+      </div>
+    `).join('');
+  }
+
+  async function loadProfileAddons(profileId) {
+    const addons = await NuvioAccountAPI.getAddons(token, profileId);
+    await runDiagnostic(addons);
+  }
+
+  document.getElementById('dg-btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('dg-inp-email').value.trim();
+    const pass = document.getElementById('dg-inp-pass').value;
+    if (!email || !pass) { setStatus('dg-login-status', 'err', 'Preenche o e-mail e a password.'); return; }
+
+    const btn = document.getElementById('dg-btn-login');
+    btn.disabled = true;
+    setStatus('dg-login-status', '', 'A ligar…');
+
+    try {
+      document.getElementById('dg-card-result').classList.remove('inactive');
+      const profSel = document.getElementById('dg-profile-select');
+
+      if (platform === 'nuvio') {
+        token = await NuvioAccountAPI.login(email, pass);
+        nuvioProfiles = await NuvioAccountAPI.ensureRealProfiles(token);
+        setStatus('dg-login-status', 'ok', '✓ Conta verificada — ' + nuvioProfiles.length + ' perfil(is).');
+        if (nuvioProfiles.length > 1) {
+          profSel.style.display = 'block';
+          profSel.innerHTML = nuvioProfiles.map(p => `<option value="${p.id}">${p.name || ('Perfil ' + p.id)}</option>`).join('');
+          profSel.onchange = () => loadProfileAddons(profSel.value);
+        } else {
+          profSel.style.display = 'none';
+        }
+        await loadProfileAddons(nuvioProfiles[0].id);
+      } else {
+        profSel.style.display = 'none';
+        token = await StremioAccountAPI.login(email, pass);
+        const addons = await StremioAccountAPI.getAddons(token);
+        setStatus('dg-login-status', 'ok', '✓ Conta verificada — ' + addons.length + ' addon(s).');
+        await runDiagnostic(addons);
+      }
+    } catch (err) {
+      setStatus('dg-login-status', 'err', err.message || 'Erro ao ligar.');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById('dg-btn-report').addEventListener('click', () => {
+    const textarea = document.getElementById('dg-report-text');
+    textarea.value = AccountDiagnostico.sanitizeReport(currentAddons, currentIssues);
+    textarea.style.display = 'block';
+    textarea.select();
+    try { document.execCommand('copy'); } catch {}
+    if (navigator.clipboard) navigator.clipboard.writeText(textarea.value).catch(() => {});
+  });
+})();
+</script>
