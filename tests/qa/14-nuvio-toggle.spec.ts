@@ -39,12 +39,16 @@ test.describe('Toggle Stremio/Nuvio — instalação na plataforma escolhida', (
     await expect(page.locator('#qs-fb-hint')).toBeVisible();
   });
 
-  test('código-fonte referencia api.nuvio.tv e sync_push_addons (RPC Nuvio)', async ({ page }) => {
+  test('módulo partilhado referencia api.nuvio.tv e sync_push_addons (RPC Nuvio)', async ({ page, request }) => {
     await page.goto('/');
     const html = await page.content();
-    expect(html).toContain('api.nuvio.tv');
-    expect(html).toContain('sync_push_addons');
-    expect(html).toContain('sync_pull_profiles');
+    // O shortcode carrega o módulo partilhado em vez de definir a API inline
+    expect(html).toContain('js/conta/nuvio-api.js');
+    const jsRes = await request.get('/js/conta/nuvio-api.js');
+    const js = await jsRes.text();
+    expect(js).toContain('api.nuvio.tv');
+    expect(js).toContain('sync_push_addons');
+    expect(js).toContain('sync_pull_profiles');
   });
 
 });

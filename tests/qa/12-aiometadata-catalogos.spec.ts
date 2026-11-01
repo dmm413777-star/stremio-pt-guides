@@ -78,14 +78,19 @@ test.describe('Filipe — catalólogo AIOMetadata completo (Tam-Taro template)',
 
   // ── Anti-regressão: sem "max descriptor size" ────────────────────────────────
 
-  test('qsSetAddons helper existe e guarda sem manifests', async ({ page }) => {
+  test('qsSetAddons helper existe e guarda sem manifests', async ({ page, request }) => {
     const html = await page.content();
-    // Verificar que o helper qsSetAddons existe
+    // Verificar que o helper qsSetAddons existe e delega na API partilhada
     expect(html).toContain('qsSetAddons');
-    // Verificar que NÃO há calls directos a addonCollectionSet fora do helper
-    // (deve haver exactamente 1 — dentro do helper)
-    const matches = html.match(/addonCollectionSet/g) || [];
-    expect(matches.length, 'Só 1 addonCollectionSet (dentro do helper)').toBe(1);
+    expect(html).toContain('StremioAPI.setAddons');
+    // addonCollectionSet vive só no módulo partilhado (static/js/conta/stremio-api.js),
+    // não deve haver nenhuma chamada directa inline no shortcode
+    expect(html).not.toContain('addonCollectionSet');
+    const jsRes = await request.get('/js/conta/stremio-api.js');
+    const js = await jsRes.text();
+    // Só 1 chamada real (fetch) — ignora menções em comentários
+    const callMatches = js.match(/fetch\(`\$\{STREMIO_API\}\/addonCollectionSet`/g) || [];
+    expect(callMatches.length, 'Só 1 chamada fetch a addonCollectionSet no módulo partilhado').toBe(1);
   });
 
   test('urlOrigin helper existe para deduplicação sem manifest', async ({ page }) => {

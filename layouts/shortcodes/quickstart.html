@@ -856,6 +856,9 @@
 
 </div><!-- #qs-widget -->
 
+<script src="{{ "js/conta/util.js" | relURL }}"></script>
+<script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
 <script>
 (function() {
   const PT_PACK = [
@@ -929,74 +932,11 @@
   let nuvioToken = null;
   let nuvioProfileId = null;
 
-  // API Nuvio (Supabase) — porta fiel da implementação pública em
-  // https://duck-tools.pages.dev/js-bundles/quackstart.bundle.js (NuvioAPIProvider)
-  const NuvioAPI = {
-    publishableKey: 'sb_publishable_1Clq8rlTVACkdcZuqr6_AD__xUUC_EN',
-    authUrl: 'https://api.nuvio.tv/auth/v1',
-    restUrl: 'https://api.nuvio.tv/rest/v1',
-
-    async _call(baseUrl, endpoint, method, body, token) {
-      const headers = { 'Content-Type': 'application/json', apikey: this.publishableKey };
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-      const res = await qsFetchTimeout(baseUrl + endpoint, 12000, {
-        method, headers, body: body ? JSON.stringify(body) : undefined,
-      });
-      let json = {};
-      try { json = await res.json(); } catch {}
-      if (json?.error) throw new Error(json.error.message || json.error_description || JSON.stringify(json.error));
-      if (json?.code && json?.message && typeof json.code === 'string') throw new Error(json.message);
-      if (json?.msg && typeof json.code === 'number') throw new Error(json.msg);
-      if (!res.ok) throw new Error('Erro Nuvio (HTTP ' + res.status + ')');
-      return json;
-    },
-
-    async login(email, password) {
-      const data = await this._call(this.authUrl, '/token?grant_type=password', 'POST', { email, password });
-      if (!data.access_token) throw new Error('Login falhou — sem access token.');
-      return data.access_token;
-    },
-
-    async register(email, password) {
-      await this._call(this.authUrl, '/signup', 'POST', { email, password });
-    },
-
-    async getProfiles(token) {
-      try {
-        const data = await this._call(this.restUrl, '/rpc/sync_pull_profiles', 'POST', {}, token);
-        return (Array.isArray(data) ? data : []).map(p => ({ ...p, id: p.profile_index }));
-      } catch { return []; }
-    },
-
-    async setProfiles(profiles, token) {
-      const formatted = profiles.map((p, i) => ({ ...p, profile_index: parseInt(p.profile_index || (i + 1), 10) }));
-      await this._call(this.restUrl, '/rpc/sync_push_profiles', 'POST', { p_client_max_profiles: 6, p_profiles: formatted }, token);
-    },
-
-    async ensureRealProfiles(token) {
-      let profiles = await this.getProfiles(token);
-      if (profiles.length === 0) {
-        await this.setProfiles([{ profile_index: 1, name: 'Main', avatar_url: '' }], token);
-        profiles = await this.getProfiles(token);
-      }
-      return profiles;
-    },
-
-    async getAddons(profileId, token) {
-      const data = await this._call(this.restUrl, `/addons?select=*&profile_id=eq.${profileId}&order=sort_order`, 'GET', null, token);
-      return (Array.isArray(data) ? data : []).map(item => ({ ...item, transportUrl: item.url }));
-    },
-
-    async setAddons(addons, profileId, token) {
-      const formatted = addons.map((a, i) => ({
-        url: a.url || a.transportUrl,
-        name: a.name || a.manifest?.name || 'Addon',
-        enabled: a.enabled !== false,
-        sort_order: i,
-      }));
-      await this._call(this.restUrl, '/rpc/sync_push_addons', 'POST', { p_profile_id: parseInt(profileId, 10), p_addons: formatted }, token);
-    },
-  };
+  // APIs de conta Stremio/Nuvio — módulo partilhado em static/js/conta/
+  // (carregado via <script> antes deste bloco). Ver window.StremioAccountAPI
+  // e window.NuvioAccountAPI.
+  const NuvioAPI = window.NuvioAccountAPI;
+  const StremioAPI = window.StremioAccountAPI;
 
   const DEBRID_SERVICES = {
     torbox: {
@@ -1193,7 +1133,7 @@
         const profiles = await NuvioAPI.ensureRealProfiles(nuvioToken);
         if (profiles.length === 0) throw new Error('Não foi possível criar o perfil Nuvio.');
         nuvioProfileId = profiles[0].id;
-        currentAddons = await NuvioAPI.getAddons(nuvioProfileId, nuvioToken);
+        currentAddons = await NuvioAPI.getAddons(nuvioToken, nuvioProfileId);
 
         document.getElementById('qs-inp-email').value = email;
         document.getElementById('qs-inp-pass').value = pass;
@@ -1217,29 +1157,9 @@
     try {
       const email = `stremio.${rand}@proton.me`;
 
-      const res = await qsFetchTimeout('https://api.strem.io/api/register', 8000, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass, confirmPassword: pass, facebook: false }),
-      });
-      if (!res.ok) throw new Error('Servidor indisponível (HTTP ' + res.status + ')');
-      const data = await res.json();
-      if (!data.result?.authKey) {
-        const errVal = data.error;
-        const msg = (typeof errVal === 'string' && errVal) ? errVal : (errVal?.message || 'Não foi possível criar a conta.');
-        throw new Error(msg);
-      }
-
-      authKey = data.result.authKey;
+      authKey = await StremioAPI.register(email, pass);
       generatedEmail = email;
-      const colRes = await qsFetchTimeout('https://api.strem.io/api/addonCollectionGet', 10000, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ authKey, type: 'User' })
-      });
-      if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
-      const colData = await colRes.json();
-      currentAddons = colData.result?.addons ?? [];
+      currentAddons = await StremioAPI.getAddons(authKey);
 
       document.getElementById('qs-inp-email').value = email;
       document.getElementById('qs-inp-pass').value = pass;
@@ -1329,7 +1249,7 @@
         const profiles = await NuvioAPI.ensureRealProfiles(nuvioToken);
         if (profiles.length === 0) throw new Error('Esta conta não tem perfis Nuvio.');
         nuvioProfileId = profiles[0].id;
-        currentAddons = await NuvioAPI.getAddons(nuvioProfileId, nuvioToken);
+        currentAddons = await NuvioAPI.getAddons(nuvioToken, nuvioProfileId);
 
         qsSetStatus(statusEl, 'ok', '✓ Conta verificada — ' + currentAddons.length + ' addon(s) actualmente instalados no perfil "' + (profiles[0].name || 'Main') + '".');
         const pill = document.getElementById('qs-account-pill');
@@ -1348,34 +1268,8 @@
     }
 
     try {
-      const res = await fetch('https://api.strem.io/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass, facebook: false }),
-      });
-
-      if (!res.ok) throw new Error('Servidor indisponível (HTTP ' + res.status + ')');
-      const data = await res.json();
-
-      if (!data.result || !data.result.authKey) {
-        const errVal = data.error;
-        const errMsg = (typeof errVal === 'string' && errVal) ? errVal
-                     : (errVal?.message || errVal?.error || 'E-mail ou password incorretos.');
-        qsSetStatus(statusEl, 'err', errMsg);
-        btn.disabled = false;
-        return;
-      }
-
-      authKey = data.result.authKey;
-
-      const colRes = await qsFetchTimeout('https://api.strem.io/api/addonCollectionGet', 10000, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ authKey, type: 'User' })
-      });
-      if (!colRes.ok) throw new Error('Erro ao ler addons da conta.');
-      const colData = await colRes.json();
-      currentAddons = colData.result?.addons ?? [];
+      authKey = await StremioAPI.login(email, pass);
+      currentAddons = await StremioAPI.getAddons(authKey);
 
       qsSetStatus(statusEl, 'ok', '✓ Conta verificada — ' + currentAddons.length + ' addon(s) actualmente instalados.');
       const pill = document.getElementById('qs-account-pill');
@@ -1697,72 +1591,16 @@
     let workingAddons = platform === 'nuvio' ? [...currentAddons] : currentAddons.filter(a => !STRIP_IDS.has(a.manifest?.id));
 
     // Helper: extrair origem de URL para deduplicação quando não há manifest guardado
-    function urlOrigin(url) { try { return new URL(url).origin; } catch { return ''; } }
+    const urlOrigin = AccountUtil.urlOrigin;
 
-    // Cria um manifest slim para evitar "max descriptor size reached" E garantir que
-    // o parser Rust do Stremio não falha com manifest:null.
-    // Mantém os catalogs (necessários para a homepage do Stremio mostrar rows de conteúdo)
-    // mas remove o campo "extra" de cada catálogo (listas de géneros/skip/filtros) que
-    // representa a maior parte do tamanho — reduz AIOMetadata de ~32KB para ~5KB.
-    function makeSlimManifest(m) {
-      if (!m) return null;
-      const slimCatalogs = (m.catalogs || []).map(c => {
-        const slimExtra = (c.extra || []).filter(e => e.name !== 'genre');
-        const cat = { type: c.type, id: c.id, name: c.name };
-        if (slimExtra.length) cat.extra = slimExtra;
-        return cat;
-      });
-      return {
-        id: m.id,
-        version: m.version || '0.0.1',
-        name: m.name,
-        description: m.description || '',
-        logo: m.logo || undefined,
-        resources: m.resources || [],
-        types: m.types || [],
-        catalogs: slimCatalogs,
-        behaviorHints: m.behaviorHints || undefined,
-      };
-    }
-
-    // Helper: guardar addon collection com manifests slim para resolver dois problemas:
-    // 1. manifest:null → Stremio desktop (parser Rust) falha ao carregar a coleção
-    // 2. manifest completo com 60+ catálogos → "max descriptor size reached"
-    // Solução: guardar stub válido (sem catalogs) — Stremio busca manifest real do transportUrl
+    // Guardar addon collection — delega na API partilhada (slim manifest no Stremio,
+    // substituição total simples no Nuvio; ver static/js/conta/).
     async function qsSetAddons(addons) {
-      // Nuvio: substituição total e simples — a tabela addons só guarda url/name/enabled/sort_order,
-      // não há limite de tamanho de manifest nem problema de manifest:null como no Stremio.
       if (platform === 'nuvio') {
-        await NuvioAPI.setAddons(addons, nuvioProfileId, nuvioToken);
+        await NuvioAPI.setAddons(addons, nuvioToken, nuvioProfileId);
         return;
       }
-
-      // Buscar manifests em falta (addons existentes vindos do addonCollectionGet com manifest:null)
-      const withManifests = await Promise.all(addons.map(async a => {
-        if (a.manifest) return a;
-        try {
-          const r = await qsFetchTimeout(a.transportUrl, 5000);
-          if (r.ok) return { ...a, manifest: await r.json() };
-        } catch {}
-        return a;
-      }));
-
-      const slim = withManifests.map(a => ({
-        transportUrl: a.transportUrl,
-        transportName: a.transportName || 'http',
-        flags: a.flags || {},
-        manifest: makeSlimManifest(a.manifest),
-      }));
-
-      const res = await fetch('https://api.strem.io/api/addonCollectionSet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ authKey, addons: slim }),
-      });
-      if (!res.ok) throw new Error('Erro ao guardar na conta Stremio (HTTP ' + res.status + ')');
-      const data = await res.json();
-      if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message || JSON.stringify(data.error) : data.error);
-      return data;
+      return StremioAPI.setAddons(addons, authKey);
     }
 
     // AIOStreams: criar conta via API com config Tam-Taro pré-configurado
