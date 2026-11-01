@@ -73,3 +73,52 @@ test.describe('Cinemeta PT — página e UI', () => {
   });
 
 });
+
+test.describe('isCinemeta — identificação só por transportUrl (nunca por manifest.id)', () => {
+  // O "Cinemeta PT" (Toast Translator) reporta de propósito o mesmo manifest.id
+  // (com.linvo.cinemeta) do Cinemeta oficial, sem ser o addon oficial. Todas as
+  // operações têm de distinguir os dois só pelo host do transportUrl.
+
+  const collection = [
+    { manifest: { id: 'com.linvo.cinemeta', name: 'Cinemeta' }, transportUrl: 'https://v3-cinemeta.strem.io/manifest.json' },
+    { manifest: { id: 'com.linvo.cinemeta', name: 'Cinemeta 🇵🇹 | ElfHosted' }, transportUrl: 'https://toast-translator.elfhosted.com/x/manifest.json' },
+  ];
+
+  test('StremioAccountAPI.isCinemeta só identifica o host oficial', async ({ page }) => {
+    await page.goto('/cinemeta-pt/');
+    const result = await page.evaluate((col) => {
+      const api = (window as any).StremioAccountAPI;
+      return col.map((a: any) => api.isCinemeta(a));
+    }, collection);
+    expect(result).toEqual([true, false]);
+  });
+
+  test('NuvioAccountAPI.isCinemeta só identifica o host oficial', async ({ page }) => {
+    await page.goto('/cinemeta-pt/');
+    const result = await page.evaluate((col) => {
+      const api = (window as any).NuvioAccountAPI;
+      return col.map((a: any) => api.isCinemeta(a));
+    }, collection);
+    expect(result).toEqual([true, false]);
+  });
+
+  test('Diagnóstico não marca o Toast "Cinemeta PT" como duplicado', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const issues = await page.evaluate(async (col) => {
+      (window as any).fetch = async () => ({ ok: true, json: async () => ({}) });
+      return (window as any).AccountDiagnostico.analyzeAddons(col, { concurrency: 1 });
+    }, collection);
+    expect(issues.find((i: any) => i.type === 'duplicado')).toBeFalsy();
+  });
+
+  test('Diagnóstico detecta o Cinemeta oficial sem tratamento, não o Toast wrapper', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const issues = await page.evaluate(async (col) => {
+      (window as any).fetch = async () => ({ ok: true, json: async () => ({}) });
+      return (window as any).AccountDiagnostico.analyzeAddons(col, { concurrency: 1 });
+    }, collection);
+    const cinemetaIssue = issues.find((i: any) => i.type === 'cinemeta');
+    expect(cinemetaIssue).toBeTruthy();
+    expect(cinemetaIssue.addonIndexes).toEqual([0]); // só o índice do oficial, não o Toast
+  });
+});

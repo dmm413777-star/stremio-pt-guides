@@ -101,9 +101,15 @@
   }
 
   const CINEMETA_URL = 'https://v3-cinemeta.strem.io/manifest.json';
+  const CINEMETA_OFFICIAL_HOST = 'v3-cinemeta.strem.io';
 
+  // Identifica o Cinemeta oficial só pelo host — nunca pelo nome, porque outros
+  // addons (ex. o "Cinemeta PT" do Toast Translator) podem chamar-se de forma
+  // parecida sem serem o addon oficial.
   function isCinemeta(addon) {
-    return !!(addon && (addon.transportUrl === CINEMETA_URL || addon.url === CINEMETA_URL || addon.name === 'Cinemeta'));
+    const url = addon && (addon.transportUrl || addon.url);
+    if (!url) return false;
+    try { return new URL(url).host === CINEMETA_OFFICIAL_HOST; } catch { return false; }
   }
 
   // Remove o Cinemeta da colecção do perfil — tira-o também da pesquisa (ao

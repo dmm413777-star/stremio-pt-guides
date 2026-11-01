@@ -120,9 +120,11 @@ test.describe('analyzeAddons — detecção de problemas', () => {
     await page.goto('/diagnostico/');
     const issues = await page.evaluate(async () => {
       (window as any).fetch = async () => ({ ok: true, json: async () => ({}) });
+      // com.linvo.cinemeta fica propositadamente fora desta detecção genérica —
+      // ver test.describe dedicado em 15-cinemeta-pt.spec.ts
       const addons = [
-        { manifest: { id: 'com.linvo.cinemeta', name: 'Cinemeta' }, transportUrl: 'https://v3-cinemeta.strem.io/manifest.json' },
-        { manifest: { id: 'com.linvo.cinemeta', name: 'Cinemeta PT' }, transportUrl: 'https://toast-translator.elfhosted.com/x/manifest.json' },
+        { manifest: { id: 'org.stremio.aiostreams', name: 'AIOStreams' }, transportUrl: 'https://aiostreams.viren070.me/stremio/a/manifest.json' },
+        { manifest: { id: 'org.stremio.aiostreams', name: 'AIOStreams (2)' }, transportUrl: 'https://aiostreams.viren070.me/stremio/b/manifest.json' },
       ];
       return (window as any).AccountDiagnostico.analyzeAddons(addons, { concurrency: 1 });
     });

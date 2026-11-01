@@ -27,6 +27,19 @@
     'api.nuvio.tv',
   ]);
 
+  const CINEMETA_OFFICIAL_HOST = 'v3-cinemeta.strem.io';
+  const CINEMETA_MANIFEST_ID = 'com.linvo.cinemeta';
+
+  // Identifica o Cinemeta oficial só pelo host do transportUrl — nunca pelo
+  // manifest.id nem pelo nome. Outros addons (ex. "Cinemeta PT" do Toast
+  // Translator) reportam de propósito o mesmo manifest.id para se apresentarem
+  // como uma versão do mesmo addon, sem serem o oficial.
+  function isOfficialCinemeta(addon) {
+    const url = addon && (addon.transportUrl || addon.url);
+    if (!url) return false;
+    try { return new URL(url).host === CINEMETA_OFFICIAL_HOST; } catch { return false; }
+  }
+
   function hostLabel(url) {
     const origin = util.urlOrigin(url);
     if (!origin) return 'origem desconhecida';
@@ -59,7 +72,11 @@
     const concurrency = opts.concurrency || 4;
     const issues = [];
 
-    // Duplicados — mesma origem de transportUrl ou mesmo manifest.id
+    // Duplicados — mesma origem de transportUrl ou mesmo manifest.id.
+    // O manifest.id do Cinemeta (com.linvo.cinemeta) fica de fora deste
+    // agrupamento de propósito: o "Cinemeta PT" (Toast Translator) reporta o
+    // mesmo id sem ser o Cinemeta oficial, e isso não é um duplicado — é um
+    // addon à parte, tratado abaixo na detecção dedicada do Cinemeta.
     const byOrigin = new Map();
     const byManifestId = new Map();
     addons.forEach((a, i) => {
@@ -69,7 +86,7 @@
         byOrigin.get(origin).push(i);
       }
       const mid = a.manifest?.id;
-      if (mid) {
+      if (mid && mid !== CINEMETA_MANIFEST_ID) {
         if (!byManifestId.has(mid)) byManifestId.set(mid, []);
         byManifestId.get(mid).push(i);
       }
@@ -97,11 +114,10 @@
       }
     }
 
-    // Cinemeta presente sem tratamento (nunca patchado/removido)
-    const cinemetaIdx = addons.findIndex(a =>
-      (a.transportUrl || a.url || '').startsWith('https://v3-cinemeta.strem.io') ||
-      a.manifest?.name === 'Cinemeta' || a.name === 'Cinemeta'
-    );
+    // Cinemeta oficial presente sem tratamento (nunca patchado/removido) —
+    // identificado só pelo host, nunca por um addon diferente (ex. Cinemeta PT)
+    // que partilhe o mesmo manifest.id ou um nome parecido.
+    const cinemetaIdx = addons.findIndex(a => isOfficialCinemeta(a));
     if (cinemetaIdx !== -1) {
       issues.push({
         type: 'cinemeta',
