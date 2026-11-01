@@ -47,8 +47,8 @@
     return KNOWN_HOSTS.has(host) ? host : 'instância privada';
   }
 
-  // Verifica se um manifest responde, distinguindo timeout/rede de resposta inválida.
-  async function checkManifest(url) {
+  // Tenta uma vez contra o URL dado; devolve null em sucesso ou um motivo de falha.
+  async function tryManifestFetch(url) {
     try {
       const res = await util.fetchTimeout(url, 8000);
       if (!res.ok) return { ok: false, kind: 'http', status: res.status };
@@ -62,6 +62,21 @@
       if (err.name === 'AbortError') return { ok: false, kind: 'timeout' };
       return { ok: false, kind: 'network' };
     }
+  }
+
+  // Verifica se um manifest responde, distinguindo timeout/rede de resposta inválida.
+  // Alguns addons (ex. defaults nativos do Nuvio, como o OpenSubtitles v3) ficam
+  // guardados com o URL base sem "/manifest.json" — tenta sempre com o sufixo
+  // antes de reportar erro, em vez de assumir que o addon está mesmo offline.
+  async function checkManifest(url) {
+    const first = await tryManifestFetch(url);
+    if (first.ok) return first;
+    if (!url.endsWith('/manifest.json')) {
+      const withSuffix = url.replace(/\/?$/, '/manifest.json');
+      const second = await tryManifestFetch(withSuffix);
+      if (second.ok) return second;
+    }
+    return first;
   }
 
   // Analisa a colecção (só leitura). Addons já têm transportUrl normalizado

@@ -159,3 +159,64 @@ test.describe('analyzeAddons — detecção de problemas', () => {
   });
 
 });
+
+test.describe('checkManifest — normaliza URLs sem sufixo /manifest.json', () => {
+  // Alguns addons nativos do Nuvio (ex. OpenSubtitles v3) ficam guardados com o
+  // URL base, sem /manifest.json — o diagnóstico tem de tentar o sufixo antes de
+  // reportar erro, em vez de assumir que o addon está offline.
+
+  test('URL já com /manifest.json: só faz um pedido', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const result = await page.evaluate(async () => {
+      const calls: string[] = [];
+      (window as any).fetch = async (url: string) => {
+        calls.push(url);
+        return { ok: true, json: async () => ({ id: 'x' }) };
+      };
+      const r = await (window as any).AccountDiagnostico.checkManifest('https://example.com/manifest.json');
+      return { r, calls };
+    });
+    expect(result.r.ok).toBe(true);
+    expect(result.calls.length).toBe(1);
+  });
+
+  test('URL sem sufixo que falha: tenta com /manifest.json antes de reportar erro', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const result = await page.evaluate(async () => {
+      const calls: string[] = [];
+      (window as any).fetch = async (url: string) => {
+        calls.push(url);
+        if (url.endsWith('/manifest.json')) return { ok: true, json: async () => ({ id: 'x' }) };
+        return { ok: false, status: 404 };
+      };
+      const r = await (window as any).AccountDiagnostico.checkManifest('https://opensubtitles-v3.strem.io');
+      return { r, calls };
+    });
+    expect(result.r.ok).toBe(true);
+    expect(result.calls).toEqual([
+      'https://opensubtitles-v3.strem.io',
+      'https://opensubtitles-v3.strem.io/manifest.json',
+    ]);
+  });
+
+  test('URL sem sufixo que continua a falhar mesmo com /manifest.json: reporta o erro original', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const result = await page.evaluate(async () => {
+      (window as any).fetch = async () => ({ ok: false, status: 500 });
+      return (window as any).AccountDiagnostico.checkManifest('https://addon-morto.example.com');
+    });
+    expect(result.ok).toBe(false);
+    expect(result.kind).toBe('http');
+  });
+
+  test('conta real do Nuvio com OpenSubtitles v3 sem sufixo não gera falso positivo', async ({ page }) => {
+    await page.goto('/diagnostico/');
+    const issues = await page.evaluate(async () => {
+      const addons = [
+        { manifest: { id: 'org.stremio.opensubtitlesv3', name: 'OpenSubtitles v3' }, transportUrl: 'https://opensubtitles-v3.strem.io' },
+      ];
+      return (window as any).AccountDiagnostico.analyzeAddons(addons, { concurrency: 1 });
+    });
+    expect(issues.find((i: any) => i.type === 'manifest-offline')).toBeFalsy();
+  });
+});
