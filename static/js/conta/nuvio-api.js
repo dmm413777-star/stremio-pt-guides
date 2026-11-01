@@ -100,6 +100,29 @@
       { p_profile_id: parseInt(profileId, 10), p_platform: platform, p_settings_json: { items } }, token);
   }
 
+  const CINEMETA_URL = 'https://v3-cinemeta.strem.io/manifest.json';
+
+  function isCinemeta(addon) {
+    return !!(addon && (addon.transportUrl === CINEMETA_URL || addon.url === CINEMETA_URL || addon.name === 'Cinemeta'));
+  }
+
+  // Remove o Cinemeta da colecção do perfil — tira-o também da pesquisa (ao
+  // contrário de pullHomeCatalogSettings, que só afecta a home).
+  async function deleteCinemeta(token, profileId) {
+    const addons = await getAddons(token, profileId);
+    const filtered = addons.filter(a => !isCinemeta(a));
+    if (filtered.length === addons.length) return false; // não estava instalado
+    await setAddons(filtered, token, profileId);
+    return true;
+  }
+
+  async function installCinemeta(token, profileId) {
+    const addons = await getAddons(token, profileId);
+    if (addons.some(a => isCinemeta(a))) return false; // já instalado
+    await setAddons([...addons, { url: CINEMETA_URL, name: 'Cinemeta', enabled: true }], token, profileId);
+    return true;
+  }
+
   global.NuvioAccountAPI = {
     capabilities: {
       multipleProfiles: true,
@@ -118,5 +141,8 @@
     restore,
     pullHomeCatalogSettings,
     pushHomeCatalogSettings,
+    isCinemeta,
+    deleteCinemeta,
+    installCinemeta,
   };
 })(window);

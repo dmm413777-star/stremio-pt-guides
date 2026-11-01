@@ -121,6 +121,97 @@
     return setAddons(backupData, token);
   }
 
+  // --- Cinemeta Patcher ---------------------------------------------------
+  // Porta fiel de CinemetaPatcherAPI em
+  // https://duck-tools.pages.dev/js-bundles/cinemeta-patcher.bundle.js
+  // (ferramenta em produção, creditada na página Cinemeta PT).
+  const CINEMETA_URL = 'https://v3-cinemeta.strem.io/manifest.json';
+  const CINEMETA_HOME_CATALOGS = new Set(['top', 'year', 'imdbRating', 'last-videos', 'calendar-videos']);
+
+  function isCinemeta(addon) {
+    if (!addon) return false;
+    if (addon.manifest && addon.manifest.name === 'Cinemeta') return true;
+    if (addon.transportUrl && addon.transportUrl.startsWith('https://v3-cinemeta.strem.io')) return true;
+    return false;
+  }
+
+  async function fetchOfficialCinemeta() {
+    const res = await util.fetchTimeout(CINEMETA_URL, 10000);
+    if (!res.ok) throw new Error('Não foi possível obter o manifest oficial do Cinemeta.');
+    const manifest = await res.json();
+    return { transportUrl: CINEMETA_URL, transportName: 'http', flags: { official: true, protected: true }, manifest };
+  }
+
+  // options: { removeSearch, removeStandardCatalogs, removeMeta }
+  function patchCinemetaManifest(addons, options) {
+    const updated = JSON.parse(JSON.stringify(addons));
+    const idx = updated.findIndex(a => isCinemeta(a));
+    if (idx === -1) throw new Error('Cinemeta não encontrado na colecção.');
+
+    const cinemeta = updated[idx];
+    let catalogs = Array.isArray(cinemeta.manifest.catalogs) ? cinemeta.manifest.catalogs : [];
+    let resources = Array.isArray(cinemeta.manifest.resources) ? cinemeta.manifest.resources : [];
+
+    if (options.removeSearch) {
+      catalogs = catalogs.filter(c => !(c && c.id === 'cinemeta.search' && (c.type === 'movie' || c.type === 'series')));
+      catalogs = catalogs.map(c => {
+        if (c && Array.isArray(c.extra) && c.id === 'top' && (c.type === 'movie' || c.type === 'series')) {
+          c.extra = c.extra.filter(e => (typeof e === 'string' ? e : e?.name) !== 'search');
+        }
+        return c;
+      });
+      resources = resources.filter(r => (typeof r === 'string' ? r : r?.name) !== 'search');
+    }
+
+    if (options.removeStandardCatalogs) {
+      const isTarget = c => c && CINEMETA_HOME_CATALOGS.has(c.id) && (c.type === 'movie' || c.type === 'series');
+      if (!options.removeSearch) {
+        catalogs = catalogs.map(c => {
+          if (c && c.id === 'top' && (c.type === 'movie' || c.type === 'series') && Array.isArray(c.extra)) {
+            c.extra = c.extra.map(e => (typeof e === 'string' ? e : e?.name) === 'search' ? { name: 'search', isRequired: true } : e);
+          }
+          return c;
+        }).filter(c => c && !(c.id === 'year' || c.id === 'imdbRating') && (c.type === 'movie' || c.type === 'series'));
+      } else {
+        catalogs = catalogs.filter(c => !isTarget(c));
+      }
+    }
+
+    if (options.removeMeta) {
+      resources = resources.filter(r => (typeof r === 'string' ? r : r?.name) !== 'meta');
+    }
+
+    cinemeta.manifest.catalogs = catalogs;
+    cinemeta.manifest.resources = resources;
+    const applied = [];
+    if (options.removeSearch) applied.push('pesquisa');
+    if (options.removeStandardCatalogs) applied.push('catálogos da página inicial');
+    if (options.removeMeta) applied.push('metadados');
+    cinemeta.manifest.name = 'Cinemeta (Patched)';
+    cinemeta.manifest.description = 'Patchado pelo Stremio PT. Removido: ' + applied.join(', ') + '.';
+
+    return updated;
+  }
+
+  // Aplica o patch directamente numa conta (busca o Cinemeta oficial fresco antes
+  // de patchar, para nunca patchar em cima de um patch anterior já corrompido).
+  async function patchCinemeta(token, options) {
+    const addons = await getAddons(token);
+    const fresh = await fetchOfficialCinemeta();
+    const idx = addons.findIndex(a => isCinemeta(a));
+    if (idx !== -1) addons[idx] = fresh; else addons.unshift(fresh);
+    const patched = patchCinemetaManifest(addons, options);
+    await setAddons(patched, token);
+  }
+
+  async function resetCinemeta(token) {
+    const addons = await getAddons(token);
+    const fresh = await fetchOfficialCinemeta();
+    const idx = addons.findIndex(a => isCinemeta(a));
+    if (idx !== -1) addons[idx] = fresh; else addons.unshift(fresh);
+    await setAddons(addons, token);
+  }
+
   global.StremioAccountAPI = {
     capabilities: {
       multipleProfiles: false,
@@ -136,5 +227,9 @@
     backup,
     restore,
     makeSlimManifest,
+    isCinemeta,
+    fetchOfficialCinemeta,
+    patchCinemeta,
+    resetCinemeta,
   };
 })(window);

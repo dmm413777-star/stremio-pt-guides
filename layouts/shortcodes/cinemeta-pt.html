@@ -1,0 +1,299 @@
+<div id="cm-widget">
+<style>
+  #cm-widget {
+    --cm-bg: #0f1117;
+    --cm-surface: #1a1d27;
+    --cm-surface2: #22263a;
+    --cm-border: #2e3450;
+    --cm-accent: #7c3aed;
+    --cm-accent-light: #a78bfa;
+    --cm-success: #10b981;
+    --cm-warning: #f59e0b;
+    --cm-error: #ef4444;
+    --cm-text: #e2e8f0;
+    --cm-text-muted: #94a3b8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 0 1rem;
+    color: var(--cm-text);
+  }
+  #cm-widget .cm-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
+  #cm-widget .cm-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+  #cm-widget .cm-intro p { color: var(--cm-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #cm-widget .cm-credit { font-size: 0.75rem; color: var(--cm-text-muted); margin-top: 0.5rem; }
+  #cm-widget .cm-credit a { color: var(--cm-accent-light); }
+  #cm-widget .card {
+    width: 100%; max-width: 520px; background: var(--cm-surface); border: 1px solid var(--cm-border);
+    border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  #cm-widget .card.inactive { opacity: 0.45; pointer-events: none; }
+  #cm-widget .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.9rem; }
+  #cm-widget .field { margin-bottom: 0.75rem; }
+  #cm-widget .field label { display: block; font-size: 0.8rem; color: var(--cm-text-muted); margin-bottom: 0.3rem; }
+  #cm-widget input[type="email"], #cm-widget input[type="password"] {
+    width: 100%; background: var(--cm-surface2); border: 1px solid var(--cm-border); border-radius: 8px;
+    padding: 0.65rem 0.8rem; color: var(--cm-text); font-size: 0.9rem; box-sizing: border-box;
+  }
+  #cm-widget .btn {
+    width: 100%; background: var(--cm-accent); color: #fff; border: none; border-radius: 9px;
+    padding: 0.7rem; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: background 0.15s;
+  }
+  #cm-widget .btn:hover { background: #6d28d9; }
+  #cm-widget .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #cm-widget .btn-ghost { background: var(--cm-surface2); border: 1px solid var(--cm-border); color: var(--cm-text); }
+  #cm-widget .btn-danger { background: var(--cm-error); }
+  #cm-widget .btn-row { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
+  #cm-widget .btn-row .btn { width: auto; flex: 1; }
+  #cm-widget .status-line { font-size: 0.82rem; margin-top: 0.6rem; min-height: 1.2em; }
+  #cm-widget .status-line.ok { color: var(--cm-success); }
+  #cm-widget .status-line.err { color: var(--cm-error); white-space: pre-line; }
+  #cm-widget .status-line.warn { color: var(--cm-warning); }
+  #cm-widget .platform-row { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+  #cm-widget .platform-card {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.7rem;
+    border-radius: 12px; border: 1.5px solid var(--cm-border); background: var(--cm-surface2);
+    color: var(--cm-text); cursor: pointer;
+  }
+  #cm-widget .platform-card img { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; }
+  #cm-widget .platform-card span { font-size: 0.85rem; font-weight: 700; flex: 1; }
+  #cm-widget .platform-card.active { border-color: var(--cm-accent); background: rgba(124,58,237,0.12); box-shadow: 0 0 0 1px var(--cm-accent); }
+  #cm-widget .option-row {
+    display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.7rem; border: 1px solid var(--cm-border);
+    border-radius: 9px; margin-bottom: 0.6rem; cursor: pointer; background: var(--cm-surface2);
+  }
+  #cm-widget .option-row input { margin-top: 0.2rem; flex-shrink: 0; }
+  #cm-widget .option-row strong { display: block; font-size: 0.86rem; margin-bottom: 0.15rem; }
+  #cm-widget .option-row span.desc { font-size: 0.78rem; color: var(--cm-text-muted); line-height: 1.4; }
+  #cm-widget .info-box {
+    background: var(--cm-surface2); border: 1px solid var(--cm-border); border-radius: 8px;
+    padding: 0.7rem 0.85rem; font-size: 0.78rem; color: var(--cm-text-muted); line-height: 1.5; margin-top: 0.6rem;
+  }
+  #cm-widget .info-box.warn { border-color: rgba(245,158,11,0.3); color: #d4a017; background: rgba(245,158,11,0.07); }
+  #cm-widget select#cm-profile-select {
+    width: 100%; background: var(--cm-surface2); border: 1px solid var(--cm-border); border-radius: 8px;
+    padding: 0.6rem 0.8rem; color: var(--cm-text); font-size: 0.85rem; margin-bottom: 0.7rem;
+  }
+</style>
+
+<div class="cm-intro">
+  <h2>🧹 Cinemeta PT</h2>
+  <p>O Cinemeta vem sempre instalado por defeito e mostra títulos, sinopses e listas em inglês — mesmo depois de instalares o AIOMetadata PT. Esta ferramenta tira-o do caminho.</p>
+  <div class="cm-credit">Técnica inspirada no <a href="https://duck-tools.pages.dev/" target="_blank" rel="noopener">Duck Tools</a> — Cinemeta Patcher.</div>
+</div>
+
+<div class="card" id="cm-card-login">
+  <div class="card-title" id="cm-login-title">Login Stremio</div>
+  <div class="platform-row">
+    <button class="platform-card active" id="cm-platform-stremio" type="button" onclick="cmSetPlatform('stremio')">
+      <img src="{{ "images/apps/stremio.png" | relURL }}" alt="">
+      <span>Stremio</span>
+    </button>
+    <button class="platform-card" id="cm-platform-nuvio" type="button" onclick="cmSetPlatform('nuvio')">
+      <img src="{{ "images/apps/nuvio.png" | relURL }}" alt="">
+      <span>Nuvio</span>
+    </button>
+  </div>
+  <div class="field">
+    <label for="cm-inp-email">E-mail</label>
+    <input type="email" id="cm-inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="cm-inp-pass">Password</label>
+    <input type="password" id="cm-inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="cm-btn-login">Entrar</button>
+  <div class="status-line" id="cm-login-status"></div>
+  <div class="info-box" id="cm-login-info">
+    🔒 As credenciais comunicam directamente com <code>api.strem.io</code>. Não são guardadas nem registadas em lado nenhum.
+  </div>
+</div>
+
+<div class="card inactive" id="cm-card-options">
+  <div class="card-title">O que fazer ao Cinemeta</div>
+
+  <!-- Opções Stremio -->
+  <div id="cm-stremio-options">
+    <label class="option-row">
+      <input type="checkbox" id="cm-opt-search" checked>
+      <div><strong>Esconder da pesquisa</strong><span class="desc">O Cinemeta deixa de aparecer nos resultados de pesquisa (fica só o AIOMetadata PT).</span></div>
+    </label>
+    <label class="option-row">
+      <input type="checkbox" id="cm-opt-home" checked>
+      <div><strong>Esconder da página inicial</strong><span class="desc">Remove as listas do Cinemeta (Popular, Novos, etc.) da home do Stremio.</span></div>
+    </label>
+    <label class="option-row">
+      <input type="checkbox" id="cm-opt-meta">
+      <div><strong>Remover metadados (avançado)</strong><span class="desc">⚠️ Só activa isto se tiveres a certeza de que o AIOMetadata cobre todos os títulos — sem isto, alguns filmes/séries podem ficar sem título/sinopse se o addon que os instalou não trouxer metadados próprios.</span></div>
+    </label>
+    <button class="btn" id="cm-btn-apply-stremio">Aplicar ao Cinemeta</button>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="cm-btn-reset-stremio">↺ Repor Cinemeta original</button>
+    </div>
+  </div>
+
+  <!-- Opções Nuvio -->
+  <div id="cm-nuvio-options" style="display:none">
+    <select id="cm-profile-select"></select>
+    <label class="option-row">
+      <input type="checkbox" id="cm-opt-all-profiles">
+      <div><strong>Aplicar a todos os perfis</strong><span class="desc">Em vez de só ao perfil seleccionado acima.</span></div>
+    </label>
+    <div class="info-box">
+      No Nuvio, remover o Cinemeta tira-o da pesquisa <strong>e</strong> da página inicial ao mesmo tempo — não há opções separadas como no Stremio.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-danger" id="cm-btn-delete-nuvio">Remover Cinemeta</button>
+      <button class="btn btn-ghost" id="cm-btn-install-nuvio">↺ Reinstalar Cinemeta</button>
+    </div>
+  </div>
+
+  <div class="status-line" id="cm-apply-status"></div>
+</div>
+
+</div><!-- #cm-widget -->
+
+<script src="{{ "js/conta/util.js" | relURL }}"></script>
+<script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script>
+(function () {
+  let platform = 'stremio';
+  let token = null;
+  let nuvioProfiles = [];
+
+  window.cmSetPlatform = function (p) {
+    platform = p;
+    const isNuvio = p === 'nuvio';
+    document.getElementById('cm-platform-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('cm-platform-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('cm-login-title').textContent = isNuvio ? 'Login Nuvio' : 'Login Stremio';
+    document.getElementById('cm-login-info').innerHTML = isNuvio
+      ? '🔒 As credenciais comunicam directamente com <code>api.nuvio.tv</code>. Não são guardadas nem registadas em lado nenhum.'
+      : '🔒 As credenciais comunicam directamente com <code>api.strem.io</code>. Não são guardadas nem registadas em lado nenhum.';
+    document.getElementById('cm-stremio-options').style.display = isNuvio ? 'none' : 'block';
+    document.getElementById('cm-nuvio-options').style.display = isNuvio ? 'block' : 'none';
+    document.getElementById('cm-inp-email').value = '';
+    document.getElementById('cm-inp-pass').value = '';
+    setStatus('cm-login-status', '', '');
+    document.getElementById('cm-card-options').classList.add('inactive');
+  };
+
+  function setStatus(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  // Pré-condição: só aplicar se o AIOMetadata estiver instalado e a responder.
+  async function checkAioMetadataPresent(addons) {
+    const aio = addons.find(a => (a.transportUrl || a.url || '').includes('aiometadata'));
+    if (!aio) return { ok: false, reason: 'O AIOMetadata PT não está instalado nesta conta.' };
+    try {
+      const res = await AccountUtil.fetchTimeout(aio.transportUrl || aio.url, 6000);
+      if (!res.ok) return { ok: false, reason: 'O AIOMetadata está instalado mas não está a responder (HTTP ' + res.status + ').' };
+    } catch {
+      return { ok: false, reason: 'O AIOMetadata está instalado mas não está a responder.' };
+    }
+    return { ok: true };
+  }
+
+  document.getElementById('cm-btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('cm-inp-email').value.trim();
+    const pass = document.getElementById('cm-inp-pass').value;
+    if (!email || !pass) { setStatus('cm-login-status', 'err', 'Preenche o e-mail e a password.'); return; }
+
+    const btn = document.getElementById('cm-btn-login');
+    btn.disabled = true;
+    setStatus('cm-login-status', '', 'A verificar conta…');
+
+    try {
+      if (platform === 'nuvio') {
+        token = await NuvioAccountAPI.login(email, pass);
+        nuvioProfiles = await NuvioAccountAPI.ensureRealProfiles(token);
+        const sel = document.getElementById('cm-profile-select');
+        sel.innerHTML = nuvioProfiles.map(p => `<option value="${p.id}">${p.name || ('Perfil ' + p.id)}</option>`).join('');
+        const firstAddons = await NuvioAccountAPI.getAddons(token, nuvioProfiles[0].id);
+        const check = await checkAioMetadataPresent(firstAddons);
+        if (!check.ok) {
+          setStatus('cm-login-status', 'warn', '⚠ ' + check.reason + ' Instala-o primeiro no QuickStart PT.');
+        } else {
+          setStatus('cm-login-status', 'ok', '✓ Conta verificada — ' + nuvioProfiles.length + ' perfil(is).');
+        }
+      } else {
+        token = await StremioAccountAPI.login(email, pass);
+        const addons = await StremioAccountAPI.getAddons(token);
+        const check = await checkAioMetadataPresent(addons);
+        if (!check.ok) {
+          setStatus('cm-login-status', 'warn', '⚠ ' + check.reason + ' Instala-o primeiro no QuickStart PT.');
+        } else {
+          setStatus('cm-login-status', 'ok', '✓ Conta verificada — ' + addons.length + ' addon(s) instalados.');
+        }
+      }
+      document.getElementById('cm-card-options').classList.remove('inactive');
+    } catch (err) {
+      setStatus('cm-login-status', 'err', err.message || 'Erro ao ligar.');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById('cm-btn-apply-stremio').addEventListener('click', async () => {
+    const options = {
+      removeSearch: document.getElementById('cm-opt-search').checked,
+      removeStandardCatalogs: document.getElementById('cm-opt-home').checked,
+      removeMeta: document.getElementById('cm-opt-meta').checked,
+    };
+    if (!options.removeSearch && !options.removeStandardCatalogs && !options.removeMeta) {
+      setStatus('cm-apply-status', 'err', 'Selecciona pelo menos uma opção.');
+      return;
+    }
+    setStatus('cm-apply-status', '', 'A aplicar…');
+    try {
+      await StremioAccountAPI.patchCinemeta(token, options);
+      setStatus('cm-apply-status', 'ok', '✓ Cinemeta patchado. Reinicia o Stremio para veres o efeito.');
+    } catch (err) {
+      setStatus('cm-apply-status', 'err', err.message || 'Erro ao aplicar.');
+    }
+  });
+
+  document.getElementById('cm-btn-reset-stremio').addEventListener('click', async () => {
+    setStatus('cm-apply-status', '', 'A repor…');
+    try {
+      await StremioAccountAPI.resetCinemeta(token);
+      setStatus('cm-apply-status', 'ok', '✓ Cinemeta reposto ao original. Reinicia o Stremio.');
+    } catch (err) {
+      setStatus('cm-apply-status', 'err', err.message || 'Erro ao repor.');
+    }
+  });
+
+  function targetProfileIds() {
+    const all = document.getElementById('cm-opt-all-profiles').checked;
+    if (all) return nuvioProfiles.map(p => p.id);
+    return [document.getElementById('cm-profile-select').value];
+  }
+
+  document.getElementById('cm-btn-delete-nuvio').addEventListener('click', async () => {
+    setStatus('cm-apply-status', '', 'A remover…');
+    try {
+      const ids = targetProfileIds();
+      for (const pid of ids) await NuvioAccountAPI.deleteCinemeta(token, pid);
+      setStatus('cm-apply-status', 'ok', '✓ Cinemeta removido de ' + ids.length + ' perfil(is). Reinicia o Nuvio.');
+    } catch (err) {
+      setStatus('cm-apply-status', 'err', err.message || 'Erro ao remover.');
+    }
+  });
+
+  document.getElementById('cm-btn-install-nuvio').addEventListener('click', async () => {
+    setStatus('cm-apply-status', '', 'A reinstalar…');
+    try {
+      const ids = targetProfileIds();
+      for (const pid of ids) await NuvioAccountAPI.installCinemeta(token, pid);
+      setStatus('cm-apply-status', 'ok', '✓ Cinemeta reinstalado em ' + ids.length + ' perfil(is). Reinicia o Nuvio.');
+    } catch (err) {
+      setStatus('cm-apply-status', 'err', err.message || 'Erro ao reinstalar.');
+    }
+  });
+})();
+</script>

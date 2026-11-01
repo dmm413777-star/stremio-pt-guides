@@ -25,3 +25,7 @@ description: "Guias de Stremio e Nuvio em português: simples, diretos e atualiz
 </div>
 
 {{< quickstart >}}
+
+<div style="text-align:center;margin-top:0.5rem">
+  <a href="cinemeta-pt/" style="color:var(--accent,#5b8dee);font-size:0.88rem">🧹 Já instalaste o pack? Tira o Cinemeta do caminho com o Cinemeta PT →</a>
+</div>
