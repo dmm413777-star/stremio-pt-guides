@@ -121,18 +121,27 @@
     return setAddons(backupData, token);
   }
 
-  // --- Cinemeta Patcher ---------------------------------------------------
-  // Porta fiel de CinemetaPatcherAPI em
-  // https://duck-tools.pages.dev/js-bundles/cinemeta-patcher.bundle.js
-  // (ferramenta em produção, creditada na página Cinemeta PT).
+  // --- Cinemeta Patcher -----------------------------------------------------
+  // Implementação própria. A ideia (esconder/remover partes do Cinemeta editando
+  // o manifest guardado na colecção) foi inspirada no Cinemeta Patcher do
+  // duck-tools.pages.dev — creditado na página Cinemeta PT — mas o código abaixo
+  // foi escrito de raiz a partir da especificação (o que cada opção faz ao
+  // manifest), não copiado do bundle deles: sem licença permissiva publicada,
+  // só a técnica foi reaproveitada, não a expressão do código.
   const CINEMETA_URL = 'https://v3-cinemeta.strem.io/manifest.json';
-  const CINEMETA_HOME_CATALOGS = new Set(['top', 'year', 'imdbRating', 'last-videos', 'calendar-videos']);
+  const CINEMETA_OFFICIAL_HOST = 'v3-cinemeta.strem.io';
+  // Catálogos que populam a página inicial do Cinemeta (não a pesquisa).
+  const CINEMETA_HOME_CATALOG_IDS = ['top', 'year', 'imdbRating', 'last-videos', 'calendar-videos'];
+  const CINEMETA_SEARCH_CATALOG_ID = 'cinemeta.search';
 
+  // Identifica o Cinemeta oficial só pelo host do transportUrl — nunca pelo
+  // manifest.id nem pelo nome, porque outros addons (ex. o "Cinemeta PT" do
+  // Toast Translator) podem legitimamente reportar o mesmo id ou um nome parecido
+  // sem serem o addon oficial.
   function isCinemeta(addon) {
-    if (!addon) return false;
-    if (addon.manifest && addon.manifest.name === 'Cinemeta') return true;
-    if (addon.transportUrl && addon.transportUrl.startsWith('https://v3-cinemeta.strem.io')) return true;
-    return false;
+    const url = addon && (addon.transportUrl || addon.url);
+    if (!url) return false;
+    try { return new URL(url).host === CINEMETA_OFFICIAL_HOST; } catch { return false; }
   }
 
   async function fetchOfficialCinemeta() {
@@ -142,74 +151,87 @@
     return { transportUrl: CINEMETA_URL, transportName: 'http', flags: { official: true, protected: true }, manifest };
   }
 
-  // options: { removeSearch, removeStandardCatalogs, removeMeta }
-  function patchCinemetaManifest(addons, options) {
-    const updated = JSON.parse(JSON.stringify(addons));
-    const idx = updated.findIndex(a => isCinemeta(a));
-    if (idx === -1) throw new Error('Cinemeta não encontrado na colecção.');
+  function extraNameOf(entry) { return typeof entry === 'string' ? entry : entry?.name; }
+  function dropExtra(extraList, name) {
+    return Array.isArray(extraList) ? extraList.filter(e => extraNameOf(e) !== name) : extraList;
+  }
+  function requireExtra(extraList, name) {
+    if (!Array.isArray(extraList)) return extraList;
+    return extraList.map(e => extraNameOf(e) === name ? { name, isRequired: true } : e);
+  }
+  function isMovieOrSeriesCatalog(c) { return !!c && (c.type === 'movie' || c.type === 'series'); }
 
-    const cinemeta = updated[idx];
-    let catalogs = Array.isArray(cinemeta.manifest.catalogs) ? cinemeta.manifest.catalogs : [];
-    let resources = Array.isArray(cinemeta.manifest.resources) ? cinemeta.manifest.resources : [];
+  // Constrói um manifest novo (não muta o original) com as três opções
+  // independentes aplicadas. "removeSearch" e "removeStandardCatalogs" podem
+  // ser combinadas de qualquer forma.
+  function buildPatchedCinemetaManifest(manifest, options) {
+    let catalogs = (manifest.catalogs || []).map(c => ({ ...c }));
+    let resources = [...(manifest.resources || [])];
 
     if (options.removeSearch) {
-      catalogs = catalogs.filter(c => !(c && c.id === 'cinemeta.search' && (c.type === 'movie' || c.type === 'series')));
-      catalogs = catalogs.map(c => {
-        if (c && Array.isArray(c.extra) && c.id === 'top' && (c.type === 'movie' || c.type === 'series')) {
-          c.extra = c.extra.filter(e => (typeof e === 'string' ? e : e?.name) !== 'search');
-        }
-        return c;
-      });
-      resources = resources.filter(r => (typeof r === 'string' ? r : r?.name) !== 'search');
+      // tira o catálogo de pesquisa dedicado, se existir, e a capacidade de
+      // pesquisar através do catálogo "top"
+      catalogs = catalogs
+        .filter(c => !(isMovieOrSeriesCatalog(c) && c.id === CINEMETA_SEARCH_CATALOG_ID))
+        .map(c => (isMovieOrSeriesCatalog(c) && c.id === 'top') ? { ...c, extra: dropExtra(c.extra, 'search') } : c);
+      resources = resources.filter(r => extraNameOf(r) !== 'search');
     }
 
     if (options.removeStandardCatalogs) {
-      const isTarget = c => c && CINEMETA_HOME_CATALOGS.has(c.id) && (c.type === 'movie' || c.type === 'series');
-      if (!options.removeSearch) {
-        catalogs = catalogs.map(c => {
-          if (c && c.id === 'top' && (c.type === 'movie' || c.type === 'series') && Array.isArray(c.extra)) {
-            c.extra = c.extra.map(e => (typeof e === 'string' ? e : e?.name) === 'search' ? { name: 'search', isRequired: true } : e);
-          }
-          return c;
-        }).filter(c => c && !(c.id === 'year' || c.id === 'imdbRating') && (c.type === 'movie' || c.type === 'series'));
+      const isHomeCatalog = c => isMovieOrSeriesCatalog(c) && CINEMETA_HOME_CATALOG_IDS.includes(c.id);
+      if (options.removeSearch) {
+        // sem pesquisa, não há razão para manter nenhuma fila da home
+        catalogs = catalogs.filter(c => !isHomeCatalog(c));
       } else {
-        catalogs = catalogs.filter(c => !isTarget(c));
+        // a pesquisa continua a viver no catálogo "top" — mantém-se só esse,
+        // mas força-se o extra "search" a obrigatório para que o Stremio pare
+        // de o oferecer como fila da home (só responde quando há uma pesquisa)
+        catalogs = catalogs
+          .filter(c => !(isHomeCatalog(c) && c.id !== 'top'))
+          .map(c => (isMovieOrSeriesCatalog(c) && c.id === 'top') ? { ...c, extra: requireExtra(c.extra, 'search') } : c);
       }
     }
 
     if (options.removeMeta) {
-      resources = resources.filter(r => (typeof r === 'string' ? r : r?.name) !== 'meta');
+      resources = resources.filter(r => extraNameOf(r) !== 'meta');
     }
 
-    cinemeta.manifest.catalogs = catalogs;
-    cinemeta.manifest.resources = resources;
-    const applied = [];
-    if (options.removeSearch) applied.push('pesquisa');
-    if (options.removeStandardCatalogs) applied.push('catálogos da página inicial');
-    if (options.removeMeta) applied.push('metadados');
-    cinemeta.manifest.name = 'Cinemeta (Patched)';
-    cinemeta.manifest.description = 'Patchado pelo Stremio PT. Removido: ' + applied.join(', ') + '.';
+    const removedParts = [];
+    if (options.removeSearch) removedParts.push('pesquisa');
+    if (options.removeStandardCatalogs) removedParts.push('catálogos da página inicial');
+    if (options.removeMeta) removedParts.push('metadados');
 
-    return updated;
+    return {
+      ...manifest,
+      catalogs,
+      resources,
+      name: 'Cinemeta (Patched)',
+      description: 'Patchado pelo Stremio PT. Removido: ' + removedParts.join(', ') + '.',
+    };
   }
 
-  // Aplica o patch directamente numa conta (busca o Cinemeta oficial fresco antes
-  // de patchar, para nunca patchar em cima de um patch anterior já corrompido).
-  async function patchCinemeta(token, options) {
-    const addons = await getAddons(token);
+  // Garante que a colecção tem sempre um Cinemeta oficial fresco na posição
+  // correcta antes de aplicar qualquer alteração — nunca reaplica por cima de
+  // um patch anterior já guardado.
+  async function replaceCinemetaWithFreshCopy(addons) {
     const fresh = await fetchOfficialCinemeta();
-    const idx = addons.findIndex(a => isCinemeta(a));
-    if (idx !== -1) addons[idx] = fresh; else addons.unshift(fresh);
-    const patched = patchCinemetaManifest(addons, options);
-    await setAddons(patched, token);
+    const existingIdx = addons.findIndex(a => isCinemeta(a));
+    const next = [...addons];
+    if (existingIdx !== -1) next[existingIdx] = fresh; else next.unshift(fresh);
+    return { list: next, index: existingIdx !== -1 ? existingIdx : 0 };
+  }
+
+  async function patchCinemeta(token, options) {
+    const current = await getAddons(token);
+    const { list, index } = await replaceCinemetaWithFreshCopy(current);
+    list[index] = { ...list[index], manifest: buildPatchedCinemetaManifest(list[index].manifest, options) };
+    await setAddons(list, token);
   }
 
   async function resetCinemeta(token) {
-    const addons = await getAddons(token);
-    const fresh = await fetchOfficialCinemeta();
-    const idx = addons.findIndex(a => isCinemeta(a));
-    if (idx !== -1) addons[idx] = fresh; else addons.unshift(fresh);
-    await setAddons(addons, token);
+    const current = await getAddons(token);
+    const { list } = await replaceCinemetaWithFreshCopy(current);
+    await setAddons(list, token);
   }
 
   global.StremioAccountAPI = {
