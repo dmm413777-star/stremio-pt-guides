@@ -29,7 +29,7 @@ O **Nuvio** é uma alternativa ao Stremio com a mesma ideia mas interface mais m
 |---|---|
 | **Quero apenas experimentar** | Instala o Stremio + AIOStreams em modo P2P. Gratuito, funciona já. Qualidade variável. |
 | **Quero a melhor experiência** | Stremio + [TorBox](/guias/torbox) (~28€/ano) + AIOStreams. Qualidade 4K instantânea, sem esperas. |
-| **Quero dar à família também** | Stremio + TorBox (partilhável sem bloqueios) + [QuickStart PT](/tools/quickstart/) para instalar em todas as contas com um clique. |
+| **Quero dar à família também** | Stremio + TorBox (partilhável sem bloqueios) + [QuickStart PT](/#qs-widget) para instalar em todas as contas com um clique. |
 
 ---
 
