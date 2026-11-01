@@ -1,0 +1,19 @@
+[
+  {
+    "date": "2026-11-01",
+    "title": "Cinemeta PT, Diagnóstico da Conta e QuickStart Nuvio",
+    "items": [
+      "Nova ferramenta Cinemeta PT: esconde o Cinemeta da pesquisa e da página inicial (ou remove, no Nuvio), para o AIOMetadata PT ficar sozinho.",
+      "Nova ferramenta Diagnóstico da Conta: verifica addons duplicados, offline ou mal configurados, com relatório sanitizado para pedir ajuda no subreddit.",
+      "O QuickStart PT passa a instalar também em contas Nuvio, incluindo geração de conta aleatória — não só Stremio."
+    ]
+  },
+  {
+    "date": "2026-10-29",
+    "title": "Correcções ao QuickStart PT",
+    "items": [
+      "Corrigido o AIOStreams a falhar a instalação em modo P2P (preset TorrentsDB estava offline).",
+      "Corrigida a pesquisa do Stremio partida depois de instalar o pack (o manifest guardado tinha perdido a capacidade de pesquisa)."
+    ]
+  }
+]

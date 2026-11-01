@@ -1,0 +1,25 @@
+<div id="nv-widget">
+<style>
+  #nv-widget { max-width: 640px; margin: 0 auto; }
+  #nv-widget .nv-entry {
+    border-left: 2px solid var(--border, #2a3050); padding-left: 1.1rem; margin-bottom: 1.8rem; position: relative;
+  }
+  #nv-widget .nv-entry::before {
+    content: ''; position: absolute; left: -5px; top: 0.3rem; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--accent, #5b8dee);
+  }
+  #nv-widget .nv-date { font-size: 0.78rem; color: var(--muted, #7a8aaa); margin-bottom: 0.2rem; }
+  #nv-widget .nv-title { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+  #nv-widget ul { margin: 0; padding-left: 1.2rem; }
+  #nv-widget li { font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.3rem; }
+</style>
+{{ range site.Data.changelog }}
+<div class="nv-entry">
+  <div class="nv-date">{{ .date }}</div>
+  <div class="nv-title">{{ .title }}</div>
+  <ul>
+    {{ range .items }}<li>{{ . }}</li>{{ end }}
+  </ul>
+</div>
+{{ end }}
+</div>

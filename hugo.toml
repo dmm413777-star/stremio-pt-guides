@@ -41,6 +41,12 @@ enableGitInfo = false
     pageRef = "/links"
     weight = 2
 
+  [[menu.main]]
+    identifier = "novidades"
+    name = "Novidades"
+    pageRef = "/novidades"
+    weight = 3
+
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
