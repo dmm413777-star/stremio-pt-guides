@@ -10,6 +10,8 @@ tempo: "2 min"
 
 O **Cotonet** é um addon de catálogo e streams de filmes em Português de Portugal. É instalado automaticamente pelo QuickStart PT. Não requer configuração.
 
+Já tens o resto do pack instalado e só queres este? [Instalar Cotonet na minha conta →](/instalar-addon/?url=https%3A%2F%2Fcotonetnet-cotonet.hf.space%2Fmanifest.json) (Stremio ou Nuvio, útil em Android TV)
+
 {{< callout type="info" >}}
 Para mais informação sobre o Cotonet e novidades do addon, junta-te ao canal Telegram: [t.me/CotonetStremio](https://t.me/CotonetStremio)
 {{< /callout >}}

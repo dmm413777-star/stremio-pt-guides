@@ -1,0 +1,211 @@
+<div id="ia-widget">
+<style>
+  #ia-widget {
+    --ia-bg: #0f1117; --ia-surface: #1a1d27; --ia-surface2: #22263a; --ia-border: #2e3450;
+    --ia-accent: #7c3aed; --ia-accent-light: #a78bfa; --ia-success: #10b981; --ia-error: #ef4444;
+    --ia-text: #e2e8f0; --ia-text-muted: #94a3b8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; align-items: center; padding: 1.5rem 0 1rem; color: var(--ia-text);
+  }
+  #ia-widget .ia-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
+  #ia-widget .ia-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+  #ia-widget .ia-intro p { color: var(--ia-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #ia-widget .card {
+    width: 100%; max-width: 520px; background: var(--ia-surface); border: 1px solid var(--ia-border);
+    border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+  }
+  #ia-widget .card.inactive { opacity: 0.45; pointer-events: none; }
+  #ia-widget .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.9rem; }
+  #ia-widget .field { margin-bottom: 0.75rem; }
+  #ia-widget .field label { display: block; font-size: 0.8rem; color: var(--ia-text-muted); margin-bottom: 0.3rem; }
+  #ia-widget input[type="text"], #ia-widget input[type="email"], #ia-widget input[type="password"] {
+    width: 100%; background: var(--ia-surface2); border: 1px solid var(--ia-border); border-radius: 8px;
+    padding: 0.65rem 0.8rem; color: var(--ia-text); font-size: 0.9rem; box-sizing: border-box;
+  }
+  #ia-widget .btn {
+    width: 100%; background: var(--ia-accent); color: #fff; border: none; border-radius: 9px;
+    padding: 0.7rem; font-size: 0.9rem; font-weight: 700; cursor: pointer;
+  }
+  #ia-widget .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  #ia-widget .btn-ghost { background: var(--ia-surface2); border: 1px solid var(--ia-border); color: var(--ia-text); }
+  #ia-widget .status-line { font-size: 0.82rem; margin-top: 0.6rem; min-height: 1.2em; }
+  #ia-widget .status-line.ok { color: var(--ia-success); }
+  #ia-widget .status-line.err { color: var(--ia-error); }
+  #ia-widget .platform-row { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+  #ia-widget .platform-card {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 0.7rem;
+    border-radius: 12px; border: 1.5px solid var(--ia-border); background: var(--ia-surface2);
+    color: var(--ia-text); cursor: pointer;
+  }
+  #ia-widget .platform-card img { width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; }
+  #ia-widget .platform-card span { font-size: 0.85rem; font-weight: 700; flex: 1; }
+  #ia-widget .platform-card.active { border-color: var(--ia-accent); background: rgba(124,58,237,0.12); box-shadow: 0 0 0 1px var(--ia-accent); }
+  #ia-widget .addon-preview {
+    display: flex; gap: 0.7rem; align-items: center; padding: 0.8rem; border: 1px solid var(--ia-border);
+    border-radius: 9px; background: var(--ia-surface2); margin-top: 0.7rem;
+  }
+  #ia-widget .addon-preview strong { display: block; font-size: 0.92rem; }
+  #ia-widget .addon-preview span { font-size: 0.78rem; color: var(--ia-text-muted); }
+  #ia-widget select#ia-profile-select {
+    width: 100%; background: var(--ia-surface2); border: 1px solid var(--ia-border); border-radius: 8px;
+    padding: 0.6rem 0.8rem; color: var(--ia-text); font-size: 0.85rem; margin-bottom: 0.7rem;
+  }
+</style>
+
+<div class="ia-intro">
+  <h2>➕ Instalar Addon por URL</h2>
+  <p>Cola o URL do manifest de qualquer addon Stremio — útil em Android TV, onde abrir links <code>stremio://</code> directamente nem sempre funciona.</p>
+</div>
+
+<div class="card" id="ia-card-url">
+  <div class="card-title">1. URL do addon</div>
+  <div class="field">
+    <label for="ia-inp-url">Manifest URL</label>
+    <input type="text" id="ia-inp-url" placeholder="https://exemplo.com/manifest.json">
+  </div>
+  <button class="btn" id="ia-btn-verify">Verificar addon</button>
+  <div class="status-line" id="ia-verify-status"></div>
+  <div class="addon-preview" id="ia-preview" style="display:none"></div>
+</div>
+
+<div class="card inactive" id="ia-card-login">
+  <div class="card-title" id="ia-login-title">2. Login Stremio</div>
+  <div class="platform-row">
+    <button class="platform-card active" id="ia-platform-stremio" type="button" onclick="iaSetPlatform('stremio')">
+      <img src="{{ "images/apps/stremio.png" | relURL }}" alt=""><span>Stremio</span>
+    </button>
+    <button class="platform-card" id="ia-platform-nuvio" type="button" onclick="iaSetPlatform('nuvio')">
+      <img src="{{ "images/apps/nuvio.png" | relURL }}" alt=""><span>Nuvio</span>
+    </button>
+  </div>
+  <div class="field">
+    <label for="ia-inp-email">E-mail</label>
+    <input type="email" id="ia-inp-email" placeholder="o-teu@email.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label for="ia-inp-pass">Password</label>
+    <input type="password" id="ia-inp-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn" id="ia-btn-login">Entrar</button>
+  <div class="status-line" id="ia-login-status"></div>
+</div>
+
+<div class="card inactive" id="ia-card-install">
+  <div class="card-title">3. Instalar</div>
+  <select id="ia-profile-select" style="display:none"></select>
+  <label style="display:flex;gap:0.5rem;align-items:center;font-size:0.82rem;color:var(--ia-text-muted);margin-bottom:0.7rem">
+    <input type="checkbox" id="ia-opt-all-profiles"> Aplicar a todos os perfis (Nuvio)
+  </label>
+  <button class="btn" id="ia-btn-install">Instalar na minha conta</button>
+  <div class="status-line" id="ia-install-status"></div>
+</div>
+
+</div><!-- #ia-widget -->
+
+<script src="{{ "js/conta/util.js" | relURL }}"></script>
+<script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/installer.js" | relURL }}"></script>
+<script>
+(function () {
+  let platform = 'stremio';
+  let token = null;
+  let nuvioProfiles = [];
+  let verifiedUrl = null;
+  let verifiedManifest = null;
+
+  function setStatus(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = 'status-line' + (type ? ' ' + type : '');
+    el.textContent = msg;
+  }
+
+  // Pré-preenche a partir de ?url=... (usado pelos botões "Instalar na minha
+  // conta" nos guias de addons).
+  const params = new URLSearchParams(location.search);
+  if (params.get('url')) document.getElementById('ia-inp-url').value = params.get('url');
+
+  window.iaSetPlatform = function (p) {
+    platform = p;
+    const isNuvio = p === 'nuvio';
+    document.getElementById('ia-platform-stremio').classList.toggle('active', !isNuvio);
+    document.getElementById('ia-platform-nuvio').classList.toggle('active', isNuvio);
+    document.getElementById('ia-login-title').textContent = '2. Login ' + (isNuvio ? 'Nuvio' : 'Stremio');
+    document.getElementById('ia-inp-email').value = '';
+    document.getElementById('ia-inp-pass').value = '';
+    token = null;
+    setStatus('ia-login-status', '', '');
+    document.getElementById('ia-card-install').classList.add('inactive');
+  };
+
+  document.getElementById('ia-btn-verify').addEventListener('click', async () => {
+    const raw = document.getElementById('ia-inp-url').value;
+    const norm = AddonInstaller.normalizeManifestUrl(raw);
+    document.getElementById('ia-preview').style.display = 'none';
+    if (!norm.ok) { setStatus('ia-verify-status', 'err', norm.error); return; }
+
+    setStatus('ia-verify-status', '', 'A verificar…');
+    const result = await AddonInstaller.fetchAndValidateManifest(norm.url);
+    if (!result.ok) { setStatus('ia-verify-status', 'err', result.error); return; }
+
+    verifiedUrl = norm.url;
+    verifiedManifest = result.manifest;
+    setStatus('ia-verify-status', 'ok', '✓ Addon válido.');
+    const preview = document.getElementById('ia-preview');
+    preview.style.display = 'flex';
+    preview.innerHTML = `<div><strong>${verifiedManifest.name}</strong><span>${verifiedManifest.description || 'Sem descrição'} — v${verifiedManifest.version}</span></div>`;
+    document.getElementById('ia-card-login').classList.remove('inactive');
+  });
+
+  document.getElementById('ia-btn-login').addEventListener('click', async () => {
+    const email = document.getElementById('ia-inp-email').value.trim();
+    const pass = document.getElementById('ia-inp-pass').value;
+    if (!email || !pass) { setStatus('ia-login-status', 'err', 'Preenche o e-mail e a password.'); return; }
+
+    setStatus('ia-login-status', '', 'A ligar…');
+    try {
+      if (platform === 'nuvio') {
+        token = await NuvioAccountAPI.login(email, pass);
+        nuvioProfiles = await NuvioAccountAPI.ensureRealProfiles(token);
+        const sel = document.getElementById('ia-profile-select');
+        if (nuvioProfiles.length > 1) {
+          sel.style.display = 'block';
+          sel.innerHTML = nuvioProfiles.map(p => `<option value="${p.id}">${p.name || ('Perfil ' + p.id)}</option>`).join('');
+        } else {
+          sel.style.display = 'none';
+        }
+        setStatus('ia-login-status', 'ok', '✓ Conta verificada.');
+      } else {
+        token = await StremioAccountAPI.login(email, pass);
+        setStatus('ia-login-status', 'ok', '✓ Conta verificada.');
+      }
+      document.getElementById('ia-card-install').classList.remove('inactive');
+    } catch (err) {
+      setStatus('ia-login-status', 'err', err.message || 'Erro ao ligar.');
+    }
+  });
+
+  document.getElementById('ia-btn-install').addEventListener('click', async () => {
+    setStatus('ia-install-status', '', 'A instalar…');
+    try {
+      if (platform === 'nuvio') {
+        const all = document.getElementById('ia-opt-all-profiles').checked;
+        const ids = all ? nuvioProfiles.map(p => p.id) : [document.getElementById('ia-profile-select').value || nuvioProfiles[0].id];
+        for (const pid of ids) {
+          const current = await NuvioAccountAPI.getAddons(token, pid);
+          const withoutDup = current.filter(a => a.transportUrl !== verifiedUrl);
+          await NuvioAccountAPI.setAddons([...withoutDup, { url: verifiedUrl, name: verifiedManifest.name, enabled: true }], token, pid);
+        }
+        setStatus('ia-install-status', 'ok', '✓ Instalado em ' + ids.length + ' perfil(is). Reinicia o Nuvio.');
+      } else {
+        const current = await StremioAccountAPI.getAddons(token);
+        const withoutDup = current.filter(a => a.transportUrl !== verifiedUrl);
+        await StremioAccountAPI.setAddons([...withoutDup, { transportUrl: verifiedUrl, transportName: 'http', flags: {}, manifest: verifiedManifest }], token);
+        setStatus('ia-install-status', 'ok', '✓ Instalado. Reinicia o Stremio.');
+      }
+    } catch (err) {
+      setStatus('ia-install-status', 'err', err.message || 'Erro ao instalar.');
+    }
+  });
+})();
+</script>

@@ -1,5 +1,15 @@
 [
   {
+    "date": "2026-11-02",
+    "title": "Instalar Addon por URL",
+    "items": [
+      "Nova ferramenta /instalar-addon/: cola o URL do manifest de qualquer addon e instala-o no Stremio ou Nuvio, útil em Android TV onde links stremio:// nem sempre abrem.",
+      "Botões \"Instalar na minha conta\" nos guias do Cotonet, Animação PT-PT e PTGDrive.",
+      "Corrigida a colisão de identificador entre o Cinemeta oficial e o addon Cinemeta PT (Toast Translator) nas ferramentas Cinemeta PT e Diagnóstico.",
+      "Corrigido um falso positivo do Diagnóstico em contas Nuvio (OpenSubtitles v3 guardado sem sufixo /manifest.json)."
+    ]
+  },
+  {
     "date": "2026-11-01",
     "title": "Cinemeta PT, Diagnóstico da Conta e QuickStart Nuvio",
     "items": [

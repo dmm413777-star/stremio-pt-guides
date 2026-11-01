@@ -24,6 +24,8 @@ Filmes e séries de animação em PT-PT, indicado para crianças, mas com títul
 
 Suporta pesquisa e paginação.
 
+Só queres este addon? [Instalar Animação PT-PT na minha conta →](/instalar-addon/?url=https%3A%2F%2Fanima-o-pt-pt-addon-stremio-6dzv.vercel.app%2Fmanifest.json)
+
 ---
 
 ## PTGDrive
@@ -35,6 +37,8 @@ Catálogo de filmes e séries em português alojado no Google Drive. Boa cobertu
 **Oito catálogos:**
 - Filmes: por género, por ano, ordem alfabética, adicionados recentemente
 - Séries: por género, por ano, ordem alfabética, adicionadas recentemente
+
+Só queres este addon? [Instalar PTGDrive na minha conta →](/instalar-addon/?url=https%3A%2F%2Fpt-pt-gdrive.newptdrive.workers.dev%2Fmanifest.json)
 
 ---
 
