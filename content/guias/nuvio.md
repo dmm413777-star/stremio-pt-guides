@@ -46,18 +46,22 @@ O Nuvio está atualmente em **beta**. Funciona melhor com um serviço de Debrid 
 
 ---
 
-## Adicionar Addons (via Stremio Web)
+## Adicionar Addons — a forma mais rápida
 
-A forma mais fácil de obter o URL de um addon é através do Stremio web:
+O [QuickStart PT](/#qs-widget) instala directamente numa conta Nuvio: no passo de login, activa o toggle **Nuvio** em vez de Stremio, e o pack de addons PT (AIOStreams, AIOMetadata PT, SubMaker, Toast Translator e os restantes) fica instalado em 3 cliques, sem precisares de passar pelo Stremio.
 
-1. No Stremio, vai à página de **Addons** (ícone de puzzle).
-2. Seleciona o addon pretendido e clica no ícone de **Definições (Settings)** (⚙️).
-3. Desce até ao botão **Install** e escolhe **Copy Link** ou **Share Manifest URL**.
-4. Abre o Nuvio → **Settings → Content & Discovery → Addons**.
-5. Cola o URL no campo **Add Addon** e confirma.
+## Adicionar outros addons manualmente
+
+Para um addon que não está no pack do QuickStart:
+
+1. Copia o URL do manifest do addon (começa por `https://...manifest.json`).
+2. Abre o Nuvio → **Settings → Content & Discovery → Addons**.
+3. Cola o URL no campo **Add Addon** e confirma.
+
+Se preferires fazer isto fora da app, a ferramenta [Instalar Addon por URL](/instalar-addon/) faz o mesmo a partir do telemóvel ou computador — útil sobretudo em Android TV, onde abrir links `stremio://` nem sempre funciona.
 
 {{< callout type="info" >}}
-**Dica:** Se apenas aparecer o botão "Install" sem opção de copiar link, clica com o botão **direito** sobre ele e seleciona **"Copiar endereço do link"**. Depois substitui `stremio://` por `https://` no início do URL.
+**Dica:** Se só tiveres um link `stremio://` (por exemplo copiado do Stremio Web), substitui `stremio://` por `https://` no início do URL antes de colar.
 {{< /callout >}}
 
 ---
@@ -94,5 +98,5 @@ O *Regex* funciona como um filtro de pesquisa inteligente. Este padrão diz ao N
 - [GitHub do Nuvio (tapframe)](https://github.com/tapframe)
 - [Doações (Ko-fi)](https://ko-fi.com/tapframe)
 - [TorBox: serviço Debrid recomendado](/guias/torbox)
-- [Migrar do Stremio para o Nuvio (NuvioSync)](/guias/migrar-para-nuvio)
+- [Migrar uma conta Stremio já existente para o Nuvio (NuvioSync)](/guias/migrar-para-nuvio)
 - [Clonar perfil Nuvio para familiar](/guias/clonar-perfil-nuvio)

@@ -54,10 +54,12 @@ O **Nuvio** é uma alternativa ao Stremio com a mesma ideia mas interface mais m
 
 ---
 
-### Para quem quer migrar para o Nuvio
+### Para quem quer usar o Nuvio
 
 1. [O que é o Nuvio e como instalar](/guias/nuvio)
-2. [Migrar do Stremio para o Nuvio](/guias/migrar-para-nuvio): move biblioteca, histórico e addons
+2. Usa o [QuickStart PT](/#qs-widget) com o toggle **Nuvio** no passo de login — instala o pack de addons PT directamente na conta Nuvio, sem passar pelo Stremio.
+
+Já tens uma conta Stremio configurada e só queres passar o que já lá está para o Nuvio? Usa o [NuvioSync](/guias/migrar-para-nuvio) — move biblioteca, histórico e addons de uma conta existente.
 
 ---
 

@@ -14,6 +14,10 @@ tempo: "10 min"
 
 ---
 
+{{< callout type="info" >}}
+**Ainda não tens nada configurado?** Não precisas de passar pelo Stremio primeiro — usa o [QuickStart PT](/#qs-widget) com o toggle **Nuvio** e instala o pack de addons PT directamente na conta Nuvio. Este guia é para quem já tem um setup no Stremio e quer trazê-lo para o Nuvio sem o refazer.
+{{< /callout >}}
+
 O **NuvioSync** migra o teu setup do Stremio para o Nuvio em 5 passos: liga as contas, escolhes o que migra, vês uma pré-visualização antes de qualquer alteração, e só então a ferramenta escreve os dados.
 
 **O que migra:**
