@@ -4,8 +4,16 @@
 (function (global) {
   'use strict';
 
-  function downloadBackup(addons, filenamePrefix) {
-    const payload = { exportedAt: new Date().toISOString(), addons: addons };
+  // `data` é normalmente uma lista de addons; algumas ferramentas (QuickStart)
+  // passam { addons, passwords } para incluir as passwords AIOStreams/AIOMetadata
+  // geradas na instalação.
+  function downloadBackup(data, filenamePrefix) {
+    const isWrapped = data && !Array.isArray(data) && Array.isArray(data.addons);
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      addons: isWrapped ? data.addons : data,
+    };
+    if (isWrapped && data.passwords) payload.passwords = data.passwords;
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
