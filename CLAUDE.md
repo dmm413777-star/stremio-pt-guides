@@ -92,6 +92,11 @@ Toast Translator, Animação PT-PT, Cotonet, PTGDrive.
   preset estiver offline, a instalação inteira falha. Já aconteceu com `torrents-db`
   (torrentsdb.com devolvia 502) — foi removido da lista. Se o AIOStreams parar de
   instalar outra vez, suspeitar primeiro de um preset offline, não do código
+- A nossa config estática (presets, `deduplicator`, `titleMatching`) é uma cópia pontual
+  do template do Tam-Taro — corre `node scripts/check-tamtaro-drift.js` para comparar
+  com a versão publicada actual (também corre semanalmente via GitHub Action, que abre
+  uma issue `tamtaro-drift` se houver diferenças). Se falhar, lê o resumo PT-PT que o
+  script imprime e decide manualmente se a nossa config precisa de actualização.
 
 ### AIOMetadata (buildAIOMetadataConfig em quickstart.html)
 - Catálogos sincronizados com a template Tam-Taro (SEL-Filtering-and-Sorting)

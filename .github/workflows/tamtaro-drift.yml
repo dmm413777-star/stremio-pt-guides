@@ -1,0 +1,77 @@
+name: Verificar deriva do template Tam-Taro
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # todas as segundas-feiras às 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Guarda a última versão vista do template entre execuções semanais,
+      # sem precisar de fazer commit ao repositório.
+      - name: Restaurar versão do template da corrida anterior
+        uses: actions/cache@v4
+        with:
+          path: scripts/.tamtaro-last-version.json
+          key: tamtaro-last-version-${{ github.run_id }}
+          restore-keys: |
+            tamtaro-last-version-
+
+      - name: Correr verificação de deriva
+        id: drift
+        run: |
+          set +e
+          node scripts/check-tamtaro-drift.js > drift-output.txt 2>&1
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          cat drift-output.txt
+
+      - name: Abrir ou actualizar issue com o resumo
+        if: steps.drift.outputs.exit_code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create tamtaro-drift --color "D93F0B" --description "Deriva detectada entre a config do QuickStart e o template Tam-Taro" --repo "$GITHUB_REPOSITORY" 2>/dev/null || true
+
+          TITLE="Deriva do template Tam-Taro detectada"
+          BODY_FILE=$(mktemp)
+          {
+            echo "O script \`scripts/check-tamtaro-drift.js\` encontrou diferenças entre o template publicado pelo Tam-Taro e a configuração estática do QuickStart, ou um URL que já não responde."
+            echo ""
+            echo '```'
+            cat drift-output.txt
+            echo '```'
+            echo ""
+            echo "Ver [CLAUDE.md](../blob/main/CLAUDE.md) para o que fazer a seguir. Corrida em: $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+          } > "$BODY_FILE"
+
+          EXISTING=$(gh issue list --label tamtaro-drift --state open --json number --jq '.[0].number' --repo "$GITHUB_REPOSITORY")
+          if [ -n "$EXISTING" ]; then
+            gh issue edit "$EXISTING" --body-file "$BODY_FILE" --repo "$GITHUB_REPOSITORY"
+          else
+            gh issue create --title "$TITLE" --body-file "$BODY_FILE" --label tamtaro-drift --repo "$GITHUB_REPOSITORY"
+          fi
+
+      - name: Fechar issue se já não há diferenças
+        if: steps.drift.outputs.exit_code == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh issue list --label tamtaro-drift --state open --json number --jq '.[0].number' --repo "$GITHUB_REPOSITORY")
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "Verificação mais recente já não encontrou diferenças — a fechar." --repo "$GITHUB_REPOSITORY"
+            gh issue close "$EXISTING" --repo "$GITHUB_REPOSITORY"
+          fi
