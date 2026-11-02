@@ -3,10 +3,10 @@
 (function (global) {
   'use strict';
 
-  // Constante única do link de feedback da beta — trocar aqui pelo link do
-  // post no r/PiratariaTuga quando houver um; aplica-se a todas as ferramentas
-  // marcadas como beta (qualquer link com [data-feedback-link]).
-  const FEEDBACK_URL = 'https://www.reddit.com/r/PiratariaTuga/';
+  // Constante única do link de feedback da beta — aplica-se a todas as
+  // ferramentas marcadas como beta (qualquer link com [data-feedback-link]).
+  // Aponta para o post de anúncio da beta no r/PiratariaTuga.
+  const FEEDBACK_URL = 'https://www.reddit.com/r/PiratariaTuga/s/3vYyFPCt3H';
 
   function applyFeedbackLinks() {
     document.querySelectorAll('[data-feedback-link]').forEach(function (el) {
