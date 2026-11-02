@@ -50,24 +50,45 @@ test.describe('Filipe — catalólogo AIOMetadata completo (Tam-Taro template)',
     expect(html).toContain('HBO Max');
   });
 
-  test('Netflix, Disney+, Amazon Prime, Apple TV+ Latest têm showInHome:true', async ({ page }) => {
+  test('Netflix, Disney+, Amazon Prime Latest continuam na config (fora da home desde a ronda 4)', async ({ page }) => {
     const html = await page.content();
-    // Verificar que os IDs correctos existem com showInHome:true
-    const idsTruePattern = [
+    // Ronda 4, item 5: estes catálogos mdblist.* "Latest" ficaram fora da home
+    // (showInHome:false) porque o streaming.* equivalente já cobre a mesma
+    // plataforma na home — mas continuam disponíveis no Discover.
+    const idsStillPresent = [
       'mdblist.86751', // Netflix Latest series
       'mdblist.88328', // Netflix Latest movie
       'mdblist.86758', // Disney+ Latest series
       'mdblist.86759', // Disney+ Latest movie
       'mdblist.86753', // Amazon Prime Latest series
       'mdblist.86755', // Amazon Prime Latest movie
-      'mdblist.88319', // Apple TV+ Latest series
-      'mdblist.88317', // Apple TV+ Latest movie
     ];
-    for (const id of idsTruePattern) {
-      expect(html, `${id} devia estar na config`).toContain(id);
+    for (const id of idsStillPresent) {
+      expect(html, `${id} devia continuar na config`).toContain(id);
     }
-    // Verificar que não há nenhum destes IDs com showInHome:false
-    expect(html).not.toMatch(/mdblist\.(86751|88328|86758|86759|86753|86755|88319|88317)[^}]+showInHome:false/);
+  });
+
+  test('Netflix, Disney+, Prime Video, Max (streaming.*) têm showInHome:true na home', async ({ page }) => {
+    const html = await page.content();
+    for (const id of ['streaming.nfx', 'streaming.dnp', 'streaming.amp', 'streaming.hbm']) {
+      // cada id aparece 2x (movie+series); confirmar que nenhuma das duas está showInHome:false
+      const re = new RegExp(`id:'${id.replace('.', '\\.')}'[^}]*showInHome:false`);
+      expect(html, `${id} não devia ter showInHome:false`).not.toMatch(re);
+      expect(html).toContain(id);
+    }
+  });
+
+  test('home da AIOMetadata reduzida a ~20 catálogos (ronda 4, item 5)', async ({ page }) => {
+    const html = await page.content();
+    const trueCount = (html.match(/showInHome:true/g) || []).length;
+    expect(trueCount).toBeLessThanOrEqual(20);
+    expect(trueCount).toBeGreaterThan(0);
+  });
+
+  test('Hulu Latest fica desligado (enabled:false) — não disponível em Portugal', async ({ page }) => {
+    const html = await page.content();
+    expect(html).toMatch(/id:'mdblist\.88327'[^}]*enabled:false/);
+    expect(html).toMatch(/id:'mdblist\.88326'[^}]*enabled:false/);
   });
 
   test('Max (HBO) e SkyShowtime aparecem nas plataformas de streaming', async ({ page }) => {

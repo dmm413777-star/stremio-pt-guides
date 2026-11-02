@@ -1417,14 +1417,31 @@
   const AIOMETADATA_URL = 'https://aiometadata.elfhosted.com';
 
   function buildAIOMetadataConfig() {
-    // Sincronizado com a template do Tam-Taro (60 catálogos, sem Hulu — não disponível em PT)
-    // Fonte: https://github.com/Tam-Taro/SEL-Filtering-and-Sorting
+    // Sincronizado com a template do Tam-Taro (72 catálogos: os 60 da variante
+    // "sem anime" + 12 streaming.* nossos). Fonte:
+    // https://github.com/Tam-Taro/SEL-Filtering-and-Sorting
+    //
+    // Ronda 4, item 5: a home do Stremio/Nuvio só mostra os catálogos com
+    // showInHome:true — reduzido para ~20 linhas (filmes+séries) para não
+    // sobrecarregar a página inicial. Todos os outros continuam disponíveis
+    // no Discover (enabled:true), só deixam de aparecer na home. Para
+    // adicionar/remover uma linha da home, basta trocar o showInHome do
+    // catálogo correspondente — a lista HOME_PRIORITY abaixo documenta a
+    // prioridade usada (trending/popular > streaming PT > kids/animação >
+    // sazonal) caso seja preciso voltar a cortar no futuro.
+    //
+    // HOME_PRIORITY (ordem usada para escolher as ~20 linhas actuais):
+    //   1. Tendências/populares globais — Seasonal, Trakt Trending, TMDB Popular, Latest Digital Release
+    //   2. Streaming disponível em PT — Netflix, Disney+, Prime Video, Max, Apple TV+ (filmes+séries)
+    //   3. Kids/animação PT-PT — Trending Kids, Animated
+    //   4. Sazonal — Top 2025
+    // (Sem variante de anime nos nossos catálogos actuais — nada a priorizar nesse grupo.)
     const catalogs = [
-      // ── Lançamentos e tendências globais ──────────────────────────────────
+      // ── Lançamentos e tendências globais (prioridade 1 — home) ────────────
       {id:'mdblist.136620', type:'movie',  name:'Seasonal',              enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200, enableRatingPosters:true},
       {id:'mdblist.88434',  type:'series', name:'Trakt Trending',        enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.87667',  type:'movie',  name:'Trakt Trending',        enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
-      {id:'mdblist.86710',  type:'series', name:'Latest Airing',         enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86710',  type:'series', name:'Latest Airing',         enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.86934',  type:'movie',  name:'Latest Digital Release',enabled:true, showInHome:true,  source:'mdblist', sort:'releasedigital',order:'asc',cacheTTL:43200},
       {id:'tmdb.top',       type:'series', name:'TMDB Popular',          enabled:true, showInHome:true,  source:'tmdb',    sort:'default',      order:'asc'},
       {id:'tmdb.top',       type:'movie',  name:'TMDB Popular',          enabled:true, showInHome:true,  source:'tmdb',    sort:'default',      order:'asc'},
@@ -1435,10 +1452,10 @@
       {id:'tvdb.genres',    type:'movie',  name:'TVDB Genres',           enabled:true, showInHome:false, source:'tvdb',    sort:'default',      order:'asc'},
       {id:'tvdb.genres',    type:'series', name:'TVDB Genres',           enabled:true, showInHome:false, source:'tvdb',    sort:'default',      order:'asc'},
       {id:'tvdb.collections',type:'movie', name:'TVDB Collections',      enabled:true, showInHome:false, source:'tvdb'},
-      // ── Kids ──────────────────────────────────────────────────────────────
+      // ── Kids/animação PT-PT (prioridade 3 — home) ─────────────────────────
       {id:'mdblist.88309',  type:'series', name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.88307',  type:'movie',  name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
-      // ── Streaming PT (plataformas disponíveis em Portugal) ───────────────
+      // ── Streaming PT (prioridade 2 — home; plataformas disponíveis em PT) ─
       {id:'streaming.nfx',  type:'movie',  name:'Netflix — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.nfx',  type:'series', name:'Netflix — Séries',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.dnp',  type:'movie',  name:'Disney+ — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
@@ -1447,58 +1464,63 @@
       {id:'streaming.amp',  type:'series', name:'Prime Video — Séries',       enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.hbm',  type:'movie',  name:'Max — Filmes',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
       {id:'streaming.hbm',  type:'series', name:'Max — Séries',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.sst',  type:'movie',  name:'SkyShowtime (Paramount+) — Filmes', enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.sst',  type:'series', name:'SkyShowtime (Paramount+) — Séries', enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',         enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      // ── Streaming MDBList (listas curadas — sincronizadas com Tam-Taro) ──
-      {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.88328',  type:'movie',  name:'Netflix Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.86753',  type:'series', name:'Amazon Prime Latest',   enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86755',  type:'movie',  name:'Amazon Prime Latest',   enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.88319',  type:'series', name:'Apple TV+ Latest',      enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.88317',  type:'movie',  name:'Apple TV+ Latest',      enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.86758',  type:'series', name:'Disney+ Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86759',  type:'movie',  name:'Disney+ Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.86761',  type:'series', name:'Paramount+ Latest',     enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.86762',  type:'movie',  name:'Paramount+ Latest',     enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.89649',  type:'series', name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.89647',  type:'movie',  name:'HBO Max Latest',        enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.88327',  type:'series', name:'Hulu Latest',           enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.88326',  type:'movie',  name:'Hulu Latest',           enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      // ── Géneros ───────────────────────────────────────────────────────────
-      {id:'mdblist.91213',  type:'series', name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91211',  type:'movie',  name:'Action',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.116038', type:'series', name:'Animated',              enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      // SkyShowtime/Paramount+ e Apple TV+ ficam fora da home (menor adesão em
+      // PT) mas continuam no Discover — ver HOME_PRIORITY acima.
+      {id:'streaming.sst',  type:'movie',  name:'SkyShowtime (Paramount+) — Filmes', enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      {id:'streaming.sst',  type:'series', name:'SkyShowtime (Paramount+) — Séries', enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',         enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',         enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      // ── Streaming MDBList (listas curadas — sobrepõem-se ao streaming.* acima,
+      // mantidas no Discover para quem prefere este corte, fora da home) ─────
+      {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88328',  type:'movie',  name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86753',  type:'series', name:'Amazon Prime Latest',   enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86755',  type:'movie',  name:'Amazon Prime Latest',   enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.88319',  type:'series', name:'Apple TV+ Latest',      enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88317',  type:'movie',  name:'Apple TV+ Latest',      enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86758',  type:'series', name:'Disney+ Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86759',  type:'movie',  name:'Disney+ Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.86761',  type:'series', name:'Paramount+ Latest',     enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.86762',  type:'movie',  name:'Paramount+ Latest',     enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.89649',  type:'series', name:'HBO Max Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.89647',  type:'movie',  name:'HBO Max Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      // Hulu não está disponível em Portugal — desligado também do Discover
+      // (não só da home), ao contrário dos restantes catálogos desta secção.
+      {id:'mdblist.88327',  type:'series', name:'Hulu Latest',           enabled:false, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.88326',  type:'movie',  name:'Hulu Latest',           enabled:false, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      // ── Géneros (fora da home — disponíveis no Discover) ──────────────────
+      {id:'mdblist.91213',  type:'series', name:'Action',                enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91211',  type:'movie',  name:'Action',                enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.116038', type:'series', name:'Animated',              enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
       {id:'mdblist.116037', type:'movie',  name:'Animated',              enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.91224',  type:'series', name:'Comedy',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91223',  type:'movie',  name:'Comedy',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.3126',   type:'series', name:'Crime',                 enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.3108',   type:'movie',  name:'Crime',                 enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.91297',  type:'series', name:'Drama',                 enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91296',  type:'movie',  name:'Drama',                 enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.8043',   type:'movie',  name:'History & War',         enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.91217',  type:'series', name:'Horror',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91215',  type:'movie',  name:'Horror',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      {id:'mdblist.102554', type:'movie',  name:'Must-See Modern Horror',enabled:true, showInHome:true,  source:'mdblist', sort:'imdbpopular',  order:'asc', cacheTTL:43200},
-      {id:'mdblist.3892',   type:'movie',  name:'Must-See Mindfuck',     enabled:true, showInHome:true,  source:'mdblist', sort:'imdbpopular',  order:'asc', cacheTTL:43200},
-      {id:'mdblist.91221',  type:'series', name:'Sci-Fi',                enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91220',  type:'movie',  name:'Sci-Fi',                enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200, enableRatingPosters:true},
-      {id:'mdblist.91894',  type:'series', name:'Thriller',              enabled:true, showInHome:true,  source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
-      {id:'mdblist.91893',  type:'movie',  name:'Thriller',              enabled:true, showInHome:true,  source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
-      // ── Especiais ─────────────────────────────────────────────────────────
-      {id:'mdblist.84677',  type:'movie',  name:'Top Documentaries',     enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.84403',  type:'series', name:'Top Documentaries',     enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.84487',  type:'series', name:'Top Nature',            enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.84401',  type:'series', name:'Top Reality TV',        enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.83497',  type:'movie',  name:'Top Standup Comedy',    enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      // ── Por época ─────────────────────────────────────────────────────────
+      {id:'mdblist.91224',  type:'series', name:'Comedy',                enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91223',  type:'movie',  name:'Comedy',                enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.3126',   type:'series', name:'Crime',                 enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.3108',   type:'movie',  name:'Crime',                 enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.91297',  type:'series', name:'Drama',                 enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91296',  type:'movie',  name:'Drama',                 enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.8043',   type:'movie',  name:'History & War',         enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.91217',  type:'series', name:'Horror',                enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91215',  type:'movie',  name:'Horror',                enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      {id:'mdblist.102554', type:'movie',  name:'Must-See Modern Horror',enabled:true, showInHome:false, source:'mdblist', sort:'imdbpopular',  order:'asc', cacheTTL:43200},
+      {id:'mdblist.3892',   type:'movie',  name:'Must-See Mindfuck',     enabled:true, showInHome:false, source:'mdblist', sort:'imdbpopular',  order:'asc', cacheTTL:43200},
+      {id:'mdblist.91221',  type:'series', name:'Sci-Fi',                enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91220',  type:'movie',  name:'Sci-Fi',                enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200, enableRatingPosters:true},
+      {id:'mdblist.91894',  type:'series', name:'Thriller',              enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
+      {id:'mdblist.91893',  type:'movie',  name:'Thriller',              enabled:true, showInHome:false, source:'mdblist', sort:'released',     order:'asc', cacheTTL:43200},
+      // ── Especiais (fora da home — disponíveis no Discover) ────────────────
+      {id:'mdblist.84677',  type:'movie',  name:'Top Documentaries',     enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.84403',  type:'series', name:'Top Documentaries',     enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.84487',  type:'series', name:'Top Nature',            enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.84401',  type:'series', name:'Top Reality TV',        enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.83497',  type:'movie',  name:'Top Standup Comedy',    enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      // ── Por época (prioridade 4 — home: só o ano mais recente) ────────────
       {id:'mdblist.92337',  type:'movie',  name:'Top 2025',              enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.91304',  type:'movie',  name:'Top 2020s',             enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.91303',  type:'movie',  name:'Top 2010s',             enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.91302',  type:'movie',  name:'Top 2000s',             enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.91300',  type:'movie',  name:'Top 1990s',             enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
-      {id:'mdblist.91301',  type:'movie',  name:'Top 1980s',             enabled:true, showInHome:true,  source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.91304',  type:'movie',  name:'Top 2020s',             enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.91303',  type:'movie',  name:'Top 2010s',             enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.91302',  type:'movie',  name:'Top 2000s',             enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.91300',  type:'movie',  name:'Top 1990s',             enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
+      {id:'mdblist.91301',  type:'movie',  name:'Top 1980s',             enabled:true, showInHome:false, source:'mdblist', sort:'random',       order:'asc', cacheTTL:43200, randomizePerPage:true},
     ];
     return {
       language: 'pt-PT',
