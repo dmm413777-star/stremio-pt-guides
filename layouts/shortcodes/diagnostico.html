@@ -152,7 +152,7 @@
     box.innerHTML = currentIssues.map(iss => `
       <div class="issue-row ${iss.severity}">
         <span class="badge">${iss.severity}</span>
-        <span>${iss.message}${iss.link ? ` <a href="${iss.link}">Resolver →</a>` : ''}</span>
+        <span>${iss.message}${iss.link ? ` <a href="${iss.link}">${iss.severity === 'info' ? 'Ver' : 'Resolver'} →</a>` : ''}</span>
       </div>
     `).join('');
   }

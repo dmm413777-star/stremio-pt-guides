@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-11-02",
+    "title": "Toast Translator passa a opcional no QuickStart",
+    "items": [
+      "Medimos numa conta real: a pesquisa do Toast \"Cinemeta PT\" não devolve resultados, e as fichas de título coincidem sempre com as do AIOMetadata PT — fica desmarcado por defeito no pack (continua disponível, só deixa de ser automático).",
+      "O Diagnóstico da Conta passa a avisar com uma nota informativa quem já o tem instalado, com link para o Organizador caso o queiras remover."
+    ]
+  },
+  {
     "date": "2026-11-01",
     "title": "Instalar Addon por URL",
     "items": [

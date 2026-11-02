@@ -757,7 +757,7 @@
 <div class="card inactive" id="qs-card-pack">
   <div class="card-header">
     <div class="card-title">Selecionar Pack</div>
-    <span class="card-badge" id="qs-pack-badge">7 selecionados</span>
+    <span class="card-badge" id="qs-pack-badge">6 selecionados</span>
   </div>
   <div class="addon-list-header">
     <span class="addon-list-label">Addons incluídos</span>
@@ -889,8 +889,9 @@
       id: 'toast',
       name: 'Toast Translator',
       icon: '🌐',
-      desc: 'Cinemeta em PT-PT: títulos, sinopses e ratings em português nas capas',
+      desc: 'Extra opcional: acrescenta ~6 linhas do Cinemeta traduzidas à página inicial (pesquisa e fichas já são cobertas pelo AIOMetadata).',
       manifestUrl: 'https://toast-translator.elfhosted.com/manifest.json',
+      defaultChecked: false,
     },
     {
       id: 'animacaopt',
@@ -1185,11 +1186,12 @@
 
   const addonListEl = document.getElementById('qs-addon-list');
   PT_PACK.forEach(addon => {
+    const checked = addon.defaultChecked !== false;
     const item = document.createElement('label');
-    item.className = 'addon-item checked';
+    item.className = 'addon-item' + (checked ? ' checked' : '');
     item.htmlFor = 'qs-chk-' + addon.id;
     item.innerHTML = `
-      <input type="checkbox" id="qs-chk-${addon.id}" checked>
+      <input type="checkbox" id="qs-chk-${addon.id}"${checked ? ' checked' : ''}>
       <div class="check-box"></div>
       <span class="addon-icon">${addon.icon}</span>
       <div class="addon-info">
@@ -1203,6 +1205,7 @@
     });
     addonListEl.appendChild(item);
   });
+  qsUpdatePackBadge();
 
   const optCleanRow = document.getElementById('qs-opt-clean-row');
   optCleanRow.addEventListener('change', () => {

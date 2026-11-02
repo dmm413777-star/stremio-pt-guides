@@ -18,6 +18,10 @@ O **Toast Translator** traduz títulos e sinopses para **Português de Portugal*
 **Antes de começares:** Precisas da tua [TMDB API Key](/guias/tmdb). É gratuita e demora menos de 5 minutos a criar.
 {{< /callout >}}
 
+{{< callout type="info" >}}
+**No [QuickStart PT](/#qs-widget), este addon é opcional** (desmarcado por defeito). Medimos numa conta real: a pesquisa do Toast não devolve resultados, e as fichas de título que testámos coincidem sempre, palavra por palavra, com as do [AIOMetadata PT](/guias/aiometadata) — o AIOMetadata já traduz sinopses e títulos sozinho. O Toast acrescenta ~6 linhas extra à página inicial do Stremio (Popular/New/Featured do Cinemeta, traduzidas), das quais cerca de 28% repetem títulos que o AIOMetadata já mostra. Continua a ser útil se quiseres essas linhas extra — é só deixar de ser a opção por defeito.
+{{< /callout >}}
+
 ---
 
 ## Passo 1: Criar a TMDB API Key

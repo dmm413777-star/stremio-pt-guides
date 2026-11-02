@@ -143,6 +143,21 @@
       });
     }
 
+    // Toast "Cinemeta PT" presente — extra opcional desde a ronda 4 (ver
+    // docs/estudo-quickstart-pt.md): pesquisa morta, fichas coincidem sempre
+    // com as do AIOMetadata nos testes feitos, só acrescenta linhas à home.
+    // Nota informativa, não aviso — não é um problema, é uma escolha.
+    const toastIdx = addons.findIndex(a => (a.transportUrl || a.url || '').includes('toast-translator'));
+    if (toastIdx !== -1) {
+      issues.push({
+        type: 'toast-opcional',
+        severity: 'info',
+        message: 'Opcional — acrescenta linhas do Cinemeta traduzidas à página inicial; podes removê-lo no Organizador.',
+        addonIndexes: [toastIdx],
+        link: '/organizador/',
+      });
+    }
+
     // Manifests que não respondem (em paralelo, com limite)
     const toCheck = addons.map((a, i) => ({ i, url: a.transportUrl || a.url })).filter(x => x.url);
     const results = new Array(addons.length);
