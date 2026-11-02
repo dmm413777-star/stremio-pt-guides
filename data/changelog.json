@@ -1,6 +1,19 @@
 [
   {
     "date": "2026-11-02",
+    "title": "Novidades de Novembro",
+    "items": [
+      "4 ferramentas novas (em beta): Cinemeta PT para tirar o Cinemeta do caminho, Diagnóstico da Conta para detectar addons com problemas, Organizador de Addons para reordenar ou remover, e Instalar Addon por URL para quem está em Android TV.",
+      "O QuickStart PT passa a instalar directamente numa conta Nuvio (toggle no passo de login), sem precisar de passar pelo Stremio primeiro.",
+      "Cópia de segurança descarregável antes de qualquer alteração nas 4 ferramentas de conta.",
+      "As passwords geradas para o AIOStreams e o AIOMetadata ficam visíveis no fim do QuickStart, em vez de se perderem depois do passo de login.",
+      "Toast Translator deixa de vir ligado por defeito no pack (continua disponível, só deixa de ser automático).",
+      "Página inicial mais curta: a home do AIOMetadata passou de ~65 para ~20 catálogos.",
+      "Encontraste algo que não funciona? Usa o Diagnóstico da Conta e diz-nos no r/PiratariaTuga."
+    ]
+  },
+  {
+    "date": "2026-11-02",
     "title": "Toast Translator passa a opcional no QuickStart",
     "items": [
       "Medimos numa conta real: a pesquisa do Toast \"Cinemeta PT\" não devolve resultados, e as fichas de título coincidem sempre com as do AIOMetadata PT — fica desmarcado por defeito no pack (continua disponível, só deixa de ser automático).",
