@@ -24,7 +24,10 @@ test.describe('Navegação — Maria navega todos os menus', () => {
     // No mobile, clicar no hamburger primeiro
     const hamburger = page.locator('.hextra-hamburger-menu, button[aria-label="Menu"]').first();
     if (await hamburger.isVisible()) await hamburger.click();
-    await page.locator('a[href="/guias"]').first().click();
+    // No mobile o link equivalente fica na sidebar, gerado pelo Hugo com barra
+    // final ("/guias/"); no desktop é o link da navbar sem barra final
+    // ("/guias") — :visible escolhe o que está mesmo acessível em cada caso.
+    await page.locator('a[href="/guias"]:visible, a[href="/guias/"]:visible').first().click();
     await expect(page).toHaveURL(/\/guias/);
   });
 

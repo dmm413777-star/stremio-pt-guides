@@ -65,16 +65,24 @@ test.describe('QuickStart — passwords AIOStreams/AIOMetadata no ecrã final', 
     await expect(rows).toHaveCount(2);
   });
 
-  test('botão de copiar usa o clipboard e não é um link/onclick com a password no DOM fora do atributo data-copy', async ({ page, context }) => {
-    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  test('botão de copiar usa o clipboard e não é um link/onclick com a password no DOM fora do atributo data-copy', async ({ page, context, browserName }) => {
+    // WebKit (Mobile Safari) não suporta conceder permissões de clipboard via
+    // Playwright ("Unknown permission: clipboard-write") — confirma-se o
+    // essencial (não é link/onclick com a password à vista, dá feedback
+    // "Copiado!") e salta-se só a leitura do clipboard real nesse browser.
+    if (browserName !== 'webkit') {
+      await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    }
     await runInstall(page);
     const btn = page.locator('.qs-copy-pw').first();
     const expected = await btn.getAttribute('data-copy');
     expect(expected).toBeTruthy();
     await btn.click();
     await expect(btn).toHaveText('Copiado!');
-    const clip = await page.evaluate(() => navigator.clipboard.readText());
-    expect(clip).toBe(expected);
+    if (browserName !== 'webkit') {
+      const clip = await page.evaluate(() => navigator.clipboard.readText());
+      expect(clip).toBe(expected);
+    }
   });
 
   test('as passwords nunca aparecem na consola', async ({ page }) => {
