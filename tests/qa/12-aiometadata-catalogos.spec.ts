@@ -68,14 +68,32 @@ test.describe('Filipe — catalólogo AIOMetadata completo (Tam-Taro template)',
     }
   });
 
-  test('Netflix, Disney+, Prime Video, Max (streaming.*) têm showInHome:true na home', async ({ page }) => {
+  test('Netflix, Disney+, Prime Video, Max, SkyShowtime (tmdb.discover streaming PT) têm showInHome:true na home', async ({ page }) => {
+    // Ronda "beta" item 3: os catálogos streaming.* nativos do AIOMetadata têm
+    // país fixo (nunca PT) no código do próprio addon — substituídos por
+    // catálogos tmdb.discover.* com watch_region:'PT'. Ver quickstart.html.
     const html = await page.content();
-    for (const id of ['streaming.nfx', 'streaming.dnp', 'streaming.amp', 'streaming.hbm']) {
-      // cada id aparece 2x (movie+series); confirmar que nenhuma das duas está showInHome:false
-      const re = new RegExp(`id:'${id.replace('.', '\\.')}'[^}]*showInHome:false`);
-      expect(html, `${id} não devia ter showInHome:false`).not.toMatch(re);
-      expect(html).toContain(id);
+    for (const slug of ['streaming_netflix_8', 'streaming_disney_337', 'streaming_prime_9', 'streaming_max_1899', 'streaming_skyshowtime_1773']) {
+      // cada slug aparece 2x (movie+series); confirmar que nenhuma das duas está showInHome:false
+      const re = new RegExp(`id:'tmdb\\.discover\\.(movie|series)\\.${slug}'[^}]*showInHome:false`);
+      expect(html, `${slug} não devia ter showInHome:false`).not.toMatch(re);
+      expect(html).toContain(slug);
     }
+  });
+
+  test('catálogos de streaming PT usam watch_region:\'PT\'', async ({ page }) => {
+    const html = await page.content();
+    for (const slug of ['streaming_netflix_8', 'streaming_disney_337', 'streaming_prime_9', 'streaming_max_1899', 'streaming_skyshowtime_1773', 'streaming_appletv_350']) {
+      const re = new RegExp(`id:'tmdb\\.discover\\.movie\\.${slug}'[\\s\\S]{0,500}watch_region:'PT'`);
+      expect(html, `${slug} devia usar watch_region:'PT'`).toMatch(re);
+    }
+  });
+
+  test('Apple TV+ (streaming PT) fica fora da home mas continua no Discover', async ({ page }) => {
+    const html = await page.content();
+    const re = new RegExp(`id:'tmdb\\.discover\\.(movie|series)\\.streaming_appletv_350'[^}]*showInHome:true`);
+    expect(html, 'Apple TV+ não devia ter showInHome:true').not.toMatch(re);
+    expect(html).toContain('streaming_appletv_350');
   });
 
   test('home da AIOMetadata reduzida a ~20 catálogos (ronda 4, item 5)', async ({ page }) => {
@@ -93,8 +111,8 @@ test.describe('Filipe — catalólogo AIOMetadata completo (Tam-Taro template)',
 
   test('Max (HBO) e SkyShowtime aparecem nas plataformas de streaming', async ({ page }) => {
     const html = await page.content();
-    expect(html).toContain('streaming.hbm');
-    expect(html).toContain('streaming.sst');
+    expect(html).toContain('streaming_max_1899');
+    expect(html).toContain('streaming_skyshowtime_1773');
   });
 
   // ── Anti-regressão: sem "max descriptor size" ────────────────────────────────

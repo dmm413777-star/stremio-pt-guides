@@ -1432,7 +1432,8 @@
     //
     // HOME_PRIORITY (ordem usada para escolher as ~20 linhas actuais):
     //   1. Tendências/populares globais — Seasonal, Trakt Trending, TMDB Popular, Latest Digital Release
-    //   2. Streaming disponível em PT — Netflix, Disney+, Prime Video, Max, Apple TV+ (filmes+séries)
+    //   2. Streaming disponível em PT — Netflix, Disney+, Prime Video, Max, SkyShowtime (filmes+séries);
+    //      Apple TV+ só no Discover
     //   3. Kids/animação PT-PT — Trending Kids, Animated
     //   4. Sazonal — Top 2025
     // (Sem variante de anime nos nossos catálogos actuais — nada a priorizar nesse grupo.)
@@ -1456,20 +1457,45 @@
       {id:'mdblist.88309',  type:'series', name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       {id:'mdblist.88307',  type:'movie',  name:'Trending Kids',         enabled:true, showInHome:true,  source:'mdblist', sort:'default',      order:'asc', cacheTTL:43200},
       // ── Streaming PT (prioridade 2 — home; plataformas disponíveis em PT) ─
-      {id:'streaming.nfx',  type:'movie',  name:'Netflix — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.nfx',  type:'series', name:'Netflix — Séries',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.dnp',  type:'movie',  name:'Disney+ — Filmes',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.dnp',  type:'series', name:'Disney+ — Séries',           enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.amp',  type:'movie',  name:'Prime Video — Filmes',       enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.amp',  type:'series', name:'Prime Video — Séries',       enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.hbm',  type:'movie',  name:'Max — Filmes',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      {id:'streaming.hbm',  type:'series', name:'Max — Séries',               enabled:true, showInHome:true,  source:'streaming', enableRatingPosters:true},
-      // SkyShowtime/Paramount+ e Apple TV+ ficam fora da home (menor adesão em
-      // PT) mas continuam no Discover — ver HOME_PRIORITY acima.
-      {id:'streaming.sst',  type:'movie',  name:'SkyShowtime (Paramount+) — Filmes', enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.sst',  type:'series', name:'SkyShowtime (Paramount+) — Séries', enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'movie',  name:'Apple TV+ — Filmes',         enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
-      {id:'streaming.atp',  type:'series', name:'Apple TV+ — Séries',         enabled:true, showInHome:false, source:'streaming', enableRatingPosters:true},
+      // Preparação da beta (item 3): os catálogos nativos `streaming.*` do
+      // AIOMetadata têm o país FIXO no código do próprio addon
+      // (addon/static/catalog-types.json: nfx=GB, dnp=GB, amp=US, hbm=NL,
+      // sst=NL, atp=GB) — não existe nenhum campo de configuração (nem
+      // `region`, nem o array `streaming` do UserConfig) que o utilizador
+      // consiga mudar para PT nesse tipo de catálogo (confirmado lendo
+      // addon/lib/getCatalog.ts: `findProvider` lê sempre o país fixo do
+      // JSON). Por isso usamos aqui catálogos `tmdb.discover.*` próprios,
+      // com `watch_region:'PT'` e o watchProviderId de cada serviço na TMDB
+      // (mesmo mecanismo que o configure oficial usa em
+      // configure/src/lib/setup/streaming.ts) — isto é que mostra o que está
+      // realmente disponível para streaming em Portugal.
+      {id:'tmdb.discover.movie.streaming_netflix_8',    type:'movie',  name:'Netflix — Filmes',       enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'8',    with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_netflix_8',   type:'series', name:'Netflix — Séries',       enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'8',    with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.movie.streaming_disney_337',   type:'movie',  name:'Disney+ — Filmes',       enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'337',  with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_disney_337',  type:'series', name:'Disney+ — Séries',       enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'337',  with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.movie.streaming_prime_9',      type:'movie',  name:'Prime Video — Filmes',   enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'9',    with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_prime_9',     type:'series', name:'Prime Video — Séries',   enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'9',    with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.movie.streaming_max_1899',     type:'movie',  name:'Max — Filmes',           enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'1899', with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_max_1899',    type:'series', name:'Max — Séries',           enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'1899', with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      // SkyShowtime: em Portugal desde 2022 — adicionado à home (item 3).
+      {id:'tmdb.discover.movie.streaming_skyshowtime_1773',  type:'movie',  name:'SkyShowtime — Filmes', enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'1773', with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_skyshowtime_1773', type:'series', name:'SkyShowtime — Séries', enabled:true, showInHome:true,  source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'1773', with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      // Apple TV+ fica fora da home (menor adesão em PT) mas continua no
+      // Discover — ver HOME_PRIORITY acima.
+      {id:'tmdb.discover.movie.streaming_appletv_350',  type:'movie',  name:'Apple TV+ — Filmes',     enabled:true, showInHome:false, source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'350',  with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
+      {id:'tmdb.discover.series.streaming_appletv_350', type:'series', name:'Apple TV+ — Séries',     enabled:true, showInHome:false, source:'tmdb', enableRatingPosters:true,
+        metadata:{discover:{params:{sort_by:'popularity.desc', include_adult:false, watch_region:'PT', with_watch_providers:'350',  with_watch_monetization_types:'flatrate|free|ads|rent|buy', 'vote_count.gte':10}}}},
       // ── Streaming MDBList (listas curadas — sobrepõem-se ao streaming.* acima,
       // mantidas no Discover para quem prefere este corte, fora da home) ─────
       {id:'mdblist.86751',  type:'series', name:'Netflix Latest',        enabled:true, showInHome:false, source:'mdblist', sort:'last_air_date',order:'asc', cacheTTL:43200},
@@ -1553,7 +1579,14 @@
         engineEnabled: { 'tmdb.search': true, 'tvdb.search': true, 'tvdb.collections.search': true, 'tvmaze.search': true, 'mal.search.movie': true, 'mal.search.series': true },
         providerNames: {},
       },
-      streaming: ['cru'],
+      // Ronda "beta" (item 3): havia aqui um `streaming: ['cru']` copiado do
+      // template do Tam-Taro. Investigado: o `UserConfig.streaming` real do
+      // AIOMetadata é `StreamingConfig[]` (objetos `{provider, region,
+      // enabled}`), não uma lista de strings — `'cru'` não corresponde a essa
+      // forma. Confirmado por leitura de addon/lib/getManifest.ts e
+      // addon/lib/getCatalog.ts que esse campo nunca é lido em nenhum dos
+      // dois — não tem efeito nenhum no manifest, na pesquisa ou nos
+      // catálogos. É resto morto de cópia; removido.
       displayTypeOverrides: { movie: 'movie', series: 'series' },
       mdblistWatchTracking: true,
       hideUnreleasedDigitalSearch: false,
