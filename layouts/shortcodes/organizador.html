@@ -102,6 +102,7 @@
     <button class="btn btn-ghost" id="og-btn-undo" disabled>↺ Desfazer</button>
   </div>
   <div class="status-line" id="og-save-status"></div>
+  <div id="og-backup-widget"></div>
 </div>
 
 </div><!-- #og-widget -->
@@ -110,6 +111,7 @@
 <script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
 <script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
 <script src="{{ "js/conta/organizer.js" | relURL }}"></script>
+<script src="{{ "js/conta/backup.js" | relURL }}"></script>
 <script>
 (function () {
   let platform = 'stremio';
@@ -198,6 +200,31 @@
     renderList();
   }
 
+  // Cópia de segurança descarregável, complementar ao "Desfazer" em memória
+  // (que se perde ao fechar o separador). Ver static/js/conta/backup.js.
+  function setupBackupWidget() {
+    const box = document.getElementById('og-backup-widget');
+    box.innerHTML = AccountBackup.widgetHtml('og-bak');
+    AccountBackup.wireWidget(
+      'og-bak',
+      'organizador',
+      () => workingList,
+      async (addons) => {
+        if (platform === 'nuvio') {
+          await NuvioAccountAPI.setAddons(addons, token, nuvioProfileId);
+        } else {
+          await StremioAccountAPI.setAddons(addons, token);
+        }
+        workingList = [...addons];
+        lastKnownServerState = [...addons];
+        preSaveBackup = null;
+        markLocalDirty(false);
+        updateUndoButton();
+        renderList();
+      }
+    );
+  }
+
   document.getElementById('og-btn-login').addEventListener('click', async () => {
     const email = document.getElementById('og-inp-email').value.trim();
     const pass = document.getElementById('og-inp-pass').value;
@@ -225,6 +252,7 @@
       await loadList();
       setStatus('og-login-status', 'ok', '✓ Conta verificada — ' + workingList.length + ' addon(s).');
       document.getElementById('og-card-list').classList.remove('inactive');
+      setupBackupWidget();
     } catch (err) {
       setStatus('og-login-status', 'err', err.message || 'Erro ao ligar.');
     }

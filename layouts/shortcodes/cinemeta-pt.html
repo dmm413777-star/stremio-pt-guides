@@ -113,6 +113,8 @@
 <div class="card inactive" id="cm-card-options">
   <div class="card-title">O que fazer ao Cinemeta</div>
 
+  <div id="cm-backup-widget"></div>
+
   <!-- Opções Stremio -->
   <div id="cm-stremio-options">
     <label class="option-row">
@@ -157,6 +159,7 @@
 <script src="{{ "js/conta/util.js" | relURL }}"></script>
 <script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
 <script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/backup.js" | relURL }}"></script>
 <script>
 (function () {
   let platform = 'stremio';
@@ -232,6 +235,7 @@
         }
       }
       document.getElementById('cm-card-options').classList.remove('inactive');
+      setupBackupWidget();
     } catch (err) {
       setStatus('cm-login-status', 'err', err.message || 'Erro ao ligar.');
     } finally {
@@ -267,6 +271,32 @@
       setStatus('cm-apply-status', 'err', err.message || 'Erro ao repor.');
     }
   });
+
+  // Cópia de segurança descarregável — injectada depois do login, porque só
+  // aí sabemos a plataforma/perfil. Ver static/js/conta/backup.js.
+  function setupBackupWidget() {
+    const box = document.getElementById('cm-backup-widget');
+    box.innerHTML = AccountBackup.widgetHtml('cm-bak');
+    AccountBackup.wireWidget(
+      'cm-bak',
+      'cinemeta-pt',
+      async () => {
+        if (platform === 'nuvio') {
+          const pid = document.getElementById('cm-profile-select').value || nuvioProfiles[0]?.id;
+          return NuvioAccountAPI.getAddons(token, pid);
+        }
+        return StremioAccountAPI.getAddons(token);
+      },
+      async (addons) => {
+        if (platform === 'nuvio') {
+          const pid = document.getElementById('cm-profile-select').value || nuvioProfiles[0]?.id;
+          await NuvioAccountAPI.setAddons(addons, token, pid);
+        } else {
+          await StremioAccountAPI.setAddons(addons, token);
+        }
+      }
+    );
+  }
 
   function targetProfileIds() {
     const all = document.getElementById('cm-opt-all-profiles').checked;

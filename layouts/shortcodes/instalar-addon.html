@@ -98,6 +98,7 @@
   </label>
   <button class="btn" id="ia-btn-install">Instalar na minha conta</button>
   <div class="status-line" id="ia-install-status"></div>
+  <div id="ia-backup-widget"></div>
 </div>
 
 </div><!-- #ia-widget -->
@@ -105,6 +106,7 @@
 <script src="{{ "js/conta/util.js" | relURL }}"></script>
 <script src="{{ "js/conta/stremio-api.js" | relURL }}"></script>
 <script src="{{ "js/conta/nuvio-api.js" | relURL }}"></script>
+<script src="{{ "js/conta/backup.js" | relURL }}"></script>
 <script src="{{ "js/conta/installer.js" | relURL }}"></script>
 <script>
 (function () {
@@ -180,10 +182,36 @@
         setStatus('ia-login-status', 'ok', '✓ Conta verificada.');
       }
       document.getElementById('ia-card-install').classList.remove('inactive');
+      setupBackupWidget();
     } catch (err) {
       setStatus('ia-login-status', 'err', err.message || 'Erro ao ligar.');
     }
   });
+
+  // Cópia de segurança descarregável antes de instalar. Ver static/js/conta/backup.js.
+  function setupBackupWidget() {
+    const box = document.getElementById('ia-backup-widget');
+    box.innerHTML = AccountBackup.widgetHtml('ia-bak');
+    AccountBackup.wireWidget(
+      'ia-bak',
+      'instalar-addon',
+      async () => {
+        if (platform === 'nuvio') {
+          const pid = document.getElementById('ia-profile-select').value || nuvioProfiles[0]?.id;
+          return NuvioAccountAPI.getAddons(token, pid);
+        }
+        return StremioAccountAPI.getAddons(token);
+      },
+      async (addons) => {
+        if (platform === 'nuvio') {
+          const pid = document.getElementById('ia-profile-select').value || nuvioProfiles[0]?.id;
+          await NuvioAccountAPI.setAddons(addons, token, pid);
+        } else {
+          await StremioAccountAPI.setAddons(addons, token);
+        }
+      }
+    );
+  }
 
   document.getElementById('ia-btn-install').addEventListener('click', async () => {
     setStatus('ia-install-status', '', 'A instalar…');
