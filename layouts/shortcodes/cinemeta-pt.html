@@ -22,6 +22,13 @@
   #cm-widget .cm-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
   #cm-widget .cm-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
   #cm-widget .cm-intro p { color: var(--cm-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #cm-widget .beta-badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; padding: 0.15rem 0.5rem; border-radius: 999px; margin-left: 0.5rem;
+    background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35); vertical-align: middle;
+  }
+  #cm-widget .cm-feedback { color: var(--cm-text-muted); font-size: 0.78rem; margin-top: 0.5rem; }
+  #cm-widget .cm-feedback a { color: var(--cm-accent-light); }
   #cm-widget .cm-credit { font-size: 0.75rem; color: var(--cm-text-muted); margin-top: 0.5rem; }
   #cm-widget .cm-credit a { color: var(--cm-accent-light); }
   #cm-widget .card {
@@ -78,8 +85,9 @@
 </style>
 
 <div class="cm-intro">
-  <h2>🧹 Cinemeta PT</h2>
+  <h2>🧹 Cinemeta PT<span class="beta-badge">Beta</span></h2>
   <p>O Cinemeta vem sempre instalado por defeito e mostra títulos, sinopses e listas em inglês — mesmo depois de instalares o AIOMetadata PT. Esta ferramenta tira-o do caminho.</p>
+  <p class="cm-feedback">Encontraste um problema? Diz-nos no <a data-feedback-link href="https://www.reddit.com/r/PiratariaTuga/" target="_blank" rel="noopener">r/PiratariaTuga</a> e cola o relatório do Diagnóstico.</p>
   <div class="cm-credit">Técnica inspirada no <a href="https://duck-tools.pages.dev/" target="_blank" rel="noopener">Duck Tools</a> — Cinemeta Patcher.</div>
 </div>
 

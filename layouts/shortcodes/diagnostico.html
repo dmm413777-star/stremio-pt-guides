@@ -10,6 +10,13 @@
   #dg-widget .dg-intro { text-align: center; margin-bottom: 1.5rem; max-width: 560px; width: 100%; padding: 0 1rem; }
   #dg-widget .dg-intro h2 { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
   #dg-widget .dg-intro p { color: var(--dg-text-muted); font-size: 0.88rem; line-height: 1.55; }
+  #dg-widget .beta-badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; padding: 0.15rem 0.5rem; border-radius: 999px; margin-left: 0.5rem;
+    background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.35); vertical-align: middle;
+  }
+  #dg-widget .dg-feedback { color: var(--dg-text-muted); font-size: 0.78rem; margin-top: 0.5rem; }
+  #dg-widget .dg-feedback a { color: var(--dg-accent-light); }
   #dg-widget .card {
     width: 100%; max-width: 560px; background: var(--dg-surface); border: 1px solid var(--dg-border);
     border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
@@ -67,8 +74,9 @@
 </style>
 
 <div class="dg-intro">
-  <h2>🔍 Diagnóstico da conta</h2>
+  <h2>🔍 Diagnóstico da conta<span class="beta-badge">Beta</span></h2>
   <p>Verifica a tua conta Stremio ou Nuvio por problemas comuns — addons duplicados, offline ou mal configurados. Só lê a tua conta, nunca escreve nada.</p>
+  <p class="dg-feedback">Encontraste um problema? Diz-nos no <a data-feedback-link href="https://www.reddit.com/r/PiratariaTuga/" target="_blank" rel="noopener">r/PiratariaTuga</a> e cola o relatório do Diagnóstico.</p>
 </div>
 
 <div class="card" id="dg-card-login">

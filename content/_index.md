@@ -29,4 +29,6 @@ description: "Guias de Stremio e Nuvio em português: simples, diretos e atualiz
 <div style="text-align:center;margin-top:0.5rem;display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
   <a href="cinemeta-pt/" style="color:var(--accent,#5b8dee);font-size:0.88rem">🧹 Tira o Cinemeta do caminho com o Cinemeta PT →</a>
   <a href="diagnostico/" style="color:var(--accent,#5b8dee);font-size:0.88rem">🔍 Algo não funciona? Corre o Diagnóstico da Conta →</a>
+  <a href="organizador/" style="color:var(--accent,#5b8dee);font-size:0.88rem">↕️ Reordena addons com o Organizador →</a>
+  <a href="instalar-addon/" style="color:var(--accent,#5b8dee);font-size:0.88rem">➕ Instala qualquer addon por URL →</a>
 </div>

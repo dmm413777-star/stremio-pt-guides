@@ -12,6 +12,8 @@ tempo: "leitura"
 **Créditos:** Baseado nos guias de [Viren070](https://guides.viren070.me/stremio/troubleshooting), adaptado para utilizadores portugueses.
 {{< /callout >}}
 
+Antes de ires atrás dos problemas abaixo um por um, podes correr o [Diagnóstico da Conta](/diagnostico/) — verifica addons duplicados, offline ou mal configurados e dá-te já um relatório do que encontrou. Se precisares de arrumar ou remover addons, usa o [Organizador de Addons](/organizador/).
+
 ---
 
 ## Lista de streams vazia ("No streams were found")

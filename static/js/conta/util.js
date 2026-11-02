@@ -3,6 +3,18 @@
 (function (global) {
   'use strict';
 
+  // Constante única do link de feedback da beta — trocar aqui pelo link do
+  // post no r/PiratariaTuga quando houver um; aplica-se a todas as ferramentas
+  // marcadas como beta (qualquer link com [data-feedback-link]).
+  const FEEDBACK_URL = 'https://www.reddit.com/r/PiratariaTuga/';
+
+  function applyFeedbackLinks() {
+    document.querySelectorAll('[data-feedback-link]').forEach(function (el) {
+      el.href = FEEDBACK_URL;
+    });
+  }
+  applyFeedbackLinks();
+
   function urlOrigin(url) {
     try { return new URL(url).origin; } catch { return ''; }
   }
@@ -21,5 +33,5 @@
     return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
   }
 
-  global.AccountUtil = { urlOrigin, generatePassword, fetchTimeout };
+  global.AccountUtil = { urlOrigin, generatePassword, fetchTimeout, FEEDBACK_URL };
 })(window);

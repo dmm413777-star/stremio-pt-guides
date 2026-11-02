@@ -49,10 +49,13 @@ Clica no ícone de ⚙️ ao lado do addon na lista de Addons. Altera o que prec
 Primeiro verifica o estado em [status.elfhosted.com](https://status.elfhosted.com/) ou [status.dinsden.top](https://status.dinsden.top/status/stremio-addons). Se estiver a funcionar do lado do servidor, tenta reinstalar. Se o problema for o token Debrid, regenera a API Key e reconfigura.
 
 **Como instalo um addon manualmente pelo URL?**
-Copia o URL do manifest do addon (começa por `https://...manifest.json`). No Stremio Web vai a **Addons → Add Addon** e cola o URL. Na app desktop ou Android cola na barra de pesquisa dos Addons.
+Copia o URL do manifest do addon (começa por `https://...manifest.json`). No Stremio Web vai a **Addons → Add Addon** e cola o URL. Na app desktop ou Android cola na barra de pesquisa dos Addons. Em Android TV, onde abrir links `stremio://` nem sempre funciona, podes usar a ferramenta [Instalar Addon por URL](/instalar-addon/) directamente a partir do telemóvel ou computador.
 
 **Onde encontro mais addons?**
 Em [stremio-addons.net](https://stremio-addons.net/) ou no separador **Community Addons** dentro do próprio Stremio.
+
+**Como tiro o Cinemeta (catálogos e pesquisa em inglês) do caminho?**
+Usa a ferramenta [Cinemeta PT](/cinemeta-pt/) — esconde ou remove o Cinemeta da tua conta Stremio ou Nuvio para o AIOMetadata PT ficar sozinho.
 
 ---
 
