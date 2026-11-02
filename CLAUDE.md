@@ -97,6 +97,8 @@ Toast Translator, Animação PT-PT, Cotonet, PTGDrive.
   com a versão publicada actual (também corre semanalmente via GitHub Action, que abre
   uma issue `tamtaro-drift` se houver diferenças). Se falhar, lê o resumo PT-PT que o
   script imprime e decide manualmente se a nossa config precisa de actualização.
+  Diferenças já conhecidas e aceites (`titleMatching`, presets ainda não avaliados) ficam
+  em `scripts/tamtaro-drift-aceites.json` — só diferenças novas/alteradas fazem o script falhar.
 
 ### AIOMetadata (buildAIOMetadataConfig em quickstart.html)
 - Catálogos sincronizados com a template Tam-Taro (SEL-Filtering-and-Sorting)

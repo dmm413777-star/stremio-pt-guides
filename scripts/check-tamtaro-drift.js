@@ -12,6 +12,17 @@
 
 const TEMPLATE_URL = 'https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/main/Tamtaro-All-Templates-for-AIOStreams.json';
 const VERSION_FILE = new URL('./.tamtaro-last-version.json', `file://${__dirname}/`);
+const ACCEPTED_FILE = new URL('./tamtaro-drift-aceites.json', `file://${__dirname}/`);
+
+// Diferenças conhecidas e aceites conscientemente (ver scripts/tamtaro-drift-aceites.json).
+// Só diferenças NOVAS ou alteradas em relação a este ficheiro fazem o script falhar.
+function loadAccepted() {
+  try {
+    return JSON.parse(require('fs').readFileSync(ACCEPTED_FILE, 'utf-8'));
+  } catch {
+    return { titleMatching: null, presetsP2PAdicionados: [] };
+  }
+}
 
 // Cópia dos valores estáticos do nosso buildAIOStreamsConfig() — mantidos à
 // mão aqui porque o script corre fora do contexto do browser/Hugo. Se
@@ -92,6 +103,8 @@ function extractPresetTypes(presetsField, branchKey) {
 async function main() {
   const problems = [];
   const notes = []; // informativo apenas (não conta como diferença, ex.: 1ª execução)
+  const accepted = []; // diferenças conhecidas e aceites (scripts/tamtaro-drift-aceites.json) — não contam como falha
+  const ACCEPTED = loadAccepted();
 
   // 1. Template Tam-Taro — versão e campos estáticos comparáveis
   let template = null;
@@ -127,14 +140,27 @@ async function main() {
       problems.push('O "deduplicator" do template Tam-Taro mudou e já não coincide com o nosso (buildAIOStreamsConfig em quickstart.html).');
     }
     if (cfg.titleMatching && !deepEqual(cfg.titleMatching, OURS.titleMatching)) {
-      problems.push('O "titleMatching" do template Tam-Taro é diferente do nosso (isto já era verdade antes desta ronda — não é necessariamente uma regressão nova, mas vale confirmar se é intencional).');
+      if (ACCEPTED.titleMatching && deepEqual(cfg.titleMatching, ACCEPTED.titleMatching.value)) {
+        accepted.push(`"titleMatching" continua diferente do nosso, como já era esperado (aceite desde ${ACCEPTED.titleMatching.desde}): ${ACCEPTED.titleMatching.motivo}`);
+      } else {
+        problems.push('O "titleMatching" do template Tam-Taro mudou para um valor novo, diferente do nosso E do que está registado em scripts/tamtaro-drift-aceites.json — convém rever manualmente.');
+      }
     }
 
     const p2pTypes = extractPresetTypes(cfg.presets, '');
     if (p2pTypes) {
       const added = p2pTypes.filter(t => !OURS.presetTypesP2P.includes(t));
       const removed = OURS.presetTypesP2P.filter(t => !p2pTypes.includes(t));
-      if (added.length) problems.push(`Presets novos no template P2P do Tam-Taro que não temos: ${added.join(', ')}.`);
+      const acceptedTypes = (ACCEPTED.presetsP2PAdicionados || []).map(e => e.type);
+      const newAdded = added.filter(t => !acceptedTypes.includes(t));
+      const acceptedAdded = added.filter(t => acceptedTypes.includes(t));
+      if (newAdded.length) problems.push(`Presets novos no template P2P do Tam-Taro que não temos nem estão em scripts/tamtaro-drift-aceites.json: ${newAdded.join(', ')}.`);
+      if (acceptedAdded.length) {
+        for (const t of acceptedAdded) {
+          const entry = ACCEPTED.presetsP2PAdicionados.find(e => e.type === t);
+          accepted.push(`Preset "${t}" continua no template Tam-Taro mas não na nossa config, como já era esperado (aceite desde ${entry.desde}): ${entry.motivo}`);
+        }
+      }
       if (removed.length) problems.push(`Presets que já não aparecem no template P2P do Tam-Taro mas continuamos a usar: ${removed.join(', ')} (pode ser remoção intencional nossa — ver comentários em quickstart.html).`);
     } else {
       notes.push('Não consegui extrair a lista de presets P2P do template (estrutura do template pode ter mudado).');
@@ -162,6 +188,12 @@ async function main() {
   if (notes.length) {
     console.log('Notas informativas (não contam como diferença):');
     for (const n of notes) console.log(`  • ${n}`);
+    console.log('');
+  }
+
+  if (accepted.length) {
+    console.log('Diferenças conhecidas e aceites (ver scripts/tamtaro-drift-aceites.json — não contam como falha):');
+    for (const a of accepted) console.log(`  ○ ${a}`);
     console.log('');
   }
 

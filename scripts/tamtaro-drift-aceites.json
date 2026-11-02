@@ -1,0 +1,18 @@
+{
+  "_comentario": "Diferenças CONHECIDAS entre o nosso buildAIOStreamsConfig() e o template Tam-Taro publicado — aceites conscientemente, não bugs. O check-tamtaro-drift.js só falha com diferenças NOVAS ou alteradas em relação ao que está aqui; estas aparecem numa secção 'aceites' separada, sem fazer o script falhar. Ver CLAUDE.md.",
+
+  "titleMatching": {
+    "value": { "mode": "exact", "similarityThreshold": 1, "enabled": true, "ambiguousResults": "discard", "requestTypes": ["movie", "series", "anime"], "addons": [] },
+    "motivo": "O nosso titleMatching fica de propósito com enabled:false/ambiguousResults:'keep' — o 'discard' do Tam-Taro descarta automaticamente streams ambíguos, o que pode cortar resultados legítimos. Divergência conhecida desde a ronda 2/3, decisão ainda não revista.",
+    "desde": "2026-11-02"
+  },
+
+  "presetsP2PAdicionados": [
+    { "type": "torrents-db", "motivo": "Já esteve offline antes (torrentsdb.com devolvia 502) — removido por isso na altura, não voltámos a avaliar.", "desde": "2026-11-02" },
+    { "type": "sootio",      "motivo": "Preset novo no template Tam-Taro desde a ronda 4, ainda não avaliado.", "desde": "2026-11-02" },
+    { "type": "webstreamr",  "motivo": "Preset novo no template Tam-Taro desde a ronda 4, ainda não avaliado.", "desde": "2026-11-02" },
+    { "type": "hdhub",       "motivo": "Preset novo no template Tam-Taro desde a ronda 4, ainda não avaliado.", "desde": "2026-11-02" },
+    { "type": "penguplay",   "motivo": "Preset novo no template Tam-Taro desde a ronda 4, ainda não avaliado.", "desde": "2026-11-02" },
+    { "type": "yastream",    "motivo": "Preset novo no template Tam-Taro desde a ronda 4, ainda não avaliado.", "desde": "2026-11-02" }
+  ]
+}
