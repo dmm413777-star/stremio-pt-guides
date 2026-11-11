@@ -14,6 +14,10 @@ Estes addons adicionam catálogos de conteúdo em Português de Portugal diretam
 
 ## Animação PT-PT
 
+{{< callout type="warning" >}}
+**Temporariamente indisponível.** O serviço que aloja este addon está em baixo (fora do nosso controlo — não temos acesso ao código nem ao alojamento). Por isso vem desmarcado por defeito no QuickStart PT. Volta aqui mais tarde ou tenta o link abaixo.
+{{< /callout >}}
+
 **Addon:** `Kids Filmes e Series de Animacao PT-PT Addon Stremio` (v1.0.0)
 
 Filmes e séries de animação em PT-PT, indicado para crianças, mas com títulos para todas as idades.

@@ -56,6 +56,16 @@ async function loginAndSelectOnlyGenericAddons(page: Page) {
       }
     });
   }, ['aiostreams', 'aiometadata', 'submaker', 'toast']);
+  // Animação PT-PT começa desmarcado por defeito (2026-11-11: addon
+  // temporariamente em baixo — ver CLAUDE.md) — este teste mocka o manifest
+  // dele e precisa que esteja seleccionado, por isso marca-se explicitamente.
+  await page.evaluate((id: string) => {
+    const el = document.getElementById('qs-chk-' + id) as HTMLInputElement;
+    if (el && !el.checked) {
+      el.checked = true;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  }, 'animacaopt');
   for (const id of ['animacaopt', 'cotonet', 'ptgdrive']) {
     await expect(page.locator('#qs-chk-' + id)).toBeChecked();
   }

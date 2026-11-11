@@ -63,6 +63,14 @@ existente ou gerar conta aleatória, para ambas as plataformas.
 **Pack instalado:** AIOStreams (template Tam-Taro SEL), AIOMetadata PT, SubMaker,
 Toast Translator, Animação PT-PT, Cotonet, PTGDrive.
 
+**Animação PT-PT desligado por defeito (2026-11-11):** o alojamento do addon (Vercel) está
+em baixo (`402 Payment required — DEPLOYMENT_DISABLED`), fora do nosso controlo — não há
+repositório público conhecido para alojarmos uma cópia. `defaultChecked:false` em `PT_PACK`
+(continua escolhível manualmente). O `check-tamtaro-drift.js` já monitoriza este URL
+(secção `URLS_TO_CHECK`) — quando a Action semanal deixar de o assinalar como offline,
+voltar a pôr `defaultChecked` a `true` (ou remover a entrada, se o addon tiver morrido
+de vez).
+
 ### Stremio
 - Login/registo via `api.strem.io` (`/api/login`, `/api/register`, `/api/addonCollectionGet`, `/api/addonCollectionSet`)
 - authKey só em memória, nunca em localStorage

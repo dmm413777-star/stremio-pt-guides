@@ -894,11 +894,19 @@
       defaultChecked: false,
     },
     {
+      // 2026-11-11: serviço do dono do addon em baixo (Vercel devolve 402
+      // "Payment required — DEPLOYMENT_DISABLED"), fora do nosso controlo —
+      // sem repositório público conhecido para alojarmos uma cópia. Fica
+      // desmarcado por defeito (continua escolhível manualmente, para quem
+      // quiser tentar) até o script de deriva (scripts/check-tamtaro-drift.js,
+      // já monitoriza este URL) confirmar que voltou — nessa altura volta a
+      // defaultChecked:true (ou remove-se esta nota se ficar morto de vez).
       id: 'animacaopt',
       name: 'Animação PT-PT',
       icon: '🧸',
-      desc: 'Filmes e séries de animação em PT-PT para as crianças (e não só)',
+      desc: 'Filmes e séries de animação em PT-PT para as crianças (e não só) — temporariamente em baixo (serviço do addon offline), por isso vem desmarcado.',
       manifestUrl: 'https://anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json',
+      defaultChecked: false,
     },
     {
       id: 'cotonet',
@@ -1595,14 +1603,36 @@
   }
 
   function buildSubMakerConfig() {
+    // Google Translate (não-oficial) como motor de tradução por defeito —
+    // zero chave API, zero passos extra, mantém o QuickStart num clique só.
+    // Suportado nativamente pelo SubMaker (providers.googletranslate, sem
+    // apiKey — confirmado directamente contra /api/create-session). Desde
+    // que a Google cortou a oferta grátis da API Gemini (~Dez/2025), a
+    // maioria das pessoas não se dava ao trabalho de ir buscar lá uma chave
+    // e ficava com a tradução partida. Qualidade mais literal que o Gemini,
+    // mas funciona sempre. Quem quiser melhor qualidade pode trocar para
+    // Gemini manualmente em submaker.elfhosted.com — ver guia (inclui
+    // rotação de várias chaves para não esgotar a quota).
     return {
       uiLanguage: 'pt',
       noTranslationMode: false,
       noTranslationLanguages: ['pt'],
       sourceLanguages: ['en'],
       targetLanguages: ['pt'],
-      mainProvider: 'gemini',
-      multiProviderEnabled: false,
+      multiProviderEnabled: true,
+      mainProvider: 'googletranslate',
+      providers: {
+        openai: { enabled: false, apiKey: '', model: '' },
+        anthropic: { enabled: false, apiKey: '', model: '' },
+        xai: { enabled: false, apiKey: '', model: '' },
+        deepseek: { enabled: false, apiKey: '', model: '' },
+        deepl: { enabled: false, apiKey: '', model: '' },
+        mistral: { enabled: false, apiKey: '', model: '' },
+        cfworkers: { enabled: false, apiKey: '', model: '' },
+        openrouter: { enabled: false, apiKey: '', model: '' },
+        googletranslate: { enabled: true, apiKey: '', model: 'web' },
+        custom: { enabled: false, apiKey: '', model: '', baseUrl: '' },
+      },
       subtitleProviders: {
         opensubtitles: { enabled: true, implementationType: 'v3', username: '', password: '' },
         subdl: { enabled: false, apiKey: '' },

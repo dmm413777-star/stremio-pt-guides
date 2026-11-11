@@ -15,15 +15,11 @@ weight: 18
 
 ## SubMaker: Tradução de Legendas por IA
 
-O **SubMaker** traduz legendas de qualquer conteúdo usando Inteligência Artificial (Google Gemini, ChatGPT, etc.). Ideal para quando não existem legendas PT disponíveis.
+O **SubMaker** traduz legendas de qualquer conteúdo automaticamente. Ideal para quando não existem legendas PT disponíveis.
 
 ### Configuração
 
-1. Abre a [Página de Configuração do SubMaker](https://submaker.elfhosted.com/).
-2. **API Key:** Recomenda-se o **Google Gemini** (gratuito e rápido). Clica no link *"Get Gemini API Key"* que aparece na página, cria uma chave e cola no campo **Gemini API Key**.
-3. **Source Language (Origem):** Seleciona apenas `English` (evita confusões de deteção).
-4. **Target Language (Destino):** Seleciona `Portuguese`.
-5. Clica em **Install**.
+Instalado pelo [QuickStart PT](/) já vem pronto a usar, sem nenhuma chave API — traduz com o Google Translate. Para melhor qualidade (tradução por IA, mais natural) podes trocar depois para o Gemini — ver [guia completo do SubMaker](/guias/submaker) para os passos e o aviso sobre a quota grátis da Google.
 
 ### Como Usar no Stremio
 

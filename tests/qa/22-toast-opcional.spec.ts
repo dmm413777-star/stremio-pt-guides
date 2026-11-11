@@ -9,14 +9,17 @@ test.describe('Toast Translator — opcional, desmarcado por defeito', () => {
   test('checkbox do Toast começa desmarcada; outros addons do pack começam marcados', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#qs-chk-toast')).not.toBeChecked();
-    for (const id of ['aiostreams', 'aiometadata', 'submaker', 'animacaopt', 'cotonet', 'ptgdrive']) {
+    // Animação PT-PT também começa desmarcado (2026-11-11: addon temporariamente
+    // em baixo — ver CLAUDE.md), por isso fica fora desta lista dos "sempre marcados".
+    for (const id of ['aiostreams', 'aiometadata', 'submaker', 'cotonet', 'ptgdrive']) {
       await expect(page.locator('#qs-chk-' + id)).toBeChecked();
     }
+    await expect(page.locator('#qs-chk-animacaopt')).not.toBeChecked();
   });
 
-  test('badge do pack mostra 6 seleccionados por defeito (7 addons, Toast fora)', async ({ page }) => {
+  test('badge do pack mostra 5 seleccionados por defeito (7 addons, Toast e Animação PT-PT fora)', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#qs-pack-badge')).toHaveText('6 selecionados');
+    await expect(page.locator('#qs-pack-badge')).toHaveText('5 selecionados');
   });
 
   test('"Todos" marca também o Toast; "Nenhum" desmarca tudo', async ({ page }) => {
