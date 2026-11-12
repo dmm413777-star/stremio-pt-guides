@@ -37,7 +37,7 @@ async function runInstall(page: any) {
   // Modo P2P (o modo por defeito é Debrid, que exige uma API key) + só
   // AIOStreams + AIOMetadata seleccionados
   await page.click('#qs-mode-p2p');
-  for (const id of ['submaker', 'animacaopt', 'cotonet', 'ptgdrive']) {
+  for (const id of ['submaker', 'cotonetkids']) {
     await page.evaluate((cid: string) => {
       const el = document.getElementById('qs-chk-' + cid) as HTMLInputElement;
       el.checked = false;

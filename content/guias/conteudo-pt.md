@@ -1,59 +1,48 @@
 ---
 title: "Conteúdo Português: Filmes, Séries, Novelas e Animação"
 date: 2026-08-11
-description: "Addons de catálogo com conteúdo em Português de Portugal: Animação PT-PT e PTGDrive — instalados automaticamente pelo QuickStart PT."
-tags: ["filmes", "séries", "animação", "português", "stremio", "catálogo", "ptgdrive"]
+description: "Addon de catálogo com conteúdo infantil e de animação em Português de Portugal: o CotonetKids, instalado automaticamente pelo QuickStart PT."
+tags: ["filmes", "séries", "animação", "infantil", "português", "stremio", "catálogo", "cotonetkids"]
 categorias: ["addons", "conteúdo-pt"]
 weight: 20
 tempo: "2 min"
 ---
 
-Estes addons adicionam catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. Nenhum requer configuração — são instalados automaticamente pelo [QuickStart PT](/).
+Este addon adiciona catálogos de conteúdo em Português de Portugal diretamente ao ecrã inicial do Stremio. O CotonetKids é instalado automaticamente pelo [QuickStart PT](/) e não requer configuração; já inclui o [Cotonet](/guias/cotonet) e o PTGDrive.
 
 ---
 
 ## Animação PT-PT
 
-{{< callout type="warning" >}}
-**Temporariamente indisponível.** O serviço que aloja este addon está em baixo (fora do nosso controlo — não temos acesso ao código nem ao alojamento). Por isso vem desmarcado por defeito no QuickStart PT. Volta aqui mais tarde ou tenta o link abaixo.
-{{< /callout >}}
+**Addon:** CotonetKids (não oficial, alojado na Fly.io)
 
-**Addon:** `Kids Filmes e Series de Animacao PT-PT Addon Stremio` (v1.0.0)
+Filmes e séries infantis e de animação em português de Portugal, indicado para crianças, mas com títulos para todas as idades. Junta várias fontes numa só lista: TugaKids, PTGDrive, Opto KIDS (os títulos infantis grátis do Opto), RTP Zig Zag e séries escolhidas do YouTube, entre outras. Quando a mesma série existe em mais do que uma fonte, aparece uma só vez, com os streams de todas.
 
-Filmes e séries de animação em PT-PT, indicado para crianças, mas com títulos para todas as idades.
+**Catálogos por omissão:** filmes e séries, por ordem de chegada. Na [página do addon](https://tvs-de-portugal.fly.dev/kids) podes ligar outras ordens (por lançamento, alfabética, clássicos) antes de instalar. Suporta pesquisa.
 
-**Dois catálogos:**
-- Filmes Animação PT-PT
-- Séries Animação PT-PT
+**Já inclui** o Cotonet e o PTGDrive, por isso não precisas de os instalar à parte.
 
-Suporta pesquisa e paginação.
+### Configuração (opcional)
 
-Só queres este addon? [Instalar Animação PT-PT na minha conta →](/instalar-addon/?url=https%3A%2F%2Fanima-o-pt-pt-addon-stremio-6dzv.vercel.app%2Fmanifest.json)
+O addon funciona sem configurar nada. As fontes extra (Tugaflix, Os Teus Filmes Tuga e TVParaPobres KiDS) abrem, por omissão, num navegador. Para as tocar **dentro do Stremio** precisas de uma app tua, grátis na Vercel (ou no Fly.io), que pede o vídeo por ti, porque o link do vídeo só serve a quem o pediu:
 
----
+1. Abre a [página do addon](https://tvs-de-portugal.fly.dev/kids), em **Fontes** clica em **Ver o comando** e corre-o num terminal (Mac e Linux) ou numa PowerShell (Windows). Precisas de ter o git e o Node.js instalados; o comando cria a app na tua conta da Vercel e mostra o endereço dela.
+2. Cola esse endereço no campo por baixo: a página testa-o sozinha.
+3. Clica em **Copiar link** e instala-o em [Instalar Addon por URL](/instalar-addon/), colando o link que copiaste.
 
-## PTGDrive
+Na mesma página escolhes também as listas que queres no Stremio (por chegada, por lançamento, alfabética, clássicos).
 
-**Addon:** PTGDrive (v2.0.4) — criado por Viren, mantido por Phen0menal0ne
-
-Catálogo de filmes e séries em português alojado no Google Drive. Boa cobertura de conteúdo PT com múltiplas formas de navegação.
-
-**Oito catálogos:**
-- Filmes: por género, por ano, ordem alfabética, adicionados recentemente
-- Séries: por género, por ano, ordem alfabética, adicionadas recentemente
-
-Só queres este addon? [Instalar PTGDrive na minha conta →](/instalar-addon/?url=https%3A%2F%2Fpt-pt-gdrive.newptdrive.workers.dev%2Fmanifest.json)
+Só queres este addon? [Instalar CotonetKids na minha conta →](/instalar-addon/?url=https%3A%2F%2Ftvs-de-portugal.fly.dev%2Fkids%2Fmanifest.json)
 
 ---
 
 ## Instalar
 
-Todos estes addons são instalados automaticamente pelo [QuickStart PT](/). Para instalar manualmente, acede ao manifest URL de cada addon no browser e confirma a instalação no Stremio:
+O CotonetKids é instalado automaticamente pelo [QuickStart PT](/). Para o instalar à parte, acede ao manifest URL no browser e confirma a instalação no Stremio:
 
 | Addon | Manifest URL |
 |---|---|
-| Animação PT-PT | `anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json` |
-| PTGDrive | `pt-pt-gdrive.newptdrive.workers.dev/manifest.json` |
+| CotonetKids | `tvs-de-portugal.fly.dev/kids/manifest.json` |
 
 ---
 
