@@ -103,10 +103,10 @@ test.describe('Botões "Instalar na minha conta" nos guias', () => {
     expect(decodeURIComponent(href || '')).toContain('cotonetnet-cotonet.hf.space/manifest.json');
   });
 
-  test('guia Conteúdo PT tem botões para Animação PT-PT e PTGDrive', async ({ page }) => {
+  test('guia Conteúdo PT tem botão para o CotonetKids', async ({ page }) => {
     await page.goto('/guias/conteudo-pt/');
     const links = page.locator('a[href*="/instalar-addon/?url="]');
-    expect(await links.count()).toBeGreaterThanOrEqual(2);
+    expect(await links.count()).toBeGreaterThanOrEqual(1);
   });
 
 });

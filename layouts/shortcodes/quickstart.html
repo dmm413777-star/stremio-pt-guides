@@ -894,33 +894,11 @@
       defaultChecked: false,
     },
     {
-      // 2026-11-11: serviço do dono do addon em baixo (Vercel devolve 402
-      // "Payment required — DEPLOYMENT_DISABLED"), fora do nosso controlo —
-      // sem repositório público conhecido para alojarmos uma cópia. Fica
-      // desmarcado por defeito (continua escolhível manualmente, para quem
-      // quiser tentar) até o script de deriva (scripts/check-tamtaro-drift.js,
-      // já monitoriza este URL) confirmar que voltou — nessa altura volta a
-      // defaultChecked:true (ou remove-se esta nota se ficar morto de vez).
-      id: 'animacaopt',
-      name: 'Animação PT-PT',
+      id: 'cotonetkids',
+      name: 'CotonetKids',
       icon: '🧸',
-      desc: 'Filmes e séries de animação em PT-PT para as crianças (e não só) — temporariamente em baixo (serviço do addon offline), por isso vem desmarcado.',
-      manifestUrl: 'https://anima-o-pt-pt-addon-stremio-6dzv.vercel.app/manifest.json',
-      defaultChecked: false,
-    },
-    {
-      id: 'cotonet',
-      name: 'Cotonet',
-      icon: '🇵🇹',
-      desc: 'Filmes em Português de Portugal — catálogo extenso, com pesquisa, géneros e ordenação por avaliação',
-      manifestUrl: 'https://cotonetnet-cotonet.hf.space/manifest.json',
-    },
-    {
-      id: 'ptgdrive',
-      name: 'PTGDrive',
-      icon: '🗂️',
-      desc: 'Filmes e séries em português via Google Drive',
-      manifestUrl: 'https://pt-pt-gdrive.newptdrive.workers.dev/manifest.json',
+      desc: 'Filmes e séries infantis e de animação em PT-PT, numa só lista: já inclui o Cotonet, o PTGDrive, o TugaKids, o Opto KIDS, o RTP Zig Zag e séries do YouTube. Não requer configuração.',
+      manifestUrl: 'https://tvs-de-portugal.fly.dev/kids/manifest.json',
     },
   ];
 
