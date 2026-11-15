@@ -6,7 +6,7 @@
   // Constante única do link de feedback da beta — aplica-se a todas as
   // ferramentas marcadas como beta (qualquer link com [data-feedback-link]).
   // Aponta para o post de anúncio da beta no r/PiratariaTuga.
-  const FEEDBACK_URL = 'https://www.reddit.com/r/PiratariaTuga/s/3vYyFPCt3H';
+  const FEEDBACK_URL = 'https://www.reddit.com/r/PiratariaTuga/comments/1xm0m39/site_guias_instalador_automático_stremionuvio/';
 
   function applyFeedbackLinks() {
     document.querySelectorAll('[data-feedback-link]').forEach(function (el) {
