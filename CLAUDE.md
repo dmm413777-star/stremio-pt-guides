@@ -139,7 +139,7 @@ teste que o utilizador fornecer explicitamente — nunca criar contas por conta 
 - Tam-Taro: GitHub (https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) + Ko-fi (https://ko-fi.com/tamtaro)
 - u/WildRabbitz: crédito no guia Nuvio
 - TorBox referral link correcto (actualizar aqui sempre que mudar):
-  `https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6`
+  `https://torbox.app/subscription?referral=d1e02b8c-a3e4-48bd-a6be-70fbb1f42fe9`
 
 ## Linguagem e tom (guias em `content/guias/`)
 

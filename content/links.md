@@ -28,7 +28,7 @@ description: "Recursos, ferramentas e comunidades para Stremio e Nuvio."
 
 | Serviço | Preço (aprox.) | Notas |
 |---|---|---|
-| [TorBox](https://torbox.app/subscription?referral=92f7e5bb-4698-4146-aefb-d95e333c3ed6) | ~28€/ano | Sem bloqueio por IP, partilhável |
+| [TorBox](https://torbox.app/subscription?referral=d1e02b8c-a3e4-48bd-a6be-70fbb1f42fe9) | ~28€/ano | Sem bloqueio por IP, partilhável |
 | [Real Debrid](https://real-debrid.com) | ~32€/ano | Popular, bloqueia IPs simultâneos |
 
 ## Templates e Configurações
