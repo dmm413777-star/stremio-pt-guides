@@ -63,7 +63,31 @@ O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecere
 
 ---
 
-## Configurar no Stremio (com Torrentio)
+## Já compraste? Volta ao QuickStart
+
+Agora falta pôr o TorBox a funcionar no Stremio ou no Nuvio, e o QuickStart PT faz isso por ti.
+
+1. Copia a tua **API Key** em [torbox.app/settings](https://torbox.app/settings?section=account).
+2. Volta ao separador do QuickStart (se vieste de lá, continua aberto). No passo 2, escolhe o modo **Debrid**, seleciona **TorBox** e cola a chave.
+3. Segue até ao fim e o instalador trata do resto.
+
+Em vez de ficares só com o Torrentio, ficas com o pack PT completo: AIOStreams já configurado com o TorBox e o template do Tam-Taro, catálogos em português, legendas e conteúdo PT.
+
+→ **[Abrir o QuickStart PT](/#qs-widget)**
+
+---
+
+## Resultado Final
+
+Depois da instalação, os links com a tag **`[TB+]`** estão em **cache** e abrem logo, sem depender de seeds. Qualidade máxima, sem espera.
+
+{{< img src="/images/stremio-tb-streams.jpg" alt="Lista de streams no Stremio com tags TB+ do TorBox" >}}
+
+---
+
+## Alternativa: só com o Torrentio
+
+Se não queres o pack completo e preferes usar só o Torrentio com o TorBox:
 
 1. Copia a tua **API Key** em [torbox.app/settings](https://torbox.app/settings?section=account).
 2. Abre a configuração do [Torrentio](https://torrentio.strem.fun/configure).
@@ -74,25 +98,13 @@ O cupão só funciona com **pagamento em criptomoedas**. Se as opções parecere
 4. Marca a opção **"Don't show download to debrid links"** (última caixa).
 5. Clica em **Install** para instalar no Stremio.
 
----
-
-## Resultado Final
-
-Após a instalação, os links com a tag **`[TB+]`** estão em **cache** e correm instantaneamente sem depender de seeds. Qualidade máxima, sem espera.
-
-{{< img src="/images/stremio-tb-streams.jpg" alt="Lista de streams no Stremio com tags TB+ do TorBox" >}}
-
----
-
-## Configurar no AIOStreams
-
-Se usas o AIOStreams com o template do Tam-Taro, seleciona **TorBox** durante o assistente de configuração e cola a API Key quando pedida. O template adapta-se automaticamente. Ver [guia AIOStreams](/guias/aiostreams-tamtaro).
+Se preferes montar o AIOStreams à mão, escolhe **TorBox** no assistente de configuração e cola a API Key quando for pedida. Os passos estão no [guia AIOStreams](/guias/aiostreams-tamtaro).
 
 ---
 
 ## Se algo correr mal
 
-**Streams `[TB+]` não abrem ou dão erro**. A API Key pode ter expirado ou a subscrição acabou. Vai a [torbox.app/settings](https://torbox.app/settings?section=account), copia a chave actual e reinstala o addon com a nova key.
+**Streams `[TB+]` não abrem ou dão erro**. A API Key pode ter expirado ou a subscrição acabou. Vai a [torbox.app/settings](https://torbox.app/settings?section=account), copia a chave actual e volta a correr o QuickStart (ou reinstala o Torrentio) com a nova chave.
 
 **Não aparecem streams `[TB+]`:** o ficheiro ainda não está em cache no TorBox. Tenta outro stream do mesmo conteúdo; o cache varia por ficheiro, não por título.
 
@@ -102,9 +114,9 @@ Se usas o AIOStreams com o template do Tam-Taro, seleciona **TorBox** durante o 
 
 ## Próximo passo
 
-Com o TorBox configurado, é altura de instalar o AIOStreams para tirares partido máximo do debrid:
+Se ainda não o fizeste, usa o QuickStart PT para instalar o pack completo com o TorBox em poucos cliques:
 
-→ [AIOStreams + Template SEL do Tam-Taro](/guias/aiostreams-tamtaro)
+→ [QuickStart PT](/#qs-widget)
 
 ---
 
