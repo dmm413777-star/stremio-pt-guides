@@ -81,14 +81,12 @@ test.describe('QuickStart PT — Sofia testa a ferramenta', () => {
     expect(bodyWidth).toBeLessThanOrEqual(vpWidth + 15);
   });
 
-  test('referral TorBox está presente e é o correcto', async ({ page }) => {
+  test('"Criar conta TorBox" leva ao guia do desconto, não directo à TorBox', async ({ page }) => {
     await page.goto(QS_URL);
-    const referralLinks = page.locator('a[href*="referral"]');
-    expect(await referralLinks.count()).toBeGreaterThanOrEqual(1);
-    const hrefs = await Promise.all(
-      (await referralLinks.all()).map(l => l.getAttribute('href'))
-    );
-    expect(hrefs.some(h => h?.includes('d1e02b8c'))).toBe(true);
+    const link = page.locator('#qs-debrid-links a', { hasText: 'Criar conta TorBox' });
+    await expect(link).toHaveCount(1);
+    expect(await link.getAttribute('href')).toMatch(/\/guias\/torbox\/#como-comprar-segue-esta-ordem$/);
+    expect(await page.locator('a[href*="torbox.app/subscription"]').count()).toBe(0);
   });
 
   test('localStorage não contém debrid keys após interacção', async ({ page }) => {

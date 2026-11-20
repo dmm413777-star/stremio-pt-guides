@@ -34,11 +34,10 @@ test.describe('Rodrigo — utilizador Real-Debrid a explorar opções', () => {
     expect(html).toMatch(/Rec\./);
   });
 
-  test('só TorBox tem link de referral', async ({ page }) => {
-    const referralLinks = page.locator('a[href*="referral=d1e02b8c"]');
-    await expect(referralLinks.first()).toBeVisible();
-    const count = await referralLinks.count();
-    expect(count).toBe(1);
+  test('só TorBox tem link para o guia do desconto', async ({ page }) => {
+    const guideLinks = page.locator('#qs-debrid-links a[href*="guias/torbox/#como-comprar"]');
+    await expect(guideLinks.first()).toBeVisible();
+    expect(await guideLinks.count()).toBe(1);
   });
 
   test('Real-Debrid — placeholder actualiza ao seleccionar', async ({ page }) => {
@@ -91,11 +90,12 @@ test.describe('Rodrigo — utilizador Real-Debrid a explorar opções', () => {
     }
   });
 
-  test('ao voltar para TorBox, link de referral volta a aparecer', async ({ page }) => {
+  test('ao voltar para TorBox, link para o guia do desconto volta a aparecer', async ({ page }) => {
+    const guideLinks = page.locator('#qs-debrid-links a[href*="guias/torbox/#como-comprar"]');
     await selectDebrid(page, 'realdebrid');
-    expect(await page.locator('a[href*="referral"]').count()).toBe(0);
+    expect(await guideLinks.count()).toBe(0);
     await selectDebrid(page, 'torbox');
-    expect(await page.locator('a[href*="referral=d1e02b8c"]').count()).toBe(1);
+    expect(await guideLinks.count()).toBe(1);
   });
 
   test('mobile — pills não causam scroll horizontal em 390px', async ({ page }) => {
